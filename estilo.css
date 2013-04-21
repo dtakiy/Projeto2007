@@ -1,0 +1,115 @@
+/* CSS Document */
+
+body, html, div, blockquote, img, label, p, h1, h2, h3, h4, h5, h6, h7, h8, pre, ul, ol,
+li, dl, dt, dd, form, a, fieldset, input, th, td
+{margin: 0; padding: 0; outline: none;}
+
+body{line-height:1; font-size:62.5%; background:#000;} /*---- 1.0 em = 10px---*/
+
+h1, h2, h3, h4, h5, h6{font-size:100%;}
+
+ul, ol{list-style:none;}
+
+
+/* Declarando os Divs*/
+
+.sidebar-div{width:125px; height:125px; margin-top:17px; background:#fff;}
+
+.sidebar-div, .destaques-div, .dir-div, .esq-div, .rodape-div{position:relative; float:left;}, .rodape2-div{position:relative; float:left;}
+
+.destaques-div{width:620px; height:auto; background:#6a6a6a; padding-bottom:17px;}
+
+.dir-div{width:283px; height:auto; background:#6a6a6a; padding:0 0 17px 17px;}
+
+.esq-div{width:620px; height:auto; margin-right:20px;}
+
+.global-div{position:absolute; display:block; width:940px; height:auto; margin:auto; left:50%; margin-left:-490px; margin-bottom:10px; background-color:#fff; padding:0 20px 10px 20px;}
+
+.menu-div{width:900px; height:auto; background:#383435; padding:12px 20px; margin-bottom:15px;}
+
+.rodape-div{width:auto; height:auto; background-color:#6a6a6a; color:#fff; margin-top:17px;}
+
+.rodape2-div{width:940px; height:auto; background-color:#6a6a6a; color:#fff; margin-top:17px;}
+
+.topo-div{width:940px; height:auto; background-color:#6a6a6a;}
+
+input {
+	padding:2px;
+	border:1px solid #eee;
+	font: normal 1em Verdana, sans-serif;
+	color:#777;
+}
+
+input.button { 
+	font: bold 12px Arial, Sans-serif; 
+	height: 24px;
+	margin: 0;
+	padding: 2px 3px; 
+	color: #FFF;
+	background: #8EB50C url(button-bg.jpg) repeat-x 0 0;
+	border: none;
+}
+
+
+/* Outros*/
+
+.displaynone{display:none;}
+
+fieldset{border:0;}
+
+.left{float:left;}
+
+.left17{margin-left:17px;}
+
+.right17{margin-right:17px;}
+
+.right{float:right;}
+
+.top8{margin-top:8px;}
+
+
+/*Links*/
+
+a{color:#000; text-decoration: none;}
+
+a img{border:0;}
+
+.leiamais{display:block; float:right; background-color:#c2c2c2; font:1em Arial, Helvetica, sans-serif; text-transform:uppercase; color:#000; padding:2px 3px; margin:5px 17px 0 0; display:inline;}
+
+.menu-div li{border-right:1px solid #fff; font:1.2em Arial, Helvetica, sans-serif; display:inline; }
+
+.menu-div li:last-child{border:0;}
+
+.menu-div li a{color:#fff; padding:0 13px;}
+
+
+/*Fontes*/
+
+.chamadas-div p{margin:0 17px;}
+
+h1{font:bold 2em Arial, Helvetica, sans-serif; margin:17px 0 8px 0; color:#fff;}
+
+h2{font:bold 1.6em Arial, Helvetica, sans-serif; margin:9px 0 7px 17px; color:#fff;}
+
+h5, h4 , h6{font:bold 2.4em Arial, Helvetica, sans-serif; text-transform:uppercase; padding:8px 20px; background:#383435; color:#fff;}
+
+h4{font-size:1.8em;}
+
+h6{font-size:1.4em; margin:35px 17px 8px 17px; padding:2px; text-align:center;}
+
+p{font:1.2em Arial, Helvetica, sans-serif; line-height:1.6em; color:#fff;}
+
+h7{font:1.8em Arial; color:#fff;}
+
+h8{font:1.3em Helvetica; color:#fff;}
+
+.rodape-div p{margin:3px 17px;}
+
+
+/*listas*/
+
+.maisartigos li{font:1.2em Arial, Helvetica, sans-serif; line-height:1.6em; list-style:disc; list-style-position:inside; margin:0 17px;}
+
+.maisartigos li a {color:#fff;}
+
+.menusidebar li a{color:#6a6a6a;}
