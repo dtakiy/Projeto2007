@@ -90,4 +90,14 @@ unset($_SESSION['usrlogin'], $_SESSION['usrtipo'], $_SESSION['usrnome']);
 header("location:index.php");
 }
 
+function expulsaVisitante2() {
+global $_SG;
+
+// Remove as variáveis da sessão (caso elas existam)
+unset($_SESSION['usrlogin'], $_SESSION['usrtipo'], $_SESSION['usrnome']);
+
+echo("<script type='text/javascript'> alert('Login ou Senha Incorreto'
+); location.href='index.php';</script>");
+}
+
 ?>

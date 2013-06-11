@@ -17,7 +17,7 @@ include("valida.php");
        
     }
     		else{
-    		expulsaVisitante();
+    		expulsaVisitante2();
     		}
     	
 ?>
