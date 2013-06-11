@@ -3,14 +3,13 @@
     $usuario = $_SESSION['usrlogin'];
     $tipo=$_SESSION['usrtipo'];
     $nome = $_SESSION['usrnome'];
-    
 	$nomedecripto = base64_decode($nome);
 	
 	if($tipo==1){
 	echo "";
 	}
 	else 
-	header("location:erro.php");
+	 header("location:erro.php");
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -63,65 +62,89 @@ echo "</form>";
         <div class="esq-div">
 		      
         	<div class="destaques-div">
-            <h5>Editar Usuário</h5>
-			
-<?php
+            <h5>Resultados Busca Usuários</h5>
+   <?php
+$buscar=$_POST["buscarusr"];
+$buscarcripto=base64_encode($buscar);   
 require_once("conf.php");
+echo "
+<br /><br />
+<table border=1>
+<tr>
+<form name='myform' action='editarusr.php' method='POST'> <div align='center'><br>
+<th>Selecione</th><th>Login</th><th>Senha</th><th>Nome</th><th>E-Mail</th></tr>
+";
 
-  $cod ="$_POST[cid2]";
-  $log="$_POST[clog2]";
-  $nome ="$_POST[cnome2]";
- // $datanasc="$_POST[cdata2]";
-  $senha ="$_POST[csenha2]";
-  $email ="$_POST[cemail2]";
-  $tipo ="$_POST[ctipo2]";
-  $rg = "$_POST[crg2]";
-  $cpf = "$_POST[ccpf2]";
-  $end = "$_POST[cend2]";
-  $num = "$_POST[cnum2]";
-  $compl = "$_POST[ccomp2]";
-  $cep = "$_POST[cep2]";
-  $cidade = "$_POST[ccidade2]";
-  $estado = "$_POST[cestado2]";
-  $tel = "$_POST[ctel2]";
-  $cel = "$_POST[ccel2]";
-  $status = "$_POST[status2]";
-  
-  
-  $nomecripto = base64_encode($nome);
-  $datanasccripto = base64_encode($datanasc);
-  $emailcripto = base64_encode($email);
- // $rgcripto = base64_encode($rg);
-  $cpfcripto = base64_encode($cpf);
-  $endcripto = base64_encode($end);
-  $numcripto = base64_encode($num);
-  $compcripto = base64_encode($compl);
-  $cmpusrcripto = base64_encode($cmpusr);
-  $cidadecripto = base64_encode($cidade);
-  $estdcripto = base64_encode($estado);
-  $cepcripto = base64_encode($cep);
-  $telcripto = base64_encode($tel);
-  $celcripto = base64_encode($cel);
-  $cepcripto = base64_encode($cep);
-  
-   
-$result = mysql_query("UPDATE usuarios SET nome='$nomecripto', email='$emailcripto', cpf='$cpfcripto', cep='$cepcripto', tel='$telcripto' ,cel='$celcripto', endereco='$endcripto',
-numero='$numcripto', complemento='$compcripto', estado='$estdcripto',cidade='$cidadecripto', tipo=$tipo, status=$status
-WHERE idusuario=$cod");
+$result = mysql_query("select * from usuarios where nome='$buscarcripto' or email='$buscarcripto' or cpf='$buscarcripto'");
 
 
-echo "Mudança Efetuada com Sucesso, clique <a href=admusr.php>"; echo "aqui Para Voltar</a>.";
-?>
-			
+while ($row = mysql_fetch_assoc($result)) {
+
+$nome=$row['nome'];
+$nomedecripto = base64_decode($nome);
+$email=$row['email'];
+$emaildecripto = base64_decode($email);
+$rg=$row['rg'];
+$rgdecripto = base64_decode($rg);
+$cpf=$row['cpf'];
+$cpfdecripto = base64_decode($cpf);
+$datanasc=$row['datanasc'];
+$datanascdecripto = base64_decode($datanasc);
+$endereco=$row['endereco'];
+$enderecodecripto = base64_decode($endereco);
+$cidade=$row['cidade'];
+$cidadedecripto = base64_decode($cidade);
+$cep=$row['cep'];
+$cepdecripto = base64_decode($cep);
+$estado=$row['estado'];
+$estadodecripto = base64_decode($estado);
+$tel=$row['tel'];
+$teldecripto = base64_decode($tel);
+$cel=$row['cel'];
+$celdecripto = base64_decode($cel);
+
+
+	echo "<tr>";
+    echo "<td> <input type='radio' name='elog' value='".$row['idusuario']."'>".$row['idusuario']. "</td>" ;
+    echo "<td> <input type='text' name='elog2'  disabled  size='auto' value='".$row['login']. "'></td>" ;
+	echo "<td> <input type='text' name='esenha'  disabled  size='auto' value='".$row['senha']. "'></td>" ;
+	echo "<td> <input type='text' name='enomeusr' disabled size='auto' value='".$nomedecripto."'></td>" ;
+	echo "<td> <input type='text' name='eemail' disabled size='15' value='".$emaildecripto."'></td>" ;
+	echo "<tr><th>RG</th><th>CPF</th><th>Tipo</th><th>Data Nasc</th><th>End</th></tr>";
+	echo "<td> <input type='text' name='erg' disabled size='auto' value='".$rgdecripto."'></td>" ;
+	echo "<td> <input type='text' name='ecpf' disabled size='auto' value='".$cpfdecripto. "'></td>" ;
+	echo "<td> <input type='text' name='etipo' disabled size='auto' value='".$row['tipo']. "'></td>" ;
+	echo "<td> <input type='text' name='edatanasc' disabled size='auto' value='".$datanascdecripto. "'></td>" ;
+	echo "<td> <input type='text' name='eend' disabled size='15' value='".$enderecodecripto. "'></td>" ;
+	echo "<tr><th>Cidade</th><th>CEP</th><th>Estado</th><th>Tel</th><th>Cel</th></tr>";
+	echo "<td> <input type='text' name='ecidade' disabled size='auto' value='".$cidadedecripto. "'></td>" ;
+	echo "<td> <input type='text' name='ecep' disabled size='auto' value='".$cepdecripto. "'></td>" ;
+	echo "<td> <input type='text' name='eestado' disabled size='auto' value='".$estadodecripto. "'></td>" ;
+	echo "<td> <input type='text' name='etel' disabled size='auto' value='".$teldecripto. "'></td>" ;
+	echo "<td> <input type='text' name='ecel' disabled size='15' value='".$celdecripto. "'></td>" ;
+	echo "</tr>";
+}
+
+echo "</table>";
+	echo "<td>  <a href='cadusr.php'  class='button adicionar'> Adicionar Usuario</a> </td>";
+	echo "<td> <button type='submit' name='action' value='apagarusr' class='button apagar'> Apagar Usuario</a> </td>";
+	echo "<td> <button type='submit' name='action' value='editarusr' class='button editar'> Editar Usuario</a> </td>";
+	echo "<td> <a href='buscausr.php'> <button  class='button pesquisar'> Pesquisar Usuario</a> </td>";
+	echo "</form>";   
+	?>	
+     <br>
+		 
         </div>
-<div class="rodape-div"><p>Loja Cusko</p></div>		
+<div class="rodape-div"><p>TCC do JET</p></div>		
 </div>
          <div class="dir-div">								
             <h4>Menu</h4>
             <br>
             <div id='menuvert'>
 			<ul>
+
             <ul class="maisartigos escuro top8">
+            
             <li><a href="#" title="Camisas Masculinas">Camisas Masculinas</a></li>
             <li><a href="#" title="Camisas Femininas">Camisas Femininas</a></li>
             <li><a href="#" title="Calcas Masculinas">Calcas Masculinas</a></li>
@@ -129,16 +152,9 @@ echo "Mudança Efetuada com Sucesso, clique <a href=admusr.php>"; echo "aqui Par
             <li><a href="#" title="Bermudas Masculinas">Bermudas Masculinas</a></li>
             <li><a href="#" title="Shorts Femininos">Shorts Femininos</a></li>
 			<li><a href="#" title="Acessorios">Acessorios</a></li>
-			<br>   		     
+			<br>   	     
             </ul>
             </div>
-            <br>
-            <h4>Área dDo Usuário</h4>
-            <br>
-            <div id='menuvert'>
-            <br> 
-            <li><a href="cadusrcmp.php" title="Editar Informações">Editar Informações</a></li>   
-            </div>  
             <br>
             <h4>Busca De Produtos</h4>
             <br>      
@@ -150,7 +166,7 @@ echo "Mudança Efetuada com Sucesso, clique <a href=admusr.php>"; echo "aqui Par
         	<div id="fb-root"></div>        	
 			<div class="fb-like" data-href="https://pt-br.facebook.com/usecusko" data-send="true" data-layout="button_count" 
 			data-width="450" data-show-faces="true" data-font="arial"></div>
-		</div>	
+		</div>		
 </div>
 				<!-- Script para se conectar ao Facebook -->
 				<script>(function(d, s, id) {

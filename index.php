@@ -79,16 +79,16 @@ while ($row = mysql_fetch_assoc($result)) {
 	echo "<tr><td><a href='".$row['nome_produto'].".php'><img src='".$row['imagem']."'height='130' width='130' name='eimg'></tr></td>";
 	echo "<td> <font size='2.5' color='white'>Preço R$ ".$row['preco_produto'];
 	echo "</tr>";
-	echo "<td>";
-	echo "<font size='2.5' color='white'> Tamanho";
-    echo "<select name='tamprod'>";
-	echo" <option value='1' selected>Selecione</option>";
-	echo" <option value='2' >P</option>";
-	echo" <option value='3' >M</option>";
-	echo" <option value='4' >G</option>";
-	echo" <option value='5' >GG</option>";
-	echo "</select>";
-	echo "</td>";
+	//echo "<td>";
+	//echo "<font size='2.5' color='white'> Tamanho";
+    //echo "<select name='tamprod'>";
+	//echo" <option value='1' selected>Selecione</option>";
+	//echo" <option value='2' >P</option>";
+	//echo" <option value='3' >M</option>";
+	//echo" <option value='4' >G</option>";
+	//echo" <option value='5' >GG</option>";
+	//echo "</select>";
+	//echo "</td>";
 	echo "<tr><td>";
     echo "<font size='2.5' color='white'>QTD &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
     echo "<select name='tamprod'>";
@@ -129,7 +129,7 @@ echo "</table>";
             <li><a href="#" title="Calcas Femininas">Calcas Femininas</a></li>
             <li><a href="#" title="Bermudas Masculinas">Bermudas Masculinas</a></li>
             <li><a href="#" title="Shorts Femininos">Shorts Femininos</a></li>
-			<li><a href="#" title="Acessorios">Acessorios</a></li>
+			<li><a href="#" title="Acessórios">Acessorios</a></li>
 			<br>   
 			     
             </ul>

@@ -15,11 +15,9 @@ ul, ol{list-style:none;}
 
 .sidebar-div{width:125px; height:125px; margin-top:17px; background:#fff;}
 
-.sidebar-div, .destaques-div, .destaques2-div, .dir-div, .esq-div, .rodape-div{position:relative; float:left;}, .rodape2-div{position:relative; float:left;}
+.sidebar-div, .destaques-div, .dir-div, .esq-div, .rodape-div{position:relative; float:left;}, .rodape2-div{position:relative; float:left;}
 
 .destaques-div{width:620px; height:auto; background:#6a6a6a; padding-bottom:17px;}
-
-.destaques2-div{width:620px; height:auto; background:#FFFFFF; padding-bottom:17px;}
 
 .dir-div{width:283px; height:auto; background:#6a6a6a; padding:0 0 17px 17px;}
 
@@ -27,15 +25,13 @@ ul, ol{list-style:none;}
 
 .global-div{position:absolute; display:block; width:940px; height:auto; margin:auto; left:50%; margin-left:-490px; margin-bottom:10px; background-color:#fff; padding:0 20px 10px 20px;}
 
-.menu-div{width:900px; height:auto; background:#000000; padding:12px 20px; margin-bottom:15px;}
+.menu-div{width:900px; height:auto; background:#383435; padding:12px 20px; margin-bottom:15px;}
 
 .rodape-div{width:auto; height:auto; background-color:#6a6a6a; color:#fff; margin-top:17px;}
 
 .rodape2-div{width:940px; height:auto; background-color:#6a6a6a; color:#fff; margin-top:17px;}
 
 .topo-div{width:940px; height:auto; background-color:#6a6a6a;}
-
-
 
 input {
 	padding:2px;
@@ -235,7 +231,7 @@ position:relative;
 display:block;
 height:33px;
 font-size:.9em;
-background: #000000 url(bg.png) repeat-x top left;
+background: #383435 url(bg.png) repeat-x top left;
 font-family:Verdana,Helvetica,Arial,sans-serif;
 border:0px solid #000;
 margin:0;

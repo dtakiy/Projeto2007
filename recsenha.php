@@ -1,17 +1,3 @@
-<?php 
-	session_start();
-    $usuario = $_SESSION['usrlogin'];
-    $tipo=$_SESSION['usrtipo'];
-    $nome = $_SESSION['usrnome'];
-    
-	$nomedecripto = base64_decode($nome);
-	
-	if($tipo==2){
-	echo "";
-	}
-	else 
-//	 header("location:erro.php");
-?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -45,13 +31,7 @@
   <li><a href='#'><span>Quem Somos</span></a></li>
   <li><a href='#'><span>Contato</span></a></li>
   <li><a href='#'><span>Carrinho</span></a></li>
-  <?php
-echo "<form id=formlogout' name='formlogout' method='post'  action='logout.php'>";
-echo "<font size='2.5' color='white'>".$nomedecripto;
-echo "</font>";
-echo "<input name='btn_logout' class='button' type='submit' id='btn_logout' value='Logout' size='40'  />";
-echo "</form>";
-?>
+
 </ul>
 </div>				                          
             </ul>
@@ -60,41 +40,55 @@ echo "</form>";
         <div class="esq-div">
 		      
         	<div class="destaques-div">
-            <h5>Cadastro</h5>
-			
-			<?php 
-//cadastro de consumidores
-// atributos
-$login= $_POST["username"];
-$senha= $_POST["passusr"];
-$email= $_POST["emailusr"];
-$criptolog  = hash('md5', $login);
-$criptopass = hash('md5', $senha);
-$emailcript = base64_encode($email);
-
-?>
-<?php
-
-require_once("conf.php");
-
-$query = mysql_query("select * from usuarios where login='$criptolog' or email='$emailcript'");
-$num = mysql_num_rows($query);
-echo "$num" ;
-
-if($num<1){
-$result = mysql_query("INSERT into usuarios (login,senha,email,tipo,status) values('$criptolog'
-,'$criptopass','$emailcript',2,1);");
-echo "Cadastrado com Sucesso, clique <a href=index2.php>"; echo "aqui Para Navegar</a>.";
+            <h5>Recuperar Senha</h5>
+			    
+      <form id="formrec" name="formrec" method="post" onsubmit="return validar(this);" action="reqrecpass.php">
+      <br>
+      <br>
+      <table border=0  width=auto height=auto>
+      <tr> 
+      <td width="auto"> <h7>E-mail:</h7> </td>
+      <td width="auto"><input type="text" name="recpass" placeholder="E-Mail Cadastrado" onBlur="vemail(formrec.recpass);" size="20" maxlength="60" /></td>
+      </tr>
+       </table>
+	  <br>
+	  <br>	   
+	  <input name="btn_recpass" class="button" type="submit" id="btn_recpass" value="Recuperar" size="40" />
+	  </form>
+   
+   <script>
+   function validar(formrec){
+	 
+   formrec.recpass.style.background="white";
+   		
+   		if(formrec.recpass.value ==''){
+   		formrec.recpass.style.background="yellow";
+   		alert("E-mail Não Preenchido");
+   		return false;
+	 	}
+   return true;
+    }
+    
+    
+    function vemail(email){
+    exp = /^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_.-])+\.([a-zA-Z])+([a-zA-Z])+/;
+	
+    if(exp.test(email.value)){         
+	  return true;
+    }
+	else{
+		alert("Formato De E-mail Inválido!"); 
+		return false;
+    }
 }
-
-else{
-echo "<h1>N�o foi possivel fazer o cadastro</h1>";
-
-echo "Para retornar ao cadastro clique <a href=cadusr.php>"; echo "aqui</a>.";
-}
-?>
-			
-          
+    
+    
+	</script>
+	
+	
+	
+	
+	
         </div>
 <div class="rodape-div"><p>Loja Cusko</p></div>		
 </div>
@@ -119,12 +113,12 @@ echo "Para retornar ao cadastro clique <a href=cadusr.php>"; echo "aqui</a>.";
             <br>
             <div id='menuvert'>
             <br> 
-            <li><a href="cadusrcmp.php" title="Editar Informa��es">Editar Informa��es</a></li>   
+            <li><a href="cadusrcmp.php" title="Editar Informações">Editar Informações</a></li>   
             </div>  
             <br>
             <h4>Busca De Produtos</h4>
             <br>      
-        	<input name="login" type="text" id="login" placeholder="Nome ou Descri��o" size="20" maxlength="60"/>
+        	<input name="login" type="text" id="login" placeholder="Nome ou Descrição" size="20" maxlength="60"/>
         	<input name="btnsearchprod" class="button" type="submit" size="2" id="btnsearchprod" value="Buscar" />
         	<br>
         	<br>

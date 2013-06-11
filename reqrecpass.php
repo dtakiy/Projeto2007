@@ -60,40 +60,36 @@ echo "</form>";
         <div class="esq-div">
 		      
         	<div class="destaques-div">
-            <h5>Cadastro</h5>
-			
-			<?php 
-//cadastro de consumidores
-// atributos
-$login= $_POST["username"];
-$senha= $_POST["passusr"];
-$email= $_POST["emailusr"];
-$criptolog  = hash('md5', $login);
-$criptopass = hash('md5', $senha);
-$emailcript = base64_encode($email);
-
-?>
-<?php
-
+            <h5>Recuperar Senha</h5>
+<?php 
 require_once("conf.php");
+// email do consumidor
+$email= $_POST["recpass"];
+$emailcript = base64_encode($email);
+$result = mysql_query("SELECT * FROM USUARIOS where email='$emailcript'");
+$numero = mysql_num_rows($result);
 
-$query = mysql_query("select * from usuarios where login='$criptolog' or email='$emailcript'");
-$num = mysql_num_rows($query);
-echo "$num" ;
 
-if($num<1){
-$result = mysql_query("INSERT into usuarios (login,senha,email,tipo,status) values('$criptolog'
-,'$criptopass','$emailcript',2,1);");
-echo "Cadastrado com Sucesso, clique <a href=index2.php>"; echo "aqui Para Navegar</a>.";
-}
+if($result){
 
-else{
-echo "<h1>N�o foi possivel fazer o cadastro</h1>";
+	while ($row = mysql_fetch_assoc($result)) {
+	$senha=$row['senha'];
+	//$email="tccdojet@gmail.com";
+	$subject = "Recuperando senha";
+	$message = "Para recupera a senha entre em www.cusko.com.br/password, entre com o código a seguir e mude a senha Obrigado ".$senha;
+	$from = "tccdojet@gmail.com";
+	$headers = "From:" .$from;
+	mail($email,$subject,$message,$headers);
+	echo "E-mail de recuperação enviado por favor verifique seu e-mail para os proximo passo";
+	}
 
-echo "Para retornar ao cadastro clique <a href=cadusr.php>"; echo "aqui</a>.";
+
+		if($numero < 1){
+	echo "Desculpe, E-mail não Encontrado";
+	}
+
 }
 ?>
-			
           
         </div>
 <div class="rodape-div"><p>Loja Cusko</p></div>		
@@ -110,7 +106,7 @@ echo "Para retornar ao cadastro clique <a href=cadusr.php>"; echo "aqui</a>.";
             <li><a href="#" title="Calcas Femininas">Calcas Femininas</a></li>
             <li><a href="#" title="Bermudas Masculinas">Bermudas Masculinas</a></li>
             <li><a href="#" title="Shorts Femininos">Shorts Femininos</a></li>
-			<li><a href="#" title="Acessorios">Acessorios</a></li>
+			<li><a href="#" title="Acessorios">Acessórios</a></li>
 			<br>   		     
             </ul>
             </div>
@@ -119,12 +115,12 @@ echo "Para retornar ao cadastro clique <a href=cadusr.php>"; echo "aqui</a>.";
             <br>
             <div id='menuvert'>
             <br> 
-            <li><a href="cadusrcmp.php" title="Editar Informa��es">Editar Informa��es</a></li>   
+            <li><a href="cadusrcmp.php" title="Editar Informações">Editar Informações</a></li>   
             </div>  
             <br>
             <h4>Busca De Produtos</h4>
             <br>      
-        	<input name="login" type="text" id="login" placeholder="Nome ou Descri��o" size="20" maxlength="60"/>
+        	<input name="login" type="text" id="login" placeholder="Nome ou Descrição" size="20" maxlength="60"/>
         	<input name="btnsearchprod" class="button" type="submit" size="2" id="btnsearchprod" value="Buscar" />
         	<br>
         	<br>

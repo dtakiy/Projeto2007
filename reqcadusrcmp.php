@@ -10,7 +10,7 @@
 	echo "";
 	}
 	else 
-//	 header("location:erro.php");
+	 header("location:erro.php");
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -60,40 +60,66 @@ echo "</form>";
         <div class="esq-div">
 		      
         	<div class="destaques-div">
-            <h5>Cadastro</h5>
+            <h5>Cadastro Usuário</h5>
 			
-			<?php 
-//cadastro de consumidores
-// atributos
-$login= $_POST["username"];
-$senha= $_POST["passusr"];
-$email= $_POST["emailusr"];
-$criptolog  = hash('md5', $login);
-$criptopass = hash('md5', $senha);
-$emailcript = base64_encode($email);
-
+			<?php
+session_start();
 ?>
-<?php
-
+<?php 
 require_once("conf.php");
+$usuario = $_SESSION['usrlogin'];
 
-$query = mysql_query("select * from usuarios where login='$criptolog' or email='$emailcript'");
-$num = mysql_num_rows($query);
-echo "$num" ;
+echo $usuario;
+// atributos
+$nome= $_POST["nomeusr"];
+//$datanasc= $_POST["nascusr"];
+//$rg=$_POST["rgusr"];
+$cpf=$_POST["cpfusr"];
+$end=$_POST["endusr"];
+$num=$_POST["nend"];
+$cmpusr=$_POST["compend"];
+$cidade=$_POST["cidadeusr"];
+$estd=$_POST["estadosusr"];
+$cep=$_POST["cepusr"];
+$tel=$_POST["telusr"];
+$cel=$_POST["celusr"];
+$senha=$_POST["senusr"];
 
-if($num<1){
-$result = mysql_query("INSERT into usuarios (login,senha,email,tipo,status) values('$criptolog'
-,'$criptopass','$emailcript',2,1);");
-echo "Cadastrado com Sucesso, clique <a href=index2.php>"; echo "aqui Para Navegar</a>.";
-}
+// criptografando dados base 64
 
-else{
-echo "<h1>N�o foi possivel fazer o cadastro</h1>";
+$nomecripto = base64_encode($nome);
+//$datanasccripto = base64_encode($datanasc);
+//$rgcripto = base64_encode($rg);
+$cpfcripto = base64_encode($cpf);
+$endcripto = base64_encode($end);
+$numcripto = base64_encode($num);
+$cmpusrcripto = base64_encode($cmpusr);
+$cidadecripto = base64_encode($cidade);
+$estdcripto = base64_encode($estd);
+$cepcripto = base64_encode($cep);
+$telcripto = base64_encode($tel);
+$celcripto = base64_encode($cel);
 
-echo "Para retornar ao cadastro clique <a href=cadusr.php>"; echo "aqui</a>.";
-}
+// criptografando dados MD5
+
+$senhacripto = hash('md5', $senha);
+echo "Cadastro Realizado com Sucesso";
+
+
+///////////////////////////////////
+
+$result = mysql_query("UPDATE usuarios
+SET nome='$nomecripto', cpf='$cpfcripto',
+endereco='$endcripto', cidade='$cidadecripto', tel='$telcripto', cel='$celcripto',
+estado='$estdcripto', cep='$cepcripto', numero='$numcripto', complemento='$cmpusrcripto', senha='$senhacripto'
+WHERE login='$usuario'");
+
+echo $result;
+// Free the resources associated with the result set
+// This is done automatically at the end of the script
+//mysql_free_result($result);
 ?>
-			
+
           
         </div>
 <div class="rodape-div"><p>Loja Cusko</p></div>		
@@ -115,16 +141,16 @@ echo "Para retornar ao cadastro clique <a href=cadusr.php>"; echo "aqui</a>.";
             </ul>
             </div>
             <br>
-            <h4>Área dDo Usuário</h4>
+            <h4>área Do Usuário</h4>
             <br>
             <div id='menuvert'>
             <br> 
-            <li><a href="cadusrcmp.php" title="Editar Informa��es">Editar Informa��es</a></li>   
+            <li><a href="cadusrcmp.php" title="Editar Informações">Editar Informações</a></li>   
             </div>  
             <br>
             <h4>Busca De Produtos</h4>
             <br>      
-        	<input name="login" type="text" id="login" placeholder="Nome ou Descri��o" size="20" maxlength="60"/>
+        	<input name="login" type="text" id="login" placeholder="Nome ou Descrição" size="20" maxlength="60"/>
         	<input name="btnsearchprod" class="button" type="submit" size="2" id="btnsearchprod" value="Buscar" />
         	<br>
         	<br>

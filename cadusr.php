@@ -42,7 +42,15 @@
   <li><a href='#'><span>Quem Somos</span></a></li>
   <li><a href='#'><span>Contato</span></a></li>
   <li><a href='#'><span>Carrinho</span></a></li>
+  <?php
+echo "<form id=formlogout' name='formlogout' method='post'  action='logout.php'>";
+echo "<font size='2.5' color='white'>".$nomedecripto;
+echo "</font>";
+echo "<input name='btn_logout' class='button' type='submit' id='btn_logout' value='Logout' size='40'  />";
+echo "</form>";
+?>
 </ul>
+
 </div>				                          
             </ul>
         </div>

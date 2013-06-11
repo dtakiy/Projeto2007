@@ -3,14 +3,13 @@
     $usuario = $_SESSION['usrlogin'];
     $tipo=$_SESSION['usrtipo'];
     $nome = $_SESSION['usrnome'];
-    
 	$nomedecripto = base64_decode($nome);
 	
-	if($tipo==2){
+	if($tipo==1){
 	echo "";
 	}
 	else 
-//	 header("location:erro.php");
+	header("location:erro.php");
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -40,18 +39,21 @@
 			  	<br>
 <div id='cssmenu'>
 <ul>
-  <li><a href='index.php'><span>Home</span></a></li>
-  <li><a href='#'><span>Produtos</span></a></li>
-  <li><a href='#'><span>Quem Somos</span></a></li>
-  <li><a href='#'><span>Contato</span></a></li>
-  <li><a href='#'><span>Carrinho</span></a></li>
+  <li><a href='adm.php'><span>Home Adm</span></a></li>
+  <li><a href='produtos.php'><span>Produtos</span></a></li>
+  <li><a href='admprod.php'><span>Administrar Produtos</span></a></li>
+  <li><a href='admusr.php'><span>Administrar Usuários</span></a></li>
   <?php
+include("valida.php");
+
+
 echo "<form id=formlogout' name='formlogout' method='post'  action='logout.php'>";
-echo "<font size='2.5' color='white'>".$nomedecripto;
+echo "<font size='2.5' color='white'>" .$nomedecripto;
 echo "</font>";
 echo "<input name='btn_logout' class='button' type='submit' id='btn_logout' value='Logout' size='40'  />";
 echo "</form>";
 ?>
+
 </ul>
 </div>				                          
             </ul>
@@ -60,41 +62,15 @@ echo "</form>";
         <div class="esq-div">
 		      
         	<div class="destaques-div">
-            <h5>Cadastro</h5>
+            <h5>Busca Usuários</h5>
 			
-			<?php 
-//cadastro de consumidores
-// atributos
-$login= $_POST["username"];
-$senha= $_POST["passusr"];
-$email= $_POST["emailusr"];
-$criptolog  = hash('md5', $login);
-$criptopass = hash('md5', $senha);
-$emailcript = base64_encode($email);
-
-?>
-<?php
-
-require_once("conf.php");
-
-$query = mysql_query("select * from usuarios where login='$criptolog' or email='$emailcript'");
-$num = mysql_num_rows($query);
-echo "$num" ;
-
-if($num<1){
-$result = mysql_query("INSERT into usuarios (login,senha,email,tipo,status) values('$criptolog'
-,'$criptopass','$emailcript',2,1);");
-echo "Cadastrado com Sucesso, clique <a href=index2.php>"; echo "aqui Para Navegar</a>.";
-}
-
-else{
-echo "<h1>N�o foi possivel fazer o cadastro</h1>";
-
-echo "Para retornar ao cadastro clique <a href=cadusr.php>"; echo "aqui</a>.";
-}
-?>
-			
-          
+      <form id="buscaprod" name="buscaprod" method="post" action="reqbuscausr.php">
+      <table border=0  width=300 height=200>   
+      <td width="69"> <h7>Busca: </h7> </td>
+      <td width="100"><input type="text" name="buscarusr" placeholder="Nome, E-mail, CPF" size="50" maxlength="60" />
+      <td> <input 'button' type='submit' name='submit' value='Procurar'></td>
+      </table>
+      </form>
         </div>
 <div class="rodape-div"><p>Loja Cusko</p></div>		
 </div>
@@ -111,20 +87,14 @@ echo "Para retornar ao cadastro clique <a href=cadusr.php>"; echo "aqui</a>.";
             <li><a href="#" title="Bermudas Masculinas">Bermudas Masculinas</a></li>
             <li><a href="#" title="Shorts Femininos">Shorts Femininos</a></li>
 			<li><a href="#" title="Acessorios">Acessorios</a></li>
-			<br>   		     
+			<br>   
+			     
             </ul>
             </div>
             <br>
-            <h4>Área dDo Usuário</h4>
-            <br>
-            <div id='menuvert'>
-            <br> 
-            <li><a href="cadusrcmp.php" title="Editar Informa��es">Editar Informa��es</a></li>   
-            </div>  
-            <br>
             <h4>Busca De Produtos</h4>
             <br>      
-        	<input name="login" type="text" id="login" placeholder="Nome ou Descri��o" size="20" maxlength="60"/>
+        	<input name="buscarprod" type="text" id="buscarprod"  size="20" maxlength="60"/>
         	<input name="btnsearchprod" class="button" type="submit" size="2" id="btnsearchprod" value="Buscar" />
         	<br>
         	<br>
@@ -132,7 +102,8 @@ echo "Para retornar ao cadastro clique <a href=cadusr.php>"; echo "aqui</a>.";
         	<div id="fb-root"></div>        	
 			<div class="fb-like" data-href="https://pt-br.facebook.com/usecusko" data-send="true" data-layout="button_count" 
 			data-width="450" data-show-faces="true" data-font="arial"></div>
-		</div>	
+		</div>
+		
 </div>
 				<!-- Script para se conectar ao Facebook -->
 				<script>(function(d, s, id) {

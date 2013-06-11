@@ -3,12 +3,12 @@
     $usuario = $_SESSION['usrlogin'];
     $tipo=$_SESSION['usrtipo'];
     $nome = $_SESSION['usrnome'];
-	
-	if($tipo==3){
+	$nomedecripto = base64_decode($nome);
+	if($tipo==1){
 	echo "";
 	}
 	else 
-//	 header("location:erro.php");
+	header("location:erro.php");
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -38,11 +38,21 @@
 			  	<br>
 <div id='cssmenu'>
 <ul>
-  <li><a href='index.php'><span>Home</span></a></li>
-  <li><a href='#'><span>Produtos</span></a></li>
-  <li><a href='#'><span>Quem Somos</span></a></li>
-  <li><a href='#'><span>Contato</span></a></li>
-  <li><a href='#'><span>Carrinho</span></a></li>
+  <li><a href='adm.php'><span>Home Adm</span></a></li>
+  <li><a href='produtos.php'><span>Produtos</span></a></li>
+  <li><a href='admprod.php'><span>Administrar Produtos</span></a></li>
+  <li><a href='admusr.php'><span>Administrar Usuários</span></a></li>
+  <?php
+include("valida.php");
+
+
+echo "<form id=formlogout' name='formlogout' method='post'  action='logout.php'>";
+echo "<font size='2.5' color='white'>" .$nomedecripto;
+echo "</font>";
+echo "<input name='btn_logout' class='button' type='submit' id='btn_logout' value='Logout' size='40'  />";
+echo "</form>";
+?>
+
 </ul>
 </div>				                          
             </ul>
@@ -91,11 +101,11 @@ else{
 	$nomedecripto = base64_decode($nome);
 	$email=$row['email'];
 	$emaildecripto = base64_decode($email);
-	$rg=$row['rg'];
+//	$rg=$row['rg'];
 	$rgdecripto = base64_decode($rg);
 	$cpf=$row['cpf'];
 	$cpfdecripto = base64_decode($cpf);
-	$datanasc=$row['datanasc'];
+//	$datanasc=$row['datanasc'];
 	$datanascdecripto = base64_decode($datanasc);
 	$endereco=$row['endereco'];
 	$enderecodecripto = base64_decode($endereco);
@@ -109,6 +119,10 @@ else{
 	$teldecripto = base64_decode($tel);
 	$cel=$row['cel'];
 	$celdecripto = base64_decode($cel);
+	$numero=$row['numero'];
+	$numerocripto = base64_decode($numero);
+	$complemento=$row['complemento'];
+	$complementocripto = base64_decode($complemento);
 	
 	
 }
@@ -142,7 +156,7 @@ else{
 				
    // codigo HTML
    
-echo "<table border=1>
+echo "<table border=0>
 <tr>
 <form action='formeditusr.php' id='formedit' onsubmit='return validar(this)'; method='post' >
   <td width='69'> <h7>ID:</h7> </td>
@@ -156,8 +170,8 @@ echo "<table border=1>
   <td width='69'> <h7>Nome:</h7> </td>
   <td><input type='text' name='cnome2' value='$nomedecripto'>
 
-  <td width='69'> <h7>Data Nasc:</h7> </td>
-  <td><input type='text' name='cdata2' value='$datanascdecripto';>
+  <td width='69'> <h7>CPF:</h7> </td>
+  <td><input type='text' name='ccpf2' value='$cpfdecripto' maxlength='14'  onkeypress='mascara(this,cpf)'>
 
    <td width='69'> <h7>Tipo: </h7> </td>;
    <td>
@@ -183,24 +197,20 @@ echo "<table border=1>
   <td width='69'> <h7>Email:</h7> </td>
   <td><input type='text' name='cemail2' value='$emaildecripto' onBlur='vemail(formedit.cemail2);'>
 
+ 
 
-  <td width='69'> <h7>RG:</h7> </td>
-  <td><input type='text' name='crg2' onkeypress='mascara(this,rg)' maxlength='12' value='$rgdecripto'>
 </tr>
  <tr>
-  <td width='69'> <h7>CPF:</h7> </td>
-  <td><input type='text' name='ccpf2' value='$cpfdecripto' maxlength='14'  onkeypress='mascara(this,cpf)'>
 
-
-  <td width='69'> <h7>Endereco:</h7> </td>
+ <td width='69'> <h7>Endereco:</h7> </td>
   <td><input type='text' name='cend2' value='$enderecodecripto'>
 
   <td width='69'> <h7>Número:</h7> </td>
-  <td><input type='text' name='cnum2' value='$enderecodecripto'>
+  <td><input type='text' name='cnum2' value='$numerocripto'>
 </tr>
  <tr>
   <td width='69'> <h7>Complemento:</h7> </td>
-  <td><input type='text' name='ccomp2' value='$enderecodecripto'>
+  <td><input type='text' name='ccomp2' value='$complementocripto'>
 
 
   <td width='69'> <h7>Cidade:</h7> </td>

@@ -111,15 +111,16 @@ echo "</form>";
 		echo "<tr> ";
 		echo "<td width='auto'><h7>Nome:</h7></td>";
 		echo "<td> <input type='text' name='nomeusr'  size='auto' maxlength='60' value='".$denome."'></td>" ;
-		echo "<td width='auto'><h7>Data Nascimento:</h7></td>";
-		echo "<td width='auto'> <input name='nascusr' type='text' id='nascusr' size='auto' maxlength='10' onkeypress='mascara(this,datamasc)' onBlur='vdata(formulariousr.nascusr)'; value='".$dedatanasc."'></td>";
-		echo "</tr> ";
-		echo "<tr> ";
-		echo "<td width='auto'><h7>RG:</h7></td>";
-		echo "<td width='auto'><input name='rgusr' type='text' onkeypress='mascara(this,rg)' id='rgusr' size='auto' maxlength='12' value='".$derg."' />";
 		echo "<td width='auto'><h7>CPF:</h7></td>";
 		echo " <td width='auto'><input name='cpfusr' type='text' id='cpfusr' size='auto' maxlength='14' onkeypress='mascara(this,cpf)' onBlur='vcpf(formulariousr.cpfusr)' value='".$decpf."';/>" ;
+	//	echo "<td width='auto'><h7>Data Nascimento:</h7></td>";
+	//	echo "<td width='auto'> <input name='nascusr' type='text' id='nascusr' size='auto' maxlength='10' onkeypress='mascara(this,datamasc)' onBlur='vdata(formulariousr.nascusr)'; value='".$dedatanasc."'></td>";
 		echo "</tr> ";
+	//	echo "<tr> ";
+	//	echo "<td width='auto'><h7>RG:</h7></td>";
+	//	echo "<td width='auto'><input name='rgusr' type='text' onkeypress='mascara(this,rg)' id='rgusr' size='auto' maxlength='12' value='".$derg."' />";
+		
+	//	echo "</tr> ";
 		echo "	  <tr>
 	  <td width='auto'><h7>Endereço:</h7></td>
       <td width='auto'><input name='endusr' type='text'  id='endusr' size='auto' maxlength='60' min='0'value='".$deend."'/>
@@ -306,13 +307,13 @@ echo"
 					formulariousr.nomeusr.style.background="yellow";
 					}
 	
-						if(formulariousr.nascusr.value == ''){
-						formulariousr.nascusr.style.background="yellow";
-						}
+					//	if(formulariousr.nascusr.value == ''){
+					//	formulariousr.nascusr.style.background="yellow";
+					//	}
 				
-								if(formulariousr.rgusr.value == ''){
-								formulariousr.rgusr.style.background="yellow";
-								}
+							//	if(formulariousr.rgusr.value == ''){
+							//	formulariousr.rgusr.style.background="yellow";
+							//	}
 									if(formulariousr.cpfusr.value == ''){
 									formulariousr.cpfusr.style.background="yellow";
 									}
@@ -345,8 +346,8 @@ echo"
 																			   }
 															
 																//campos obrigatorios nao preenchidos emitir alerta
-																if( formulariousr.nascusr.value == '' || formulariousr.nomeusr.value == '' || 
-																    formulariousr.rgusr.value == '' ||  
+																if( formulariousr.nomeusr.value == '' || 
+			 
 																    formulariousr.endusr.value == '' || formulariousr.cpfusr.value == '' ||
 																    formulariousr.estadosusr.value == '' || formulariousr.cidadeusr.value == '' ||
 																    formulariousr.cepusr.value == '' || formulariousr.celusr.value == '' || 
