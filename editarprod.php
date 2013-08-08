@@ -1,8 +1,3 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<body>
-<?php
-require_once("conf.php");
-?>
 <?php 
 	session_start();
     $usuario = $_SESSION['usrlogin'];
@@ -15,6 +10,12 @@ require_once("conf.php");
 	}
 	else 
 	header("location:erro.php");
+?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<body>
+<?php
+require_once("conf.php");
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -68,6 +69,8 @@ echo "</form>";
 		      
         	<div class="destaques-div">
             <h5>Editar Produto</h5>
+            
+<br>
 			
 <?php
 $cod = $_POST['rcod'];
@@ -77,7 +80,7 @@ if ($_POST['action'] == 'apagar') {
 	echo "<h7><a href=admprod.php>  Por favor, selecione um produto clique aqui para retornar</a></h7>";
   }
   	else{
-  $result1 = mysql_query("SELECT * FROM produtos where cod_produto=$cod");
+  $result1 = mysql_query("SELECT * FROM produtos where idprodutos=$cod");
 
   while ($row = mysql_fetch_assoc($result1)) {
 
@@ -85,7 +88,7 @@ if ($_POST['action'] == 'apagar') {
 }
 
 
-$result4 = mysql_query("DELETE FROM PRODUTOS WHERE cod_produto=$cod");
+$result4 = mysql_query("DELETE FROM PRODUTOS WHERE idprodutos=$cod");
 $file = $nome.".php";
 echo " <h7><a href=admprod.php> O arquivo ".$file." foi apagado,  clique aqui para retornar</a>";
 
@@ -105,11 +108,11 @@ unlink($file);
   	else{
   
   
-  $result = mysql_query("SELECT * FROM produtos where cod_produto=$cod");
+  $result = mysql_query("SELECT * FROM produtos where idprodutos=$cod");
 
   while ($row = mysql_fetch_assoc($result)) {
 
-	$cod = $row['cod_produto'];
+	$cod = $row['idprodutos'];
 	$nome = $row['nome_produto'];
 	$cat = $row['cat_produto'];
 	$qtd= $row['qtd_produto'];
@@ -119,6 +122,8 @@ unlink($file);
 	$desc = $row['descricao'];
 	$statusprod = $row['status_prod'];
 }
+// trocando . por ,
+$precoprod2 = str_replace(".",",",$prc);
 
 // setando variaveis nos input box
    if($cat==2){
@@ -162,20 +167,15 @@ unlink($file);
 
 
    // codigo HTML
-   
+
 echo "<table border=1>
-<tr>
 <form action='formedit.php' method='post'>
-  <td width='69'> <h7>Codigo:</h7> </td>
-  <td><input type='text' onkeypress='mascara(this,numeros)' name='ecod2' value='$cod'>
-</tr>
 <tr>
   <td width='69'> <h7>Nome:</h7> </td>
-  <td><input type='text' name='enome2' value='$nome'>
+  <td><input type='text'  name='enome2' value='$nome'>
 </tr>
-
 <tr>
-   <td width='69'> <h7>Categoria: </h7> </td>;
+   <td width='69'> <h7>Categoria: </h7> </td>
    <td>
    <select name='catprod2'>
    <option value='$cat' selected>$cat_value</option>
@@ -185,17 +185,18 @@ echo "<table border=1>
    </select> </td>
  </tr>  
  <tr>
+ 
   <td width='69'> <h7>Quantidade:</h7> </td>
-  <td><input type='text' onkeypress='mascara(this,numeros)' name='qtd2' value='$qtd' >
+  <td><input type='text' style='text-align:right' size='5' onkeypress='mascara(this,numeros)' name='qtd2' value='$qtd' >
 </tr>
  <tr>
-  <td width='69'> <h7>Preco:</h7> </td>
-  <td><input type='text' onkeypress='mascara(this,monetaria)' name='prc2' value='$prc'>
+  <td width='69'> <h7>Preco: R$</h7> </td>
+  <td><input type='text' style='text-align:right' size='5' onkeypress='mascara(this,monetaria)' name='prc2' value='$precoprod2'>
 </tr>
  <tr>
   <td width='69'> <h7>Imagem:</h7> </td>
   <td><img src='$img  'height='30' width='30'>&nbsp; &nbsp; &nbsp;
-  <input type='file' name='editimg2' accept='image/x-png, image/gif, image/jpeg, image/jpg, image/bmp image/png' /></td>
+  <input type='file' style='text-align:right' name='editimg2' accept='image/x-png, image/gif, image/jpeg, image/jpg, image/bmp image/png' /></td>
 </tr>
  <tr>
   <td width='69'><h7>Destaque:</h7></td>
@@ -207,10 +208,10 @@ echo "<table border=1>
 </tr> 
  <tr>
   <td width='69'> <h7>Desc:</h7> </td>
-  <td><input type='text' name='desc2' value='$desc'>
+  <td><input type='text' style='text-align:right' name='desc2' value='$desc'>
 </tr> 
 <tr>
-    <td width='69'> <h7>Status: </h7> </td>;
+    <td width='69'> <h7>Status: </h7> </td>
    <td>
 
    <select name='statusprod'>
@@ -229,7 +230,9 @@ echo "<table border=1>
    }
  
 		}
+		
 ?>
+
 <script>
 		//função para executar mascara
 function mascara(objeto,funcao){  
@@ -250,14 +253,14 @@ function numeros(v){
 function monetaria(v){ 
 v=v.replace(/\D/g,"")
 
-v=v.replace(/(\d{1})(\d{1,2})$/,"$1.$2") // coloca ponto nos dois ultimos digitos
+v=v.replace(/(\d{1})(\d{1,2})$/,"$1,$2") // coloca ponto nos dois ultimos digitos
 return v; 
 } 
 </script>	      
         </div>
 			
 
-<div class="rodape-div"><p>TCC do JET</p></div>		
+<div class="rodape-div"><p>Loja Cusko</p></div>		
 </div>
          <div class="dir-div">								
             <h4>Menu</h4>
@@ -269,11 +272,11 @@ return v;
             
             <li><a href="#" title="Camisas Masculinas">Camisas Masculinas</a></li>
             <li><a href="#" title="Camisas Femininas">Camisas Femininas</a></li>
-            <li><a href="#" title="Calcas Masculinas">Calcas Masculinas</a></li>
-            <li><a href="#" title="Calcas Femininas">Calcas Femininas</a></li>
+            <li><a href="#" title="Calcas Masculinas">Calças Masculinas</a></li>
+            <li><a href="#" title="Calcas Femininas">Calças Femininas</a></li>
             <li><a href="#" title="Bermudas Masculinas">Bermudas Masculinas</a></li>
             <li><a href="#" title="Shorts Femininos">Shorts Femininos</a></li>
-			<li><a href="#" title="Acessorios">Acessorios</a></li>
+			<li><a href="#" title="Acessorios">Acessórios</a></li>
 			<br>   
 			     
             </ul>
@@ -281,7 +284,7 @@ return v;
             <br>
             <h4>Busca De Produtos</h4>
             <br>      
-        	<input name="login" type="text" id="login" placeholder="Nome ou Descri��o" size="20" maxlength="60"/>
+        	<input name="login" type="text" id="login" placeholder="Nome ou Descrição" size="20" maxlength="60"/>
         	<input name="btnsearchprod" class="button" type="submit" size="2" id="btnsearchprod" value="Buscar" />
         	<br>
         	<br>

@@ -17,6 +17,7 @@ session_start();
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" type="text/css" href="estilo.css" />
+<link rel='icon' rel='icon' href='favicon.ico' type='image/ico' />
 <title>Cusko</title>
 </head>
 
@@ -77,7 +78,7 @@ echo "
 <table border=1>
 <tr>
 <form name='myform2' action='editarprod.php' method='POST'> <div align='center'><br>
-<th>Selecione</th><th>Codigo Prod</th><th>Nome</th><th>Categoria</th><th>Quantidade</th><th>Preco</th><th>Imagem</th><th>Desatque</th><th>Descricao</th><th>Status</th>
+<th>Selecione</th><th>Nome</th><th>Categoria</th><th>Quantidade</th><th>Preco</th><th>Imagem</th><th>Desatque</th><th>Descricao</th><th>Status</th>
 ";
 
 $result = mysql_query("SELECT * FROM produtos");
@@ -87,7 +88,9 @@ while ($row = mysql_fetch_assoc($result)) {
 
 	$cat = $row['cat_produto'];
 	$dst = $row['destaque'];
-
+    $valorprod=$row['preco_produto']; //usado pra transformar . em ,
+    $precoprod2 = str_replace(".",",",$valorprod);
+    
 
    if($cat==2){
    $cat_value="Camisas Masculinas";
@@ -114,16 +117,16 @@ while ($row = mysql_fetch_assoc($result)) {
 		$dest_value="Nao Selecionado";
 	
 	echo "<tr>";
-	echo "<td> <input type='radio' name='rcod' value='".$row['cod_produto']."'></td>" ;
-	echo "<td> <input type='text'  name='ecod'  disabled  size='8' value='".$row['cod_produto']. "'></td>" ;
-	echo "<td> <input type='text'  name='enome2' disabled size='15' value='".$row['nome_produto']."'></td>" ;
-	echo "<td> <input type='text'  name='ecat' disabled size='15' value='".$cat_value. "'></td>" ;
-	echo "<td> <input type='text'  name='eqtd' disabled size='5' value='".$row['qtd_produto']. "'></td>" ;
-	echo "<td> <input type='text'  name='eprc' disabled size='5' value='".$row['preco_produto']. "'></td>" ;
-	echo "<td><img src='".$row['imagem']."'height='30' width='30' name='eimg'></td>";
-	echo "<td> <input type='text' name='edst' disabled size='5' value='".$dest_value."'></td>" ;
-	echo "<td> <input type='text' name='edesc' disabled size='5' value='".$row['descricao']."'></td>" ;
-	echo "<td> <input type='text' name='edesc' disabled size='5' value='".$row['status_prod']."'></td>" ;
+	echo "<td> <input type='radio' style='text-align:right' name='rcod' value='".$row['idprodutos']."'></td>" ;
+//	echo "<td> <input type='text' style='text-align:right' name='ecod'  disabled  size='5' value='".$row['cod_produto']. "'></td>" ;
+	echo "<td> <input type='text' style='text-align:right' name='enome2' disabled size='16' value='".$row['nome_produto']."'></td>" ;
+	echo "<td> <input type='text' style='text-align:right' name='ecat' disabled size='19' value='".$cat_value. "'></td>" ;
+	echo "<td> <input type='text' style='text-align:right' name='eqtd' disabled size='5' value='".$row['qtd_produto']. "'></td>" ;
+	echo "<td> <input type='text' style='text-align:right' name='eprc' disabled size='6' value='R$".$precoprod2."'></td>" ;
+	echo "<td><img src='".$row['imagem']."'height='30' width='30' style='text-align:right' name='eimg'></td>";
+	echo "<td> <input type='text' style='text-align:right' name='edst' disabled size='5' value='".$dest_value."'></td>" ;
+	echo "<td> <input type='text' style='text-align:right' name='edesc' disabled size='5' value='".$row['descricao']."'></td>" ;
+	echo "<td> <input type='text' style='text-align:right' name='edesc' disabled size='3' value='".$row['status_prod']."'></td>" ;
 	
 	echo "</tr>";
 
@@ -133,7 +136,7 @@ echo "</table>";
     
 	echo "<td>  <a href='cadprod.php'  class='button adicionar'> Adicionar Produto</a> </td>";
 ?>
-<button type='submit' name='action' value='apagar' onclick="return confirm('Are you sure you want to submit?')" class='button apagar'> Apagar Produto</a>
+<button type='submit' name='action' value='apagar' onclick="return confirm('Tem Certeza de excluir o produto ?')" class='button apagar'> Apagar Produto</a>
 <?php
 	echo "<td> <button type='submit' name='action' value='editar' class='button editar'> Editar Produto</a> </td>";
 //	echo "<td> <a href='buscaprod.php'> <button  class='button pesquisar'> Pesquisar Produto</a> </td>";
@@ -156,11 +159,11 @@ echo "</table>";
             
             <li><a href="#" title="Camisas Masculinas">Camisas Masculinas</a></li>
             <li><a href="#" title="Camisas Femininas">Camisas Femininas</a></li>
-            <li><a href="#" title="Calcas Masculinas">Calcas Masculinas</a></li>
-            <li><a href="#" title="Calcas Femininas">Calcas Femininas</a></li>
+            <li><a href="#" title="Calcas Masculinas">Calças Masculinas</a></li>
+            <li><a href="#" title="Calcas Femininas">Calças Femininas</a></li>
             <li><a href="#" title="Bermudas Masculinas">Bermudas Masculinas</a></li>
             <li><a href="#" title="Shorts Femininos">Shorts Femininos</a></li>
-			<li><a href="#" title="Acessorios">Acessorios</a></li>
+			<li><a href="#" title="Acessorios">Acessórios</a></li>
 			<br>   
 			     
             </ul>

@@ -4,7 +4,7 @@ body, html, div, blockquote, img, label, p, h1, h2, h3, h4, h5, h6, h7, h8, pre,
 li, dl, dt, dd, form, a, fieldset, input, th, td
 {margin: 0; padding: 0; outline: none;}
 
-body{line-height:1; font-size:62.5%; background:#000;} /*---- 1.0 em = 10px---*/
+body{line-height:1; font-size:62.5%; background:#FFF;} /*---- 1.0 em = 10px---*/
 
 h1, h2, h3, h4, h5, h6{font-size:100%;}
 
@@ -17,11 +17,11 @@ ul, ol{list-style:none;}
 
 .sidebar-div, .destaques-div, .destaques2-div, .dir-div, .esq-div, .rodape-div{position:relative; float:left;}, .rodape2-div{position:relative; float:left;}
 
-.destaques-div{width:620px; height:auto; background:#6a6a6a; padding-bottom:17px;}
+.destaques-div{width:620px; height:auto; background:#ffffff; padding-bottom:17px;}
 
 .destaques2-div{width:620px; height:auto; background:#FFFFFF; padding-bottom:17px;}
 
-.dir-div{width:283px; height:auto; background:#6a6a6a; padding:0 0 17px 17px;}
+.dir-div{width:283px; height:auto; background:#ffffff; padding:0 0 17px 17px;}
 
 .esq-div{width:620px; height:auto; margin-right:20px;}
 
@@ -210,7 +210,7 @@ h6{font-size:1.4em; margin:35px 17px 8px 17px; padding:2px; text-align:center;}
 
 p{font:1.2em Arial, Helvetica, sans-serif; line-height:1.6em; color:#fff;}
 
-h7{font:1.4em Arial; color:#fff;}
+h7{font:1.4em Arial; color:#000;}
 
 h8{font:1.3em Helvetica; color:#fff;}
 

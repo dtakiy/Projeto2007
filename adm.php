@@ -3,6 +3,9 @@
     $usuario = $_SESSION['usrlogin'];
     $tipo=$_SESSION['usrtipo'];
     $nome = $_SESSION['usrnome'];
+    $_SESSION['logged_in'] = true; //logado
+	$_SESSION['last_activity'] = time(); //Ultima vez ativo
+	$_SESSION['expire_time'] = time()+1800; // uma hora para expirar
     $nomedecripto = base64_decode($nome);
 	
 	if($tipo==1){
@@ -62,9 +65,8 @@ echo "</form>";
 			
 			 <a href='admprod.php'> <button  class='button pesquisar'> Administrar Produtos</a>
 			 <a href='admusr.php'> <button  class='button pesquisar'> Administrar Usuários</a>
-			
-			
-          
+			 <a href='admconsulta.php'> <button  class='button pesquisar'>Consultar Pedidos</a>
+			     
         </div>
 <div class="rodape-div"><p>Loja Cusko</p></div>		
 </div>
@@ -76,11 +78,11 @@ echo "</form>";
             <ul class="maisartigos escuro top8">
             <li><a href="#" title="Camisas Masculinas">Camisas Masculinas</a></li>
             <li><a href="#" title="Camisas Femininas">Camisas Femininas</a></li>
-            <li><a href="#" title="Calcas Masculinas">Calcas Masculinas</a></li>
-            <li><a href="#" title="Calcas Femininas">Calcas Femininas</a></li>
+            <li><a href="#" title="Calcas Masculinas">Calças Masculinas</a></li>
+            <li><a href="#" title="Calcas Femininas">Calças Femininas</a></li>
             <li><a href="#" title="Bermudas Masculinas">Bermudas Masculinas</a></li>
             <li><a href="#" title="Shorts Femininos">Shorts Femininos</a></li>
-			<li><a href="#" title="Acessorios">Acessorios</a></li>
+			<li><a href="#" title="Acessorios">Acessórios</a></li>
 			<br>   		     
             </ul>
             </div>

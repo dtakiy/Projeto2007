@@ -69,7 +69,7 @@ echo "</form>";
 require_once("conf.php");
 echo "
 <br/><br/>
-<table border=0>
+<table border=1>
 <tr>
 <form name='myform' action='editarusr.php' method='POST'> <div align='center'><br>";
 
@@ -106,13 +106,14 @@ $cel=$row['cel'];
 $celdecripto = base64_decode($cel);
 $status=$row['status'];
 	
-	echo "<th>Selecione</th><th>Login</th><th>Senha</th><th>Nome</th><th>E-Mail</th></tr>";
+	echo "<th>Selecione</th><th>Nome</th><th>E-Mail</th><th></th><th></th></tr>";
 	echo "<tr>";
     echo "<td> <input type='radio' name='elog' value='".$row['idusuario']."'>".$row['idusuario']. "</td>" ;
-    echo "<td> <input type='text' name='elog2'  disabled  size='auto' value='".$row['login']. "'></td>" ;
-	echo "<td> <input type='text' name='esenha'  disabled  size='auto' value='".$row['senha']. "'></td>" ;
-	echo "<td> <input type='text' name='enomeusr' disabled size='auto' value='".$nomedecripto."'></td>" ;
+    echo "<td> <input type='text' name='enomeusr' disabled size='auto' value='".$nomedecripto."'></td>" ;
 	echo "<td> <input type='text' name='eemail' disabled size='auto' value='".$emaildecripto."'></td>" ;
+    echo "<td> <input type='hidden' name='elog2'  disabled  size='auto' value='".$row['login']. "'></td>" ;
+	echo "<td> <input type='hidden' name='esenha'  disabled  size='auto' value='".$row['senha']. "'></td>" ;
+
 	echo "<tr><th>CPF</th><th>Tipo</th><th>End</th><th>Num</th><th>Cmp</th></tr>";
 //	echo "<td> <input type='text' name='erg' disabled size='auto' value='".$rgdecripto."'></td>" ;
 	echo "<td> <input type='text' name='ecpf' disabled size='auto' value='".$cpfdecripto. "'></td>" ;
@@ -138,7 +139,7 @@ $status=$row['status'];
 }
 
 echo "</table>";
-	echo "<td>  <a href='cadusr.php'  class='button adicionar'> Adicionar Usuario</a> </td>";
+	echo "<td>  <a href='cadusradm.php'  class='button adicionar'> Adicionar Usuario</a> </td>";
 //	echo "<td> <button type='submit' name='action' value='apagarusr' class='button apagar'> Apagar Usuario</a> </td>";
 	echo "<td> <button type='submit' name='action' value='editarusr' class='button editar'> Editar Usuario</a> </td>";
 	echo "<td> <a href='buscausr.php'> <button  class='button pesquisar'> Pesquisar Usuario</a> </td>";
@@ -161,11 +162,11 @@ echo "</table>";
             
             <li><a href="#" title="Camisas Masculinas">Camisas Masculinas</a></li>
             <li><a href="#" title="Camisas Femininas">Camisas Femininas</a></li>
-            <li><a href="#" title="Calcas Masculinas">Calcas Masculinas</a></li>
-            <li><a href="#" title="Calcas Femininas">Calcas Femininas</a></li>
+            <li><a href="#" title="Calcas Masculinas">Calças Masculinas</a></li>
+            <li><a href="#" title="Calcas Femininas">Calças Femininas</a></li>
             <li><a href="#" title="Bermudas Masculinas">Bermudas Masculinas</a></li>
             <li><a href="#" title="Shorts Femininos">Shorts Femininos</a></li>
-			<li><a href="#" title="Acessorios">Acessorios</a></li>
+			<li><a href="#" title="Acessorios">Acessórios</a></li>
 			<br>   
 			     
             </ul>

@@ -1,3 +1,10 @@
+<?php
+session_start();
+echo "";
+//echo session_id();
+$usuario = $_SESSION['usrlogin']; 
+?>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -14,20 +21,27 @@
         	<ul>
         	
         	<ul>
-        		<table border=0>
-        		<form name="input" action="auth.php" method="post">  
-        		<td><a  title="login"><h8>Login</h8> <input name="login" type="text" id="login" size="20" maxlength="40" /></td>
-				<td><a  title="senha"><h8>Senha</h8><input name="senha" type="password" id="senha" size="20" maxlength="40" /></td>
-				
+<?php
+if ($usuario !='')
+{
+echo "";
+}
+else{
+echo "
+        	    <table border=0>
+        		<form name='input' action='auth.php'method='post'>  
+        		<td><a  title='login'><h8>Login</h8> <input name='login' type='text' id='login' size='20' maxlength='40' /></td>
+				<td><a  title='senha'><h8>Senha</h8><input name='senha' type='password' id='senha' size='20' maxlength='40' /></td>
 				</a>
-			    <td><input name="btn_logar" class="button entrar" type="submit" id="btn_logar" value="Logar" /> </td>
-			    <td><a href="cadusr.php" class="button">Cadastrar</a></td>
-			    <td><a href="recsenha.php" class="button">Esqueceu Senha?</a></td>
-			    
+			    <td><input name='btn_logar' class='button entrar' type='submit' id='btn_logar' value='Logar' /> </td>
+			    <td><a href='cadusr.php' class='button'>Cadastrar</a></td>
+			    <td><a href='recsenha.php' class='button'>Esqueceu Senha?</a></td>
 			    </td>
 			    </table>	
-			  	</form>
-			  	<table>
+			  	</form>        	
+			  	<table>";
+}
+?>
 			  	<td>&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
 			  	&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
 			  	&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
@@ -40,6 +54,7 @@
 			  	</table>
 			  	<br>
 			  	<br>
+		  				  	
 <div id='cssmenu'>
 <ul>
   <li><a href='index.php'><span>Home</span></a></li>
@@ -47,6 +62,21 @@
   <li><a href='quemsomos.php'><span>Quem Somos</span></a></li>
   <li><a href='contato.php'><span>Contato</span></a></li>
   <li><a href='carr.php'><span>Carrinho</span></a></li>
+  
+  <?php
+if ($usuario !='')
+{
+echo "<form id=formlogout' name='formlogout' method='post'  action='logout.php'>";
+echo "<font size='2.5' color='white'>" .$nome;
+echo "</font>";
+echo "<input name='btn_logout' class='button' type='submit' id='btn_logout' value='Logout' size='40'  />";
+echo "</form>";
+}
+else{
+echo "";
+}
+?>
+  
 </ul>
 </div>				                          
             </ul>
@@ -63,21 +93,24 @@
 			<br/><br/>
 			<table border=0>
 			<tr>
-			<form name='myform' action='editarprod.php' method='POST'> <div align='center'><br>
-			
-";
+			<form action='buscar.php' method='get'> <div align='center'><br>";
 
 $result = mysql_query("SELECT * FROM produtos where destaque=1");
+
 while ($row = mysql_fetch_assoc($result)) {
-	
+
+	$preco=$row['preco_produto'];
+	// trocando . por ,
+	$precoprod = str_replace(".",",",$preco);
+
 	echo "<center>";
 	echo "<tr>";
-	echo "<td> <font size='2.5' color='white'>".$row['nome_produto'];
+	echo "<td> <font size='2.5' color='black'>".$row['nome_produto'];
 	echo "</td>";
 	echo "</tr>";
 	echo "<br>";
 	echo "<tr><td><a href='".$row['nome_produto'].".php'><img src='".$row['imagem']."'height='130' width='130' name='eimg'></tr></td>";
-	echo "<td> <font size='2.5' color='white'>Preço R$ ".$row['preco_produto'];
+	echo "<td> <font size='2.5' color='black'>Preço R$ ".$precoprod;
 	echo "</tr>";
 	//echo "<td>";
 	//echo "<font size='2.5' color='white'> Tamanho";
@@ -89,64 +122,73 @@ while ($row = mysql_fetch_assoc($result)) {
 	//echo" <option value='5' >GG</option>";
 	//echo "</select>";
 	//echo "</td>";
-	echo "<tr><td>";
-    echo "<font size='2.5' color='white'>QTD &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-    echo "<select name='tamprod'>";
-	echo" <option value='1' selected>Selecione</option>";
-	echo" <option value='2' >1</option>";
-	echo" <option value='3' >2</option>";
-	echo" <option value='4' >3</option>";
-	echo" <option value='5' >4</option>";
-	echo" <option value='6' >5</option>";
-	echo "</select>";
+//	echo "<tr><td>";
+//  echo "<font size='2.5' color='black'>QTD &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+//  echo "<select id='qtdprod' name='qtdprod'>";
+//	echo" <option value='1' selected>Selecione</option>";
+//	echo" <option value='2' >1</option>";
+//	echo" <option value='3' >2</option>";
+//	echo" <option value='4' >3</option>";
+//	echo" <option value='5' >4</option>";
+//	echo" <option value='6' >5</option>";
+//	echo "</select>";
 	echo "</td>";
 	echo "</tr></td>";
 	echo "<tr>";
-	echo "<td><a href='inserecar.php' class='button'>Comprar</a></td>";
+	echo "<td><div align='center' style='font-size:10px;font-family:Verdana'><a href='carr.php?cod=".$row['idprodutos']."&acao=incluir' class='button'>Comprar</a></div><br></td>";
 	echo "</tr>";
 	echo "</center>";
 
+
 }
+
 echo "</table>";
+echo "</form>"
 ?>  
 
         </div>
-			
-
-<div class="rodape-div"><p>Loja Cusko</p></div>		
-</div>
+		<div class="rodape-div"><p>Loja Cusko</p></div>		
+		</div>
          <div class="dir-div">								
             <h4>Menu</h4>
             <br>
             <div id='menuvert'>
 			<ul>
-
             <ul class="maisartigos escuro top8">
-            
             <li><a href="#" title="Camisas Masculinas">Camisas Masculinas</a></li>
             <li><a href="#" title="Camisas Femininas">Camisas Femininas</a></li>
-            <li><a href="#" title="Calcas Masculinas">Calcas Masculinas</a></li>
-            <li><a href="#" title="Calcas Femininas">Calcas Femininas</a></li>
+            <li><a href="#" title="Calcas Masculinas">Calças Masculinas</a></li>
+            <li><a href="#" title="Calcas Femininas">Calças Femininas</a></li>
             <li><a href="#" title="Bermudas Masculinas">Bermudas Masculinas</a></li>
             <li><a href="#" title="Shorts Femininos">Shorts Femininos</a></li>
-			<li><a href="#" title="Acessórios">Acessorios</a></li>
-			<br>   
-			     
+			<li><a href="#" title="Acessorios">Acessórios</a></li>
+			<br>     
             </ul>
             </div>
             <br>
             <h4>Busca De Produtos</h4>
-            <br>      
-        	<input name="login" type="text" id="login" placeholder="Nome ou Descrição" size="20" maxlength="60"/>
-        	<input name="btnsearchprod" class="button" type="submit" size="2" id="btnsearchprod" value="Buscar" />
+            <BR>
+         	<form id="buscaprod" name="buscaprod" method="post" action="productlistclient.php">
+      	 	<table border=0  width=auto height=auto>   
+      		<td width=auto><input type="text" name="buscarprod" placeholder="Nome do Produto" size=35 maxlength=auto />
+      		<td> <input name="btn_cadusr" class="button" type="submit" id="btn_pesq_prod" value="Buscar" size=auto  /> </td>
+      		</table>
+      		</form>
         	<br>
         	<br>
+        	
+		  
+		      
         	<!-- Like Button Facebook -->
         	<div id="fb-root"></div>        	
 			<div class="fb-like" data-href="https://pt-br.facebook.com/usecusko" data-send="true" data-layout="button_count" 
 			data-width="450" data-show-faces="true" data-font="arial"></div>
-		</div>
+			<!-- Fallow Button Facebook -->
+			<div class="fb-follow" data-href="https://www.facebook.com/usecusko" data-width="450" data-layout="button_count" data-show-faces="true"></div>
+
 		
+		</div>
+
 </div>
 				<!-- Script para se conectar ao Facebook -->
 				<script>(function(d, s, id) {

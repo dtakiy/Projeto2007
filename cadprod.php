@@ -67,15 +67,12 @@ echo "</form>";
       <br>
       <br>
       <table border=0  width=300 height=200>   
-      <td width="69"> <h7>Código: </h7> </td>
-      <td width="100"><input type="text" name="codprod" onkeypress="mascara(this,numeros)" size="50" maxlength="60" />
-      <tr>
       <td width="69"><h7>Nome:</h7></td>
       <td width="100"><input name="nomeprod" type="text" id="nomeprod" size="50" maxlength="60" />
       </tr>
       <tr>
       <td width="69"><h7>Preço: R$</h7></td>
-      <td width="100"><input name="precoprod" type="text" id="precoprod" onkeypress="mascara(this,monetaria)" size="20" maxlength="60" />
+      <td width="100"><input name="precoprod" text-align:"right" type="text" id="precoprod" onkeypress="mascara(this,monetaria)" size="8" maxlength="60" />
       </tr>
       <tr>
       <td width="69"><h7>Quantidade:</h7></td>
@@ -132,7 +129,7 @@ echo "</form>";
 	 function validar(formulario){
 	 
 	 // Cor Padrao do formulario
-	 formulario.codprod.style.background="white";
+	 
 	 formulario.nomeprod.style.background="white";
 	 formulario.precoprod.style.background="white";
 	 formulario.qtdprod.style.background="white";
@@ -143,9 +140,7 @@ echo "</form>";
 	 formulario.descprod.style.background="white";
 	 
 	 	//caso campo nao esteja preenchido destacar campo se necessario
-	 	if(formulario.codprod.value == ''){
-		formulario.codprod.style.background="yellow";
-		}
+	 	
 			if(formulario.nomeprod.value == ''){
 			formulario.nomeprod.style.background="yellow";
 			}
@@ -200,7 +195,7 @@ function execmascara(){
 function monetaria(v){ 
 v=v.replace(/\D/g,"")
 
-v=v.replace(/(\d{1})(\d{1,2})$/,"$1.$2") // coloca ponto nos dois ultimos digitos
+v=v.replace(/(\d{1})(\d{1,2})$/,"$1,$2") // coloca ponto nos dois ultimos digitos
 return v; 
 } 
 
@@ -223,11 +218,11 @@ function numeros(v){
             
             <li><a href="#" title="Camisas Masculinas">Camisas Masculinas</a></li>
             <li><a href="#" title="Camisas Femininas">Camisas Femininas</a></li>
-            <li><a href="#" title="Calcas Masculinas">Calcas Masculinas</a></li>
-            <li><a href="#" title="Calcas Femininas">Calcas Femininas</a></li>
+            <li><a href="#" title="Calcas Masculinas">Calças Masculinas</a></li>
+            <li><a href="#" title="Calcas Femininas">Calças Femininas</a></li>
             <li><a href="#" title="Bermudas Masculinas">Bermudas Masculinas</a></li>
             <li><a href="#" title="Shorts Femininos">Shorts Femininos</a></li>
-			<li><a href="#" title="Acessorios">Acessorios</a></li>
+			<li><a href="#" title="Acessorios">Acessórios</a></li>
 			<br>   
 			     
             </ul>
