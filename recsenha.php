@@ -97,24 +97,20 @@
             <br>
             <div id='menuvert'>
 			<ul>
+
             <ul class="maisartigos escuro top8">
+            
             <li><a href="#" title="Camisas Masculinas">Camisas Masculinas</a></li>
             <li><a href="#" title="Camisas Femininas">Camisas Femininas</a></li>
-            <li><a href="#" title="Calcas Masculinas">Calcas Masculinas</a></li>
-            <li><a href="#" title="Calcas Femininas">Calcas Femininas</a></li>
+            <li><a href="#" title="Calcas Masculinas">Calças Masculinas</a></li>
+            <li><a href="#" title="Calcas Femininas">Calças Femininas</a></li>
             <li><a href="#" title="Bermudas Masculinas">Bermudas Masculinas</a></li>
             <li><a href="#" title="Shorts Femininos">Shorts Femininos</a></li>
-			<li><a href="#" title="Acessorios">Acessorios</a></li>
-			<br>   		     
+			<li><a href="#" title="Acessorios">Acessórios</a></li>
+			<br>   
+			     
             </ul>
             </div>
-            <br>
-            <h4>Área dDo Usuário</h4>
-            <br>
-            <div id='menuvert'>
-            <br> 
-            <li><a href="cadusrcmp.php" title="Editar Informações">Editar Informações</a></li>   
-            </div>  
             <br>
             <h4>Busca De Produtos</h4>
             <br>      
@@ -126,7 +122,8 @@
         	<div id="fb-root"></div>        	
 			<div class="fb-like" data-href="https://pt-br.facebook.com/usecusko" data-send="true" data-layout="button_count" 
 			data-width="450" data-show-faces="true" data-font="arial"></div>
-		</div>	
+		</div>
+		
 </div>
 				<!-- Script para se conectar ao Facebook -->
 				<script>(function(d, s, id) {

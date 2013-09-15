@@ -67,16 +67,34 @@ echo "</form>";
             
 <?php
 require_once("conf.php");
+$max=1; // numero maximo de produtos por pagina
+$pagina=$_GET["pagina"]; 
+if ($pagina == "")
+$pagina=1;
+ 
+$inicio = $pagina - 1;
+$inicio = $max * $inicio;
+ 
+ 
 echo "
 <br/><br/>
 <table border=1>
 <tr>
 <form name='myform' action='editarusr.php' method='POST'> <div align='center'><br>";
+ 
+$sql="SELECT * FROM usuarios";
+$res=mysql_query($sql);
+$total=mysql_num_rows($res);
+ 
+if ($total == 0)
+echo "Nenhum registro encontrado!";
+else
+{
+echo "<BR>";
 
-$result = mysql_query("SELECT * FROM usuarios");
-
-
-while ($row = mysql_fetch_assoc($result)) {
+$sql="SELECT * FROM usuarios LIMIT $inicio,$max";
+$res=mysql_query($sql);
+while ($row=mysql_fetch_array($res)){
 
 $nome=$row['nome'];
 $nomedecripto = base64_decode($nome);
@@ -135,15 +153,46 @@ $status=$row['status'];
 	echo "<td> <input type='text' name='status2' disabled size='auto' value='".$status."'></td>" ;
 	echo "</tr>";
 	echo "</tr>";
-	
 }
-
-echo "</table>";
+ 
+ echo "</table>";
 	echo "<td>  <a href='cadusradm.php'  class='button adicionar'> Adicionar Usuario</a> </td>";
 //	echo "<td> <button type='submit' name='action' value='apagarusr' class='button apagar'> Apagar Usuario</a> </td>";
 	echo "<td> <button type='submit' name='action' value='editarusr' class='button editar'> Editar Usuario</a> </td>";
-	echo "<td> <a href='buscausr.php'> <button  class='button pesquisar'> Pesquisar Usuario</a> </td>";
-	echo "</form>";   
+	echo "<td> <a href='buscausr.php'> <button  class='button pesquisar'> Pesquisar Usuario</a> </td> </button>";
+	echo "</form>";
+	echo "<BR>"; 
+ 
+}
+// Calculando pagina anterior
+$menos = $pagina - 1;
+// Calculando pagina posterior
+$mais = $pagina + 1;
+$pgs = ceil($total / $max);
+if($pgs > 1 ) 
+{
+if($menos>0) 
+echo "<a href=\"?pagina=$menos\" class='texto_paginacao'>Anterior</a> "; 
+ 
+if (($pagina-4) < 1 )
+$anterior = 1;
+else
+$anterior = $pagina-4;
+ 
+if (($pagina+4) > $pgs )
+$posterior = $pgs;
+else
+$posterior = $pagina + 4;
+ 
+for($i=$anterior;$i <= $posterior;$i++) 
+if($i != $pagina) 
+echo " <a href=\"?pagina=".($i)."\" class='texto_paginacao'>$i</a>";
+else 
+echo " <strong class='texto_paginacao_pgatual'>".$i."</strong>";
+ 
+if($mais <= $pgs) 
+echo " <a href=\"?pagina=$mais\" class='texto_paginacao'>Proxima</a>";
+}
 	?>	
      <br>
 		 

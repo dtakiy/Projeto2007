@@ -10,7 +10,7 @@
 <BR>
 <BR>
 <center><img src='cusko_preto.jpg' 'height='100' width='200'> </td><BR></center>
-<center><font size="3" color="black">Página Não Encontrada</font></center>
+<center><font size="3" color="black">Página Expirada! Por Favor Faça o Login Novamente</font></center>
 
 </body>
 </html>

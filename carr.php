@@ -1,5 +1,4 @@
 <?php
-
 session_start();
 echo "";
 //echo session_id();
@@ -86,17 +85,17 @@ echo "";
 
 require_once("conf.php");
 
-
-
 // Recuperamos os valores passados por parametros
 $acao   = $_GET['acao'];
 $cod    = $_GET['cod'];
 $cod2   = $_GET['cod2'];
+$cepv   = $_GET['cepv'];
 $qtdpr = $_GET['carqtdprod'];
 $preco  = 0;
-
 $dataexp = time();
 $dataexp = $dataexp + 1800;
+
+if (isset($_SESSION['last_activity'],$_SESSION['expire_time'])){
 
 if( $_SESSION['last_activity'] > $_SESSION['expire_time'] ) { //verifica se expirou
     //redirect to logout.php
@@ -104,20 +103,28 @@ if( $_SESSION['last_activity'] > $_SESSION['expire_time'] ) { //verifica se expi
 	$result2 = mysql_query("SELECT * FROM carrinho where timestamps < $dataexp");			
 	while ($row = mysql_fetch_assoc($result2)) {
 		$id = $row['id'];
+		$nome = $row['nome'];
+		$qtdcar = $row['qtd'];
 		$res = mysql_query("DELETE FROM carrinho where id=$id");
-	}    
-    
-    echo "<meta HTTP-EQUIV='REFRESH' content='0; url=http://localhost/cusko/erro.php'>";
+		$res2 = mysql_query("SELECT FROM produtos where nome_produto='$nome'");
+			while ($row = mysql_fetch_assoc($res2)) {
+			$qtdprod = $row['qtd_produto'];
+			}
+			$qtdprod = $qtdprod+$qtdcar; //numero de produtos no carrinho
+			$res2 = mysql_query("UPDATE produtos set qtd_produtos=$qtdprod where nome_produto='$nome'"); // voltando produto para prateleira
+				
+	}
+	echo "<meta HTTP-EQUIV='REFRESH' content='0; url=http://localhost/cusko/erro2.php'>";
+}    
+   
 } 
     
     else{ //if we haven't expired:
     $_SESSION['last_activity'] = time(); //momento da ultima atividade
 	}
 
-
 if ($acao == "incluir")
-{
-	
+{	
 	$data = time();
 	$data = $data + 1800; //aprox 30 min para expirar do carrinho
 
@@ -143,6 +150,7 @@ if ($acao == "incluir")
 	// verifica a qtd do produto tem que ser maior que 0 para incluir
 	
 	$nqtd=$row_rs_produto['qtd_produto'];
+	$nomeprodt=$row_rs_produto['nome_produto'];
 	
 	// Se total for maior que zero esse produto existe e esta disponivel então podemos incluir no carrinho
 				if ($totalRows_rs_produto > 0 && $nqtd > 0)
@@ -151,9 +159,15 @@ if ($acao == "incluir")
 					// Incluimos o produto selecionado no carrinho de compras
 					$add_sql = "INSERT INTO carrinho (id, cod, nome, preco, qtd,peso,sessao,imgprod,timestamps)
 					VALUES
-					('','".$row_rs_produto['cod_produto']."','".$row_rs_produto['nome_produto']."','".$row_rs_produto['preco_produto']."','1','".$row_rs_produto['peso_prod']."','".session_id()."','".$row_rs_produto['imagem']."',$data)";		
+					('','".$row_rs_produto['idprodutos']."','".$row_rs_produto['nome_produto']."','".$row_rs_produto['preco_produto']."','1','".$row_rs_produto['peso_prod']."','".session_id()."','".$row_rs_produto['imagem']."',$data)";		
 					$rs_produto_add = mysql_query($add_sql);
+					
+					$nqtd = $nqtd-1;
+		//			echo $nqtd;
+		//			echo "UPDATE produtos set qtd_produtos=$nqtd where nome_produto ='$nomeprodt'";
+					$rest2 = mysql_query("UPDATE produtos set qtd_produto=$nqtd where nome_produto ='$nomeprodt'"); // voltando produto para	
 				}
+					
 					else if ($nqtd == 0){
 					
 					echo "Desculpe-nos Mas Este Produto Está Indisponível No Momento";
@@ -167,9 +181,10 @@ if ($acao == "incluir")
 // Verificamos se a acao é igual a excluir
 if ($acao == "excluir")
 {
+	
 	// Verificamos se cod do produto é diferente de vazio
 	if ($cod2 != '')
-	{			
+	{							
 			// Verificamos se o produto referente ao $cod  está no carrinho para o session id correnpondente
 			$query_rs_car = "SELECT * FROM carrinho WHERE cod = '".$cod2."'  AND sessao = '".session_id()."'";
 			$rs_car = mysql_query($query_rs_car);
@@ -179,29 +194,51 @@ if ($acao == "excluir")
 			// Se encontrarmos o registro, excluimos do carrinho
 			if ($totalRows_rs_car > 0)
 			{
+				$result33 = mysql_query("select * from carrinho WHERE cod = '".$cod2."'");
+				while ($row = mysql_fetch_assoc($result33)) {
+				$qtd_excar = $row['qtd'];
+				$nome_excar = $row['nome'];
+				}
+				
+				// excluindo do carrinho
+				
 				$sql_carrinho_excluir = "DELETE FROM carrinho WHERE cod = '".$cod2."' AND sessao = '".session_id()."'";	
 				$exec_carrinho_excluir = mysql_query($sql_carrinho_excluir);
 				
+				//Colocando de volta na pratileira
+				
+				$result44 = mysql_query("select * from produtos WHERE idprodutos = '".$cod2."'");
+				while ($row = mysql_fetch_assoc($result44)) {
+				$qtd_est = $row['qtd_produto'];
+				}
+			//	echo $qtd_est;
+			//	echo $qtd_excar;
+				$qtd_est = $qtd_est +  $qtd_excar;
+				$sql_ex = "UPDATE produtos SET qtd_produto =$qtd_est WHERE nome_produto ='$nome_excar'";
+				$rs_ex = mysql_query($sql_ex);	
 			}
-		
 	}
 }
 
 // Verificamos se a ação é de modificar a quantidade do produto
 if ($acao == "modifica")
 {
-
-	$result2 = mysql_query("select * from produtos where cod_produto = '".$cod."'");
+	$result2 = mysql_query("select * from produtos where idprodutos = '".$cod."'");
 	while ($row = mysql_fetch_assoc($result2)) {
 	$qtd_estoque = $row['qtd_produto'];
+	$nomeprt = $row['nome_produto'];
 	}
-		
 	
-	$qtdpr=$qtdpr+1;
+	$qtdpr=$qtdpr+1; // numero de quantidade
+	$qtd_estoque = $qtd_estoque-1;	// tira de estoque de produtos
+	
 	if($qtdpr <= $qtd_estoque){
 		// Fazemos nosso update nas quantidades dos produtos
 		$sql_modifica = "UPDATE carrinho SET qtd ='$qtdpr' WHERE  cod ='$cod' AND sessao = '".session_id()."'";
 		$rs_modifica = mysql_query($sql_modifica);
+		$sql_modifica2 = "UPDATE produtos SET qtd_produto =$qtd_estoque WHERE nome_produto ='$nomeprt'";
+		$rs_modifica2 = mysql_query($sql_modifica2);
+		
 	}
 		else{
 		echo "<BR>";
@@ -211,13 +248,16 @@ if ($acao == "modifica")
 		}
 }
 
-
 if ($acao == "modificamenos")
 {
-	echo "passo";
-	
+//	echo "passo";	
 //	echo $qtdpr;
+	$qtdantigo = $qtdpr;
 	$qtdpr=$qtdpr-1;
+
+	//calculando valor que sera colocado no estoque
+	$qtdadd = $qtdantigo - $qtdpr;
+	
 //	echo "resultado";
 //	echo $qtdpr;
 
@@ -225,15 +265,26 @@ if ($acao == "modificamenos")
 		// Fazemos nosso update nas quantidades dos produtos
 		$sql_modifica = "UPDATE carrinho SET qtd ='$qtdpr' WHERE  cod ='$cod' AND sessao = '".session_id()."'";
 		$rs_modifica = mysql_query($sql_modifica);
-	
+		
+				$result55 = mysql_query("select * from produtos WHERE idprodutos =$cod"); // voltando produtos para o carrinho
+				
+				while ($row = mysql_fetch_assoc($result55)) {
+				$nomeme  = $row['nome_produto'];
+				$qtd_estadd = $row['qtd_produto'];
+				}
+				
+				$qtdatual = $qtd_estadd + $qtdadd;
+				
+				$sql_ex3 = "UPDATE produtos SET qtd_produto =$qtdatual WHERE nome_produto ='$nomeme'";
+				$rs_ex3 = mysql_query($sql_ex3);
+				
+		
 		}
 			// quantidade nao deve ser menor do que zero
 			else{
 			$qtdpr=0;
-			}
-			
+			}		
 }
-
 ?>
 
 <?php
@@ -255,21 +306,12 @@ while ($row = mysql_fetch_assoc($result)) {
 
 
 	echo "<tr>";
-//	echo "<td> <input type='radio' id='carradio' name='carradio' value='".$row['cod_produto']."'></td>" ;
-//	echo "<td> <input type='text'  name='carcodprod'  disabled  size='8' value='".$row['cod']. "'></td>" ;
 	echo "<td> <input type='text'  name='carnomeprod' disabled size='15' value='".$row['nome']."'></td>" ;
 	echo "<td> <img src='".$row['imgprod']." 'height='60' width='60'  name='prod'></td>" ;
 	echo "<td> <input type='text'  name='carprecopro' disabled size='15' value='".$precoprod. "'></td>" ;
 	echo "<td> <input type='text'  name='carqtdprod' id='carqtdprod'  size='5' value='".$row['qtd']. "'>" ;
 	echo "<div align='auto' style='font-size:7px;font-family:Verdana'><a href='carr.php?&acao=modifica&cod=".$row['cod']."&carqtdprod=".$row['qtd']."' class='button'>+</a></div><br>";
 	echo "<div align='auto'style='font-size:7px;font-family:Verdana'><a href='carr.php?&acao=modificamenos&cod=".$row['cod']."&carqtdprod=".$row['qtd']."' class='button'>-</a></div><br></td>";
-//	echo "<td><select name='carqtdprod' size='auto'>
-//		<option value='1'>1</option>
-//		<option value='2'>2</option>
-//		<option value='3'>3</option>
-//		<option value='4'>4</option>
-//		<option value='5'>5</option>
-//	  </select></td>";
 	echo"<td><div align='center' style='font-size:10px;font-family:Verdana'><a href='carr.php?&acao=excluir&cod2=".$row['cod']."' class='button'>Excluir</a></div><br></td>";
 	echo "</tr>";
 	
@@ -316,77 +358,132 @@ echo "</table>";
 	//	  echo "</form>";
 		  
 		  echo"
+		  <BR>
+		 <H7>Endereço De Entrega:</H7>
+		  <BR>
 		  <table border=0>
+		  <BR>
 		  <td>Nome:</td>
 		  <td><input name='nomeckt' type='text' id='nomeckt' value='".$nomedecripto."'   size='15' maxlength='9' min='0' ' /></td>
 		  <td>Email:</td>
 		  <td><input name='emailckt' type='text' id='emailckt' value='".$emaildecripto."'   size='15'  ' /></td>
 		  <tr></tr>
+		  ";
+		  
+		  //session usada para armazenar um novo cep caso ele seja usado
+		  
+		  if($_SESSION['cepv2'] ==''){
+		  echo"
+		  <td>CEP:</td>
+		  <td><input name='cepckt' type='text' id='cepckt' value='".$cepdecripto."' onkeypress='mascara(this,cep)' onBlur='vcep(carfor.cepckt);' size='15' maxlength='9' min='0' ' /></td>
 		  <td>Endereço:</td>
-		  <td><input name='endckt' type='text' id='endckt' value='".$emaildecripto."'   size='15'  ' /></td>
+		  <td><input name='endckt' type='text' id='endckt' value='".$enddecripto."'   size='15'  ' /></td>
 		  <td>Numero:</td>
 		  <td><input name='numckt' type='text' id='numckt' value='".$numdecripto."' ' /></td>
 		  <td>Complemento:</td>
 		  <td><input name='cmpckt' type='text' id='cmpckt' value='".$cmpdecripto."' ' /></td>
 		  <tr></tr>
-		  <td>CEP:</td>
-		  <td><input name='cepckt' type='text' id='cepckt' value='".$cepdecripto."' onkeypress='mascara(this,cep)' size='15' maxlength='9' min='0' ' /></td>
 		  <td>Cidade:</td>
 		  <td><input name='cidadeckt' type='text' id='cidadeckt' value='".$cidadedecripto."'   size='15' maxlength='9' min='0' ' /></td>
-		  <tr></tr>
 		  <td>Estado:</td>
 		  <td><input name='cidadeckt' type='text' id='estadockt' value='".$estadodecripto."'   size='15' maxlength='9' min='0' ' /></td>
-		  <td><a href='cadusrcmp.php' class='button'>Atualizar Cadastro</a></td>
+		  ";
+		  }
+		  else
+		  {
+		  $cepv = $_SESSION['cepv2'];
+		  echo "
+		  <td>CEP:</td>
+		  <td><input name='cepckt' type='text' id='cepckt' value='".$cepv."' onkeypress='mascara(this,cep)' onBlur='vcep(carfor.cepckt);' size='15' maxlength='9' min='0' ' /></td>  
+		  <td>Endereço:</td>
+		  <td><input name='endckt' type='text' id='endckt' value=''   size='15'  ' /></td>
+		  <td>Numero:</td>
+		  <td><input name='numckt' type='text' id='numckt' value='' ' /></td>
+		  <td>Complemento:</td>
+		  <td><input name='cmpckt' type='text' id='cmpckt' value='' ' /></td>
+		  <tr></tr>
+		  <td>Cidade:</td>
+		  <td><input name='cidadeckt' type='text' id='cidadeckt' value=''   size='15' maxlength='9' min='0' ' /></td>
+		  <td>Estado:</td>
+		  <td><input name='cidadeckt' type='text' id='estadockt' value=''   size='15' maxlength='9' min='0' ' /></td>";
+		  }
+		  echo"
 		  </table>";
 		  echo "<input name='btn_chekout' class='button' type='submit' id='btn_chekout' value='Fechar Conta' size='9'/>";
-		  echo "</form>";
-		//  echo "<input name='btn_chekout' class='button' type='submit' id='btn_atualiza' value='Atualizar Frete' size='9'/>";
-		 // echo "</form>";
-		
+		  echo "</form>";	
+		  		    
+		  echo "<BR>";
 		  
 		  
+		 // usado para caso o CEP esteja cadastrado
+		  if($cepv ==''){
 		 // tirando o - do cep
 		 $cepreplace = str_replace("-", "", $cepdecripto);
 	   	 include("calcfrete.php");
-	     $valorfrete = calcula_frete('40010','13901150',$cepreplace,'0.5');
-	     
+	     $valorfrete = calcula_frete('40010','13901150',$cepreplace,'0.5');	     
 	     // troca , por .
 	     $valorfrete2 = str_replace(",",".",$valorfrete);
 	     
 	     echo "<BR>";
-	     echo "<td><h7>Valor Frete: R$".$valorfrete."</td></h7>";
-	     
-		  }
-		  else{
-		  echo "<BR>";
-		  echo "Usuário não Registrado, Faça o Login ou Registre-se para continuar comprando";
-		  }
-		  
-	
-		//<tr><a href='calcfrete2.php'  class='button' size=9  id='btn_frete'/>Calcular Frete</a> </tr>
-		  
-		// Calcula Preco final que eh igual ao preco dos prod junto com o frete
-	
+	     echo "<td><h7>Valor Frete: R$:</td></h7>";
+	     echo "<td><h7>$valorfrete</h7></td>";
+	     // Calcula Preco final que eh igual ao preco dos prod junto com o frete	
 		$precofinal = $valorfrete2 + $preco;
-		
 		//setando o formato monetario
 		$precofinal2= number_format($precofinal,2);
 		$precofinal2 = str_replace(".",",",$precofinal2);
-		
 		echo "<table border =0>
-		<th><h7>Preço Total</h7></th>
-		<tr>
-		<td><h7>Valor: R$:</td>
-		<td><h7>$precofinal2</h7></td>
+		<th><h7>Preço Total:</h7></th>
+		
+	    <td><h7>R$:$precofinal2</h7></td>
 		</tr>";
+		}
+			else{
+			$_SESSION['cepv2'] = $cepv;
+			$cepreplace = str_replace("-", "", $cepv);
+			include("calcfrete.php");
+	     	$valorfrete = calcula_frete('40010','13901150',$cepreplace,'0.5');	     
+	     	// troca , por .
+	     	$valorfrete2 = str_replace(",",".",$valorfrete);
+	     	
+	     	
+	     	echo "<BR>";
+	     	echo "<td><h7>Valor Frete: R$:</td></h7>";
+	     	echo "<td><h7>$valorfrete</h7></td>";
+	     	// Calcula Preco final que eh igual ao preco dos prod junto com o frete	
+			$precofinal = $valorfrete2 + $preco;
+			//setando o formato monetario
+			$precofinal2= number_format($precofinal,2);
+			$precofinal2 = str_replace(".",",",$precofinal2);
+				echo "<table border =0>
+				<th><h7>Preço Total:</h7></th>	
+	    		<td><h7>R$:$precofinal2</h7></td>
+				</tr>";
+			}
+		}
+		
+		  else{
+		  echo "<BR>";
+		  echo "Usuário não Registrado, Faça o Login ou Registre-se para pagar a compra";
+		  }
 		?>
 <br>
 <br>
 </table>
+		<br>
+		<br>
+		<a href='index.php'> <img src='cnt.gif' 'height='auto' width='auto'>  </a>
 	  <br>
 	  <br>
 	  <br>
         </div>
+                   
+ 		<script>
+        function vcep(cp){       		
+     	var cepv = carfor.cepckt.value;
+		location.href = location.href+'?cepv='+cepv;
+    	}
+		</script>
         			
 <div class="rodape-div"><p>Loja Cusko</p></div>		
 </div>
@@ -408,11 +505,23 @@ echo "</table>";
             </div>
             <br>
             <h4>Busca De Produtos</h4>
-            <br>      
-        	<input name="login" type="text" id="login" placeholder="Nome ou Descrição" size="20" maxlength="60"/>
-        	<input name="btnsearchprod" class="button" type="submit" size="2" id="btnsearchprod" value="Buscar" />
+            <BR>
+         	<form id="buscaprod" name="buscaprod" method="post" action="reqbusprod.php"> <!-- productlistclient.php web -->
+      	 	<table border=0  width=auto height=auto>   
+      		<td width=auto><input type="text" name="buscarprod" placeholder="Nome do Produto" size=35 maxlength=auto />
+      		<td> <input name="btn_cadusr" class="button" type="submit" id="btn_pesq_prod" value="Buscar" size=35  /> </td>
+      		</table>
+      		</form>
         	<br>
         	<br>
+        	<h4>Consultar Pedido</h4>
+            <BR>
+			<form id="formconsult" name="formconsult" method="post" action="consulta.php">
+      		<table border=0  width=auto height=auto> 
+      		<td width="auto"><input type="text" name="codcompra" id="codcompra" size="35" placeholder="Código da Compra" /> </td>
+      		<td><input name="btn_codcompra" class="button" type="submit" id="btn_codcompra" value="Pesquisar" size="35"  /></td>
+      		</table>
+      		</form>		
         	<!-- Like Button Facebook -->
         	<div id="fb-root"></div>        	
 			<div class="fb-like" data-href="https://pt-br.facebook.com/usecusko" data-send="true" data-layout="button_count" 

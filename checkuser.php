@@ -2,12 +2,9 @@
 
 $username=$_POST['user_name'];
 
-$crip=hash('sha512', $username);
+$crip=hash('md5', $username);
 
-$con = mysql_connect("localhost","root","");
-if (!$con)
-	die ("Connection Error! -> ".mysql_error());
-$db = mysql_select_db("mydb",$con);
+require_once("conf.php");
 
 $result = mysql_query("SELECT login FROM usuarios where login = '$crip' ");
 

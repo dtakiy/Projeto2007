@@ -60,17 +60,31 @@ echo "</form>";
         </div>
         
         <div class="esq-div">
+        
+        
 		      
         	<div class="destaques-div">
             <h5>Cadastro Produto</h5>
+					
 			
 			<?php
 // Inserindo produtos na tabela
 require_once("conf.php");
+require_once("conf2.php");
 
-$cod = "$_POST[codprod]";
+
+$result = mysql_query("SELECT * FROM produtos",$con);
+
+while ($row = mysql_fetch_assoc($result)) {
+
+$cod = $row['idprodutos'];
+
+}
+
+
+$cod = $cod+1;
 $nomeprod = "$_POST[nomeprod]";
-$precoprod = "$_POST[precoprod]";
+$valor = "$_POST[precoprod]";
 $qtdprod = "$_POST[qtdprod]";
 $pesoprod = "$_POST[pesoprod]";
 $catprod = "$_POST[catprod]";
@@ -79,8 +93,27 @@ $fotoprod = "$_POST[fotoprod]";
 $descprod = "$_POST[descprod]";
 //$notaprod = "$_POST[notaprod]";
 
-$result = mysql_query("INSERT INTO produtos (cod_produto,nome_produto,cat_produto,preco_produto,qtd_produto,imagem,destaque,status_prod,descricao) VALUES($cod,'$nomeprod'
-,'$catprod',$precoprod,$qtdprod,'$fotoprod',1,1,'$descprod')");
+$precoprod = str_replace(",",".",$valor);
+$precoprod2 = str_replace(".",",",$precoprod);
+
+$query = mysql_query("select * from produtos where nome_produto='$nomeprod'",$con);
+$num = mysql_num_rows($query);
+
+//valores de inicializacao da tabela de recomendacao
+$query4 = mysql_query("SELECT * from produtos",$con); // procura por todos os produtos
+while ($row = mysql_fetch_assoc($query4)) {
+$nprod2 = $row['nome_produto'];
+	if($nomeprod != $nprod2){
+	$query3 = mysql_query("INSERT INTO recomendacao (prod1,prod2,peso) VALUES('$nomeprod','$nprod2',1)",$con2); //insere para comparação
+	//echo "INSERT INTO recomendacao (prod1,prod2,peso) VALUES('$nomeprod','$nprod2',1)";
+	}
+
+
+}
+
+if($num<1){
+$result = mysql_query("INSERT INTO produtos (nome_produto,cat_produto,preco_produto,qtd_produto,imagem,destaque,status_prod,descricao,peso_prod) VALUES('$nomeprod'
+,'$catprod',$precoprod,$qtdprod,'$fotoprod',1,1,'$descprod',$pesoprod)",$con);
 
 //echo  $result;
 //echo "INSERT INTO produtos (cod_produto,nome_produto,cat_produto,preco_produto,qtd_produto,imagem,destaque,status_prod,descricao) VALUES($cod,'$nomeprod';
@@ -94,26 +127,19 @@ file_put_contents($nomeprod.".php", "
 <link rel='stylesheet' type='text/css' href='estilo.css' />
 <title>Cusko</title>
 </head>
-
-
 <body>
     <div class='global-div'>
     	<div class='topo-div'></div>
         <div class='menu-div'>
         	<ul>
-        	
         	<ul>
- 
 			  	<table>
 			  	<td>&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
 			  	&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
 			  	&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
 			  	&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
 			  	&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
-			  	&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
-			  	&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
 			    <img src='cusko_branco.jpg' 'height='100' width='200'> </td>
-			  	
 			  	</table>
 			  	<br>
 			  	<br>
@@ -124,29 +150,25 @@ file_put_contents($nomeprod.".php", "
   <li><a href='#'><span>Quem Somos</span></a></li>
   <li><a href='#'><span>Contato</span></a></li>
   <li><a href='#'><span>Carrinho</span></a></li>
-
 </ul>
-
 </div>				                          
             </ul>
         </div>
-        
         <div class='esq-div'>
-		      
         	<div class='destaques2-div'>
             <h5>".$nomeprod."</h5>
 			
-			<table border=0>
+			<table border=1 style='text-align:right'>
 <td>
 <table border=0>
 <BR>
 <BR>
-<td><img src='".$fotoprod."'height='150' width='150' name='prod'></td>
+<td><img src='".$fotoprod."'height='150' width='150' name='prod'>&nbsp &nbsp</td>
 <td><table border=0>
 <td>Dimensoes:(cm)</td><td>&nbsp;&nbsp;P&nbsp;&nbsp;</td><td>&nbsp;&nbsp;M&nbsp;&nbsp;</td><td>&nbsp;&nbsp;G&nbsp;&nbsp;</td>
 <tr><td>Manga</td><td>&nbsp;17,5&nbsp;</td><td>&nbsp;17,5&nbsp;</td><td>&nbsp;18,5&nbsp;</td></tr>
 <tr><td>Largura</td><td>46,5</td><td>49,5</td><td>50</td></tr>
-<tr><td>Compr</td><td>66,5</td><td>69,5</td><td>71</td></tr>
+<tr><td>Comprimento</td><td>66,5</td><td>69,5</td><td>71</td></tr>
 </table></td>
 
 </table>
@@ -154,7 +176,7 @@ file_put_contents($nomeprod.".php", "
 
 
 <tr>
-<tr><td>Descricao</td></tr>
+<tr><td>Descrição</td></tr>
 <tr><td><textarea rows='10' cols='40' disabled>
 ".$descprod."
 </textarea></tr></td>
@@ -165,10 +187,10 @@ file_put_contents($nomeprod.".php", "
 <option value='3' >M</option>
 <option value='4' >G</option>
 </select> -->
-&nbsp&nbsp Preco &nbsp; &nbsp; R$ &nbsp;".$precoprod."
+&nbsp&nbsp Preço &nbsp; &nbsp; R$ &nbsp;".$precoprod2."
 </td> 
 
-</tr>
+</tr><!--
 <td>Quantidade
 <select name='tamprod2'>
 <option value='0' selected>Selecione</option>
@@ -177,8 +199,8 @@ file_put_contents($nomeprod.".php", "
 <option value='3' >3</option>
 <option value='4' >4</option>
 <option value='4' >5</option>
-</select>
-<button href='inserecar.php' class='button'>Comprar</button>
+</select>-->
+<td><div align='center' style='font-size:10px;font-family:Verdana'><a href='carr.php?cod=".$cod."&acao=incluir' class='button'>Comprar</a></div><br></td>
 </td>
 </tr>
 </table>
@@ -207,11 +229,11 @@ data-width='450' data-show-faces='true' data-font='arial'></div>
             
             <li><a href='#' title='Camisas Masculinas'>Camisas Masculinas</a></li>
             <li><a href='#' title='Camisas Femininas'>Camisas Femininas</a></li>
-            <li><a href='#' title='Calcas Masculinas'>Calcas Masculinas</a></li>
-            <li><a href='#' title='Calcas Femininas'>Calcas Femininas</a></li>
+            <li><a href='#' title='Calcas Masculinas'>Calças Masculinas</a></li>
+            <li><a href='#' title='Calcas Femininas'>Calças Femininas</a></li>
             <li><a href='#' title='Bermudas Masculinas'>Bermudas Masculinas</a></li>
             <li><a href='#' title='Shorts Femininos'>Shorts Femininos</a></li>
-			<li><a href='#' title='Acessorios'>Acessorios</a></li>
+			<li><a href='#' title='Acessorios'>Acessórios</a></li>
 			<br>   
 			     
             </ul>
@@ -223,11 +245,14 @@ data-width='450' data-show-faces='true' data-font='arial'></div>
         	<input name='btnsearchprod' class='button' type='submit' size='2' id='btnsearchprod' value='Buscar' />
         	<br>
         	<br>
+        	
         	<!-- Like Button Facebook -->
         	<div id='fb-root'></div>        	
 			<div class='fb-like' data-href='https://pt-br.facebook.com/usecusko' data-send='true' data-layout='button_count' 
 			data-width='450' data-show-faces='true' data-font='arial'></div>
-		</div>
+			<!-- Fallow Button Facebook -->
+			<div class='fb-follow' data-href='https://www.facebook.com/usecusko' data-width='450' data-layout='button_count' data-show-faces='true'></div>
+		    </div>
 		
 </div>
 				<!-- Script para se conectar ao Facebook -->
@@ -245,15 +270,22 @@ data-width='450' data-show-faces='true' data-font='arial'></div>
 
 ", FILE_APPEND);
 
-if($result>=1)
-{
+	if($result>=1)
+	{
 //header("refresh:5; url=cadprod.php");
-echo "<h1> <a href=cadprod.php> Produto Cadastrado. Clique"; echo " aqui para Voltar</a>.</h1>";
-}
+	echo "<h1> <a href=admprod.php> Produto Cadastrado. Clique"; echo " aqui para Voltar</a>.</h1>";
+	}
 
 //mysql_free_result($result);
 
 //mysqli_close($con);
+}
+
+else{
+echo "<h1><font color='black'> Não foi possivel fazer o cadastro </font></h1>";
+
+echo "<h1><a href=cadprod.php> Para retornar ao cadastro clique aqui</a></h1>";
+}
 ?>
 		
           

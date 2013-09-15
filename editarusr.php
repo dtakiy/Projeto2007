@@ -161,10 +161,10 @@ echo "<table border=0>
 <form action='formeditusr.php' id='formedit' onsubmit='return validar(this)'; method='post' >
   <td width='69'> <h7>ID:</h7> </td>
   <td><input type='text' name='cid2' value='$cod'>
-  <td width='69'> <h7>Login:</h7> </td>
-  <td><input type='text' name='clog2' value='$log'>
-  <td width='69'> <h7>Senha:</h7> </td>
-  <td><input type='text' name='csenha2' value='$pass'>
+  <td width='69'> <h7></h7> </td>
+  <td><input type='hidden' name='clog2' value='$log'>
+  <td width='69'> <h7></h7> </td>
+  <td><input type='hidden' name='csenha2' value='$pass'>
 </tr>
 <tr>
   <td width='69'> <h7>Nome:</h7> </td>
@@ -410,11 +410,11 @@ return true;
             <ul class="maisartigos escuro top8">
             <li><a href="#" title="Camisas Masculinas">Camisas Masculinas</a></li>
             <li><a href="#" title="Camisas Femininas">Camisas Femininas</a></li>
-            <li><a href="#" title="Calcas Masculinas">Calcas Masculinas</a></li>
-            <li><a href="#" title="Calcas Femininas">Calcas Femininas</a></li>
+            <li><a href="#" title="Calcas Masculinas">Calças Masculinas</a></li>
+            <li><a href="#" title="Calcas Femininas">Calças Femininas</a></li>
             <li><a href="#" title="Bermudas Masculinas">Bermudas Masculinas</a></li>
             <li><a href="#" title="Shorts Femininos">Shorts Femininos</a></li>
-			<li><a href="#" title="Acessorios">Acessorios</a></li>
+			<li><a href="#" title="Acessorios">Acessórios</a></li>
 			<br>   	     
             </ul>
             </div>

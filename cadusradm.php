@@ -30,7 +30,8 @@
 			  	&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
 			  	&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
 			  	&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
-			    <img src='cusko_branco.jpg' 'height='100' width='200'> </td>	
+			    <img src='cusko_branco.jpg' 'height='100' width='200'> </td>
+			  	
 			  	</table>
 			  	<br>
 			  	<br>
@@ -42,11 +43,11 @@
   <li><a href='#'><span>Contato</span></a></li>
   <li><a href='#'><span>Carrinho</span></a></li>
   <?php
-//echo "<form id=formlogout' name='formlogout' method='post'  action='logout.php'>";
-//echo "<font size='2.5' color='white'>".$nomedecripto;
-//echo "</font>";
-//echo "<input name='btn_logout' class='button' type='submit' id='btn_logout' value='Logout' size='40'  />";
-//echo "</form>";
+echo "<form id=formlogout' name='formlogout' method='post'  action='logout.php'>";
+echo "<font size='2.5' color='white'>".$nomedecripto;
+echo "</font>";
+echo "<input name='btn_logout' class='button' type='submit' id='btn_logout' value='Logout' size='40'  />";
+echo "</form>";
 ?>
 </ul>
 
@@ -60,7 +61,7 @@
 
       <h5>Cadastrar Usuário</h5>
      
-      <form id="formulariousr" name="cadusr" method="post" onsubmit="return validar(this);" action="reqcadusr.php">
+      <form id="formulariousr" name="cadusr" method="post" onsubmit="return validar(this);" action="reqcadusradm.php">
       <br>
       <br>
       <table border=0  width=auto height=150>   
@@ -170,14 +171,11 @@ function checkUserName(usercheck)
 {
 	$('#usercheck').html;
 	$.post("checkuser.php", {user_name: usercheck} , function(data)
-		{
-			
+		{			
 			   if (data != '' || data != undefined || data != null) 
 			   {				   
-				  $('#usercheck').html(data);
-				  		
+				  $('#usercheck').html(data);	
 			   }
-			  
           });
 }
 </script>

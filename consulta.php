@@ -19,6 +19,7 @@ $usuario = $_SESSION['usrlogin'];
     	<div class="topo-div"></div>
         <div class="menu-div">
         	<ul>
+        	
         	<ul>
 <?php
 if ($usuario !='')
@@ -84,105 +85,124 @@ echo "";
         <div class="esq-div">
 		      
         	<div class="destaques-div">
-            <h5>Produtos em Destaque</h5>
+            <h5>Consultar Pedido</h5>
 			
-		<?php
-require_once("conf.php");
+	<?php
 
-$max=5; // numero maximo de produtos por pagina
+$transaction = $_POST[codcompra];
 
-$pagina=$_GET["pagina"]; 
-if ($pagina == "")
-$pagina=1;
+$email = 'tccdojet@gmail.com';
+$token = '7ABF4DAA06A74269AF1A39D79FD91162';
+//$transaction = 'C2B7F135-FE5F-4744-AC67-659AAFA3BB86';
+$url = 'https://ws.pagseguro.uol.com.br/v2/transactions/' . $transaction . '?email=' . $email . '&token=' . $token;
+
+$curl = curl_init($url);
+curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+$transaction= curl_exec($curl);
+curl_close($curl);
  
-$inicio = $pagina - 1;
-$inicio = $max * $inicio;
+if($transaction == 'Unauthorized') {
+    //Insira seu código avisando que o sistema está com problemas, sugiro enviar um e-mail avisando para alguém fazer a manutenção
+    echo 'You shall not pass';
+    exit;//Mantenha essa linha para evitar que o código prossiga
+}
  
-  
-$sql="SELECT * FROM produtos";
-$res=mysql_query($sql);
-$total=mysql_num_rows($res);
+$transaction = simplexml_load_string($transaction);
  
-if ($total == 0)
-echo "Nenhum registro encontrado!";
-else
-{
+if(count($transaction -> error) > 0) {
+
+    //Aviso que houve um problema no carregamento do site
+    //var_dump($transaction); 
+   
+    echo "<h1>";
+    echo "<font color='black'>";
+    echo "<BR>";
+    echo "Código Invalido por favor verique se o código está correto.";
+    echo "<BR>";
+    echo "Quaisquer dúvidas entre em contato conosco: adm@cusko.com.br";
+    echo "</font>";
+    echo " </h1>";
+}
+else{
+$data  = $transaction -> lastEventDate;
+$nomec = $transaction -> sender -> name;
+$endc  = $transaction -> shipping -> address->street;
+$numc  = $transaction -> shipping -> address->number;
+$compc = $transaction -> shipping -> address->complement;
+$cidadec = $transaction -> shipping -> address->city;
+$estadoc = $transaction -> shipping -> address->state;
+$cepc = $transaction -> shipping -> address->postalcode;
+$emailc = $transaction -> sender -> email;
+$valorc = $transaction -> grossAmount;
+$valoruni = $transaction ->items->item->amount;
+$statusc = $transaction -> status;
+$decc= $transaction ->items->item->description;
+$itemc= $transaction -> itemCount;
+$itemc = $itemc-1;
+
+
+
+if($statusc == 1){
+$sts = "Aguardando pagamento";
+}
+	else if($statusc == 2){
+	$sts = "Em análise";
+	}
+		else if($statusc == 3){
+		$sts = "Paga";
+		}
+			else if($statusc == 4){
+			$sts = "Disponível";
+			}
+				else if($statusc == 5){
+				$sts = "Em Disputa";
+				}
+					else if($statusc == 6){
+					$sts = "Devolvida";
+					}
+						else if($statusc == 7){
+					$sts = "Cancelada";
+					}
+	
+
+
+echo "<BR>";
+echo "<table border=1 font size=2>
+<th>Cod Compra</th><th>Status</th>
+<tr>
+<td>
+<p>
+<font size='1' color='black'>".$_POST[codcompra]."</td></font><font size='1'>".$sts."</td>
+</tr>
+</table>";
+
 echo "<BR>";
 
-$sql="SELECT * FROM produtos where destaque =1 LIMIT $inicio,$max";
-$res=mysql_query($sql);
-while ($row = mysql_fetch_assoc($res)) {
-echo "<table border=0>";
-echo "<tr>";
-echo "<td>";
+echo "<table border=1 font size=2>
+<th>Nome</th><th>Endereço</th><th>E_mail</th>
+<tr>
+<td>
+<p>
+<font size='1' color='black'>".$nomec."</td></font><td><font size='1'>".$endc." ".$numc. " " .$compc. " " .$cidadec. " " .$estadoc. "</td></font><td><font size='1'>".$emailc."</td></font>
+</table>";
 
-			echo "
-			<br/><br/>
-			<table border=0>
-			<tr>
-			<form action='buscar.php' method='get'> <div align='center'><br>";
-	$preco=$row['preco_produto'];
-	// trocando . por ,
-	$precoprod = str_replace(".",",",$preco);
+echo "<BR>";
 
-	echo "<center>";
-	echo "<tr>";
-	echo "<td> <font size='2.5' color='black'>".$row['nome_produto'];
-	echo "</td>";
-	echo "</tr>";
-	echo "<br>";
-	echo "<tr><td><a href='".$row['nome_produto'].".php'><img src='".$row['imagem']."'height='130' width='130' name='eimg'></tr></td>";
-	echo "<td> <font size='2.5' color='black'>Preço R$ ".$precoprod;
-	echo "</tr>";
+echo "<table border=1 font size=2>
+<th>Preço C / Frete</th>
+<tr>
+<td>
+<p>
+<font size='1' color='black'>".$valorc."</td>
+</table>";
 
-	echo "</td>";
-	echo "</tr></td>";
-	echo "<tr>";
-	echo "<td><div align='center' style='font-size:10px;font-family:Verdana'><a href='carr.php?cod=".$row['idprodutos']."&acao=incluir' class='button'>Comprar</a></div><br></td>";
-	echo "</tr>";
-	echo "</center>";
-	echo "</table>";
-    echo "</form>"; 
-    echo "<td>";
 }
-	
-	for($i =1; $i <= $max; $i++){
-	echo "</table>";
-	}
- 
 
- 
-}
-// Calculando pagina anterior
-$menos = $pagina - 1;
-// Calculando pagina posterior
-$mais = $pagina + 1;
-$pgs = ceil($total / $max);
-if($pgs > 1 ) 
-{
-if($menos>0) 
-echo "<a href=\"?pagina=$menos\" class='texto_paginacao'>Anterior</a> "; 
- 
-if (($pagina-4) < 1 )
-$anterior = 1;
-else
-$anterior = $pagina-4;
- 
-if (($pagina+4) > $pgs )
-$posterior = $pgs;
-else
-$posterior = $pagina + 4;
- 
-for($i=$anterior;$i <= $posterior;$i++) 
-if($i != $pagina) 
-echo " <a href=\"?pagina=".($i)."\" class='texto_paginacao'>$i</a>";
-else 
-echo " <strong class='texto_paginacao_pgatual'>".$i."</strong>";
- 
-if($mais <= $pgs) 
-echo " <a href=\"?pagina=$mais\" class='texto_paginacao'>Proxima</a>";
-}
-	?>	
+?>
+
+
+
         </div>
 		<div class="rodape-div"></div>		<!-- <p>Loja Cusko</p> caso queira colocar frase dentro do rodape -->
 		</div>

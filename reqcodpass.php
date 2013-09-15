@@ -182,7 +182,7 @@ if($numero < 1){
         	<div class='destaques-div'>
 			
       <h5>Dados Incorretos</h5>
-   <h3> E-mail E / OU Codigo Incorreto</h3>
+   <h1><font color='black'> E-mail E / OU Codigo Incorreto </font></h1>
         </div>
 	<div class='rodape-div'><p>Loja Cusko</p></div>		
 </div>

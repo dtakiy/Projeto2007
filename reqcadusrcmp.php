@@ -10,7 +10,7 @@
 	echo "";
 	}
 	else 
-	 header("location:erro.php");
+//	 header("location:erro.php");
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -69,7 +69,7 @@ session_start();
 require_once("conf.php");
 $usuario = $_SESSION['usrlogin'];
 
-echo $usuario;
+//echo $usuario;
 // atributos
 $nome= $_POST["nomeusr"];
 //$datanasc= $_POST["nascusr"];
@@ -103,18 +103,30 @@ $celcripto = base64_encode($cel);
 // criptografando dados MD5
 
 $senhacripto = hash('md5', $senha);
-echo "Cadastro Realizado com Sucesso";
 
-
-///////////////////////////////////
-
+$query = mysql_query("select * from usuarios where login='$usuario' and senha='$senha'");
+$num = mysql_num_rows($query);
+echo "numero";
+echo $num;
+if($num >=1){
+$result = mysql_query("UPDATE usuarios
+SET nome='$nomecripto', cpf='$cpfcripto',
+endereco='$endcripto', cidade='$cidadecripto', tel='$telcripto', cel='$celcripto',
+estado='$estdcripto', cep='$cepcripto', numero='$numcripto', complemento='$cmpusrcripto', senha='$senha'
+WHERE login='$usuario'");
+echo "entro aqui";
+echo "<h1>Cadastro Realizado com Sucesso</h1>";
+}
+else{
 $result = mysql_query("UPDATE usuarios
 SET nome='$nomecripto', cpf='$cpfcripto',
 endereco='$endcripto', cidade='$cidadecripto', tel='$telcripto', cel='$celcripto',
 estado='$estdcripto', cep='$cepcripto', numero='$numcripto', complemento='$cmpusrcripto', senha='$senhacripto'
 WHERE login='$usuario'");
-
-echo $result;
+echo "else";
+echo "<h1>Cadastro Realizado com Sucesso</h1>";
+}
+//echo $result;
 // Free the resources associated with the result set
 // This is done automatically at the end of the script
 //mysql_free_result($result);

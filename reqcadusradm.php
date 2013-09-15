@@ -6,11 +6,11 @@
     
 	$nomedecripto = base64_decode($nome);
 	
-	//if($tipo==2){
-	//echo "";
-	//}
-	//else 
-	//header("location:erro.php");
+	if($tipo==1){
+	echo "";
+	}
+	else 
+	header("location:erro.php");
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -60,13 +60,40 @@ echo "</form>";
         <div class="esq-div">
 		      
         	<div class="destaques-div">
-            <h5>Produtos em Destaque</h5>
+            <h5>Cadastro</h5>
 			
-			Aqui Colocamos os Produtos em Destaque
+			<?php 
+//cadastro de consumidores
+// atributos
+$login= $_POST["username"];
+$senha= $_POST["passusr"];
+$email= $_POST["emailusr"];
+$criptolog  = hash('md5', $login);
+$criptopass = hash('md5', $senha);
+$emailcript = base64_encode($email);
+
+?>
+<?php
+
+require_once("conf.php");
+
+$query = mysql_query("select * from usuarios where login='$criptolog' or email='$emailcript'");
+$num = mysql_num_rows($query);
+echo "$num" ;
+
+if($num<1){
+$result = mysql_query("INSERT into usuarios (login,senha,email,tipo,status) values('$criptolog'
+,'$criptopass','$emailcript',2,1);");
+echo "<h1><a href=admusr.php> Cadastrado com Sucesso, clique aqui Para Navegar</a>.</h1>";
+}
+
+else{
+echo "<h1>Não foi possivel fazer o cadastro</h1>";
+
+echo "Para retornar ao cadastro clique <a href=cadusr.php>"; echo "aqui</a>.";
+}
+?>
 			
-          <h5>Produtos Recomendados</h5>
-          
-          Aqui Colocamos os Produtos Recomendados Para o Consumidor
           
         </div>
 <div class="rodape-div"><p>Loja Cusko</p></div>		
@@ -79,11 +106,11 @@ echo "</form>";
             <ul class="maisartigos escuro top8">
             <li><a href="#" title="Camisas Masculinas">Camisas Masculinas</a></li>
             <li><a href="#" title="Camisas Femininas">Camisas Femininas</a></li>
-            <li><a href="#" title="Calcas Masculinas">Calças Masculinas</a></li>
-            <li><a href="#" title="Calcas Femininas">Calças Femininas</a></li>
+            <li><a href="#" title="Calcas Masculinas">Calcas Masculinas</a></li>
+            <li><a href="#" title="Calcas Femininas">Calcas Femininas</a></li>
             <li><a href="#" title="Bermudas Masculinas">Bermudas Masculinas</a></li>
             <li><a href="#" title="Shorts Femininos">Shorts Femininos</a></li>
-			<li><a href="#" title="Acessorios">Acessórios</a></li>
+			<li><a href="#" title="Acessorios">Acessorios</a></li>
 			<br>   		     
             </ul>
             </div>

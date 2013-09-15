@@ -68,7 +68,7 @@ echo "</form>";
       <br>
       <table border=0  width=300 height=200>   
       <td width="69"><h7>Nome:</h7></td>
-      <td width="100"><input name="nomeprod" type="text" id="nomeprod" size="50" maxlength="60" />
+      <td width="100"><input name="nomeprod" type="text" text-align:"right" id="nomeprod" size="50" maxlength="60" />
       </tr>
       <tr>
       <td width="69"><h7>Preço: R$</h7></td>
@@ -76,11 +76,11 @@ echo "</form>";
       </tr>
       <tr>
       <td width="69"><h7>Quantidade:</h7></td>
-      <td width="100"><input name="qtdprod" type="text" onkeypress="mascara(this,numeros)" id="qtdprod" size="20" maxlength="60" min="0"/>
+      <td width="100"><input name="qtdprod" type="text" text-align:"right" onkeypress="mascara(this,numeros)" id="qtdprod" size="8" maxlength="60" min="0"/>
       </tr>
 	  <tr>
       <td width="69"><h7>Peso: (g)</h7></td>
-      <td width="100"><input name="pesoprod" type="text" onkeypress="mascara(this,numeros)" id="pesoprod" size="20" maxlength="60" min="0" />
+      <td width="100"><input name="pesoprod" type="text" text-align:"right" onkeypress="mascara(this,numeros)" id="pesoprod" size="8" maxlength="60" min="0" />
       </tr>
 	  <tr>
       <td width="69"><h7>Categoria:</h7></td>

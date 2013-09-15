@@ -40,11 +40,11 @@
 			  	<br>
 <div id='cssmenu'>
 <ul>
-  <li><a href='index.php'><span>Home</span></a></li>
-  <li><a href='#'><span>Produtos</span></a></li>
-  <li><a href='#'><span>Quem Somos</span></a></li>
-  <li><a href='#'><span>Contato</span></a></li>
-  <li><a href='#'><span>Carrinho</span></a></li>
+<ul>
+  <li><a href='adm.php'><span>Home Adm</span></a></li>
+  <li><a href='produtos.php'><span>Produtos</span></a></li>
+  <li><a href='admprod.php'><span>Administrar Produtos</span></a></li>
+  <li><a href='admusr.php'><span>Administrar Usuários</span></a></li>
   <?php
 echo "<form id=formlogout' name='formlogout' method='post'  action='logout.php'>";
 echo "<font size='2.5' color='white'>".$nomedecripto;
@@ -84,11 +84,11 @@ echo "$num" ;
 if($num<1){
 $result = mysql_query("INSERT into usuarios (login,senha,email,tipo,status) values('$criptolog'
 ,'$criptopass','$emailcript',2,1);");
-echo "Cadastrado com Sucesso, clique <a href=index2.php>"; echo "aqui Para Navegar</a>.";
+echo "<h1><a href=index.php> Cadastrado com Sucesso, clique aqui Para Navegar</a>.</h1>";
 }
 
 else{
-echo "<h1>N�o foi possivel fazer o cadastro</h1>";
+echo "<h1>Não foi possivel fazer o cadastro</h1>";
 
 echo "Para retornar ao cadastro clique <a href=cadusr.php>"; echo "aqui</a>.";
 }
@@ -119,12 +119,12 @@ echo "Para retornar ao cadastro clique <a href=cadusr.php>"; echo "aqui</a>.";
             <br>
             <div id='menuvert'>
             <br> 
-            <li><a href="cadusrcmp.php" title="Editar Informa��es">Editar Informa��es</a></li>   
+            <li><a href="cadusrcmp.php" title="Editar Informações">Editar Informações</a></li>   
             </div>  
             <br>
             <h4>Busca De Produtos</h4>
             <br>      
-        	<input name="login" type="text" id="login" placeholder="Nome ou Descri��o" size="20" maxlength="60"/>
+        	<input name="login" type="text" id="login" placeholder="Nome ou Descrição" size="20" maxlength="60"/>
         	<input name="btnsearchprod" class="button" type="submit" size="2" id="btnsearchprod" value="Buscar" />
         	<br>
         	<br>

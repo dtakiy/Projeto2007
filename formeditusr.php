@@ -104,13 +104,17 @@ require_once("conf.php");
   $celcripto = base64_encode($cel);
   $cepcripto = base64_encode($cep);
   
-   
+if($log==$usuario && $status==2) {
+echo "Voce Nao Pode Mudar Status de seu proprio usuario";
+}
+else{
 $result = mysql_query("UPDATE usuarios SET nome='$nomecripto', email='$emailcripto', cpf='$cpfcripto', cep='$cepcripto', tel='$telcripto' ,cel='$celcripto', endereco='$endcripto',
 numero='$numcripto', complemento='$compcripto', estado='$estdcripto',cidade='$cidadecripto', tipo=$tipo, status=$status
 WHERE idusuario=$cod");
 
 
 echo "Mudança Efetuada com Sucesso, clique <a href=admusr.php>"; echo "aqui Para Voltar</a>.";
+}
 ?>
 			
         </div>

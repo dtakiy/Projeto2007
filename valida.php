@@ -3,9 +3,9 @@
 $_SG['conectaServidor'] = true;    
 $_SG['abreSessao'] = true;         
 
-$_SG['servidor'] = 'localhost';   
-$_SG['usuario'] = 'root';         
-$_SG['senha'] = '';               
+$_SG['servidor'] = '192.168.56.101';   
+$_SG['usuario'] = 'adm';         
+$_SG['senha'] = '123';               
 $_SG['banco'] = 'mydb';            
 
 $_SG['paginaLogin'] = 'index.php'; 
@@ -14,8 +14,9 @@ $_SG['tabela'] = 'usuarios';       // Nome da tabela onde os usuários são salv
 
 
 if ($_SG['conectaServidor'] == true) {
-$_SG['link'] = mysql_connect($_SG['servidor'], $_SG['usuario'], $_SG['senha']) or die("MySQL: Não foi possível conectar-se ao servidor [".$_SG['servidor']."].");
-mysql_select_db($_SG['banco'], $_SG['link']) or die("MySQL: Não foi possível conectar-se ao banco de dados [".$_SG['banco']."].");
+
+require_once("conf.php");
+
 }
 
 // Verifica se precisa iniciar a sessão
@@ -45,6 +46,7 @@ $row = mysql_fetch_assoc($result);
 if ($row <= 0) {
 
 return false;
+
 
 } else {
 

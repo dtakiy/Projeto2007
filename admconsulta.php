@@ -3,14 +3,13 @@
     $usuario = $_SESSION['usrlogin'];
     $tipo=$_SESSION['usrtipo'];
     $nome = $_SESSION['usrnome'];
-    
-	$nomedecripto = base64_decode($nome);
+    $nomedecripto = base64_decode($nome);
 	
-	//if($tipo==2){
-	//echo "";
-	//}
-	//else 
-	//header("location:erro.php");
+	if($tipo==1){
+	echo "";
+	}
+	else 
+	header("location:erro.php");
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -40,14 +39,13 @@
 			  	<br>
 <div id='cssmenu'>
 <ul>
-  <li><a href='index.php'><span>Home</span></a></li>
-  <li><a href='#'><span>Produtos</span></a></li>
-  <li><a href='#'><span>Quem Somos</span></a></li>
-  <li><a href='#'><span>Contato</span></a></li>
-  <li><a href='#'><span>Carrinho</span></a></li>
+  <li><a href='adm.php'><span>Home Adm</span></a></li>
+  <li><a href='produtos.php'><span>Produtos</span></a></li>
+  <li><a href='admprod.php'><span>Administrar Produtos</span></a></li>
+  <li><a href='admusr.php'><span>Administrar Usuários</span></a></li>
   <?php
 echo "<form id=formlogout' name='formlogout' method='post'  action='logout.php'>";
-echo "<font size='2.5' color='white'>".$nomedecripto;
+echo "<font size='2.5' color='white'>"  .$nomedecripto;
 echo "</font>";
 echo "<input name='btn_logout' class='button' type='submit' id='btn_logout' value='Logout' size='40'  />";
 echo "</form>";
@@ -60,13 +58,24 @@ echo "</form>";
         <div class="esq-div">
 		      
         	<div class="destaques-div">
-            <h5>Produtos em Destaque</h5>
+            <h5>Consultar Pedidos</h5>
 			
-			Aqui Colocamos os Produtos em Destaque
-			
-          <h5>Produtos Recomendados</h5>
-          
-          Aqui Colocamos os Produtos Recomendados Para o Consumidor
+			<form id="formconsult" name="formconsult" method="post" action="consulta.php">
+      		<table border=0  width=auto height=150>   
+      		<td width="auto"> <h7>Código Compra: </h7> </td>
+      		<td width="auto"><input type="text" name="codcompra" id="codcompra" size="45" placeholder="Código da Compra" /> </td>
+      		<td><input name="btn_codcompra" class="button" type="submit" id="btn_codcompra" value="Pesquisar" size="40"  /></td>
+      		</table>
+      		</form>
+      		<h5>Últimos Pedidos</h5>
+      		<br>
+      		<br>
+      		<table border=1 font size=2>
+      		<th>Cod Compra</th><th>Data</th><th>Nome</th><th>End</th><th>Num</th><th>Cmp</th><th>CEP</th><th>Tel</th><th>Cel</th><th>Itens</th><th>Valor</th><th>Status</th>
+      		<?php
+      		
+      		?>
+      		</table>
           
         </div>
 <div class="rodape-div"><p>Loja Cusko</p></div>		
