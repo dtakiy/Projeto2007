@@ -70,7 +70,7 @@ echo "</form>";
 			<?php
 // Inserindo produtos na tabela
 require_once("conf.php");
-require_once("conf2.php");
+
 
 
 $result = mysql_query("SELECT * FROM produtos",$con);
@@ -104,8 +104,7 @@ $query4 = mysql_query("SELECT * from produtos",$con); // procura por todos os pr
 while ($row = mysql_fetch_assoc($query4)) {
 $nprod2 = $row['nome_produto'];
 	if($nomeprod != $nprod2){
-	$query3 = mysql_query("INSERT INTO recomendacao (prod1,prod2,peso) VALUES('$nomeprod','$nprod2',1)",$con2); //insere para comparação
-	//echo "INSERT INTO recomendacao (prod1,prod2,peso) VALUES('$nomeprod','$nprod2',1)";
+	// espaco reservado para colocar os produtos que serao usadados na entrada da IA
 	}
 
 
@@ -115,9 +114,7 @@ if($num<1){
 $result = mysql_query("INSERT INTO produtos (nome_produto,cat_produto,preco_produto,qtd_produto,imagem,destaque,status_prod,descricao,peso_prod) VALUES('$nomeprod'
 ,'$catprod',$precoprod,$qtdprod,'$fotoprod',1,1,'$descprod',$pesoprod)",$con);
 
-//echo  $result;
-//echo "INSERT INTO produtos (cod_produto,nome_produto,cat_produto,preco_produto,qtd_produto,imagem,destaque,status_prod,descricao) VALUES($cod,'$nomeprod';
-//,'$catprod',$precoprod,$qtdprod,'$fotoprod',1,1,'$descprod')";
+
 file_put_contents($nomeprod.".php","  ");
 file_put_contents($nomeprod.".php", "
 <html xmlns='http://www.w3.org/1999/xhtml'>
