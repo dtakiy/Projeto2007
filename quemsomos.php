@@ -72,39 +72,35 @@ echo "<font size='2.5' color='white'>" .$emailcripto;
 echo "</font>";
 echo "<input name='btn_logout' class='button' type='submit' id='btn_logout' value='Logout' size='40'  />";
 echo "</form>";
-echo "<a href='cadusrcmp.php' title='Editar Informações'><font color='white'>  Editar Usuário</font></a> ";
 }
 else{
 echo "";
-
 }
 ?>
-  </ul>
+  
+</ul>
 </div>				                          
             </ul>
-        </div>      
+        </div>
         
         <div class="esq-div">
-        <div class="destaques-div">
-	
-	 <h5>Obrigado Pela Preferência</h5>
-<?php
-echo "<BR>";
-echo "<BR>";
+		      
+        	<div class="destaques-div">
+            
+            <h5>Quem Somos</h5>
+			
+			<h6>Um conceito novo que chegou para quebrar os padrões. 
+			É desse modo que a Cusko veio trazer para você a sua primeira coleção “Break the edge”. 
+			Usando como inspiração a cultura peruana, a Cusko veio para dominar seu armário e sua mala de viagem, com muito estilo e bom humor. 
+			Liberdade, música, amigos, viagens e muita lhama é o que desejamos para todos vocês! Seja Cusko você também!
+			
+			<BR>
+			Use Cusko!</h6>
 
-$idpagamento= $_GET['idpagamento'];
-echo "<h1>";
-echo "<font color='black'>";
-echo "Obrigado por comprar conosco ";
-echo "seu id de pedido:";
-echo $idpagamento;
-echo "</font>";
-echo "</h1>";
-?>
-
+          
         </div>
-		<div class="rodape-div"></div>		<!-- <p>Loja Cusko</p> caso queira colocar frase dentro do rodape -->
-		</div>
+<div class="rodape-div"><p>Loja Cusko</p></div>		
+</div>
          <div class="dir-div">								
             <h4>Menu</h4>
             <br>

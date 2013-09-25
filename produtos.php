@@ -72,39 +72,66 @@ echo "<font size='2.5' color='white'>" .$emailcripto;
 echo "</font>";
 echo "<input name='btn_logout' class='button' type='submit' id='btn_logout' value='Logout' size='40'  />";
 echo "</form>";
-echo "<a href='cadusrcmp.php' title='Editar Informações'><font color='white'>  Editar Usuário</font></a> ";
 }
 else{
 echo "";
-
 }
 ?>
-  </ul>
+  
+</ul>
 </div>				                          
             </ul>
-        </div>      
+        </div>
         
         <div class="esq-div">
-        <div class="destaques-div">
-	
-	 <h5>Obrigado Pela Preferência</h5>
-<?php
-echo "<BR>";
-echo "<BR>";
-
-$idpagamento= $_GET['idpagamento'];
-echo "<h1>";
-echo "<font color='black'>";
-echo "Obrigado por comprar conosco ";
-echo "seu id de pedido:";
-echo $idpagamento;
-echo "</font>";
-echo "</h1>";
-?>
-
+		      
+        	<div class="destaques-div">
+            
+            <h5>Produtos</h5>
+			<BR>
+			<BR>
+			<BR>
+			<div align="center">
+			<table border=0>
+			<tr>
+			<td>Camisas Masculinas</td>
+			<td>Bermudas Masculinas</td>
+			<td>Calças Masculinas</td>
+			</tr>
+			<tr>
+			<td><a href='cammasc.php'><img src='camisa1.jpg'height='130' width='130' name='cammasc'></td>	
+			<td><a href='bermasc.php'><img src='bermasc1.png'height='130' width='130' name='bermasc'></td>
+			<td><a href='calcmas.php'><img src='calcmas1.png'height='130' width='130' name='calcmas'></td>
+			</tr>
+			</table>
+			<BR>
+			<BR>
+			<table border=0>
+			<tr>
+			<td>Camisas Femininos</td>
+			<td>Shorts Femininos</td>
+			<td>Calças Femininos</td>
+			</tr>
+			<tr>
+			<td><a href='camfem.php'><img src='fem2.jpg'height='130' width='130' name='camfem'></td>
+			<td><a href='shortfem.php'><img src='shortsfem1.png'height='130' width='130' name='shortfem'></td>
+			<td><a href='calcafem.php'><img src='calcafem1.png'height='130' width='130' name='calcafem1'></td>
+			</tr>
+			</table>
+			<BR>
+			<BR>
+			<table border=0>
+			<tr>
+			<td>Acessórios</td>
+			</tr>
+			<tr>
+			<td><a href='acessorios.php'><img src='acce1.png'height='130' width='130' name='acessorios'></td>
+			</tr>
+			</table>
+			</div>
         </div>
-		<div class="rodape-div"></div>		<!-- <p>Loja Cusko</p> caso queira colocar frase dentro do rodape -->
-		</div>
+<div class="rodape-div"><p>Loja Cusko</p></div>		
+</div>
          <div class="dir-div">								
             <h4>Menu</h4>
             <br>
