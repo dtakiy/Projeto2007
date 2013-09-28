@@ -3,6 +3,8 @@ session_start();
 echo "";
 //echo session_id();
 $usuario = $_SESSION['usrlogin']; 
+$email = $_SESSION['email'];
+$emailcripto = base64_decode($email);
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -11,33 +13,36 @@ $usuario = $_SESSION['usrlogin'];
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" type="text/css" href="estilo.css" />
 <link rel='icon' rel='icon' href='favicon.ico' type='image/ico' />
-<link rel='icon' rel='icon' href='favicon.ico' type='image/ico' />
 <title>Cusko</title>
 </head>
+
 <body>
     <div class="global-div">
     	<div class="topo-div"></div>
         <div class="menu-div">
         	<ul>
         	<ul>
-        	<?php
-        	if($usuario=='')
-        	{
-        	echo "
+<?php
+if ($usuario !='')
+{
+echo "";
+}
+else{
+echo "
         	    <table border=0>
         		<form name='input' action='auth.php'method='post'>  
         		<td><a  title='login'><h8>Login</h8> <input name='login' type='text' id='login' size='20' maxlength='40' /></td>
 				<td><a  title='senha'><h8>Senha</h8><input name='senha' type='password' id='senha' size='20' maxlength='40' /></td>
 				</a>
 			    <td><input name='btn_logar' class='button entrar' type='submit' id='btn_logar' value='Logar' /> </td>
-			    <td><a href='cadusr.php' class='button'>Cadastrar</a></td>
+			    <td><a href='cadusradm.php' class='button'>Cadastrar</a></td>
 			    <td><a href='recsenha.php' class='button'>Esqueceu Senha?</a></td>
 			    </td>
 			    </table>	
 			  	</form>        	
 			  	<table>";
-			  	}
-        	?>
+}
+?>
 			  	<td>&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
 			  	&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
 			  	&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
@@ -46,23 +51,24 @@ $usuario = $_SESSION['usrlogin'];
 			  	&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
 			  	&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
 			    <img src='cusko_branco.jpg' 'height='100' width='200'> </td>
+			  	
 			  	</table>
 			  	<br>
-			  	<br>		  	
+			  	<br>
+		  				  	
 <div id='cssmenu'>
 <ul>
   <li><a href='index.php'><span>Home</span></a></li>
-  <li><a href='#'><span>Produtos</span></a></li>
-  <li><a href='#'><span>Quem Somos</span></a></li>
-  <li><a href='#'><span>Contato</span></a></li>
-  <li><a href='#'><span>Carrinho</span></a></li>
+  <li><a href='produtos.php'><span>Produtos</span></a></li>
+  <li><a href='quemsomos.php'><span>Quem Somos</span></a></li>
+  <li><a href='contato.php'><span>Contato</span></a></li>
+  <li><a href='carr.php'><span>Carrinho</span></a></li>
   
-<?php
-
+  <?php
 if ($usuario !='')
 {
 echo "<form id=formlogout' name='formlogout' method='post'  action='logout.php'>";
-echo "<font size='2.5' color='white'>" .$nome;
+echo "<font size='2.5' color='white'>" .$emailcripto;
 echo "</font>";
 echo "<input name='btn_logout' class='button' type='submit' id='btn_logout' value='Logout' size='40'  />";
 echo "</form>";
@@ -70,9 +76,8 @@ echo "</form>";
 else{
 echo "";
 }
-
-
 ?>
+  
 </ul>
 </div>				                          
             </ul>
@@ -90,10 +95,14 @@ $acao   = $_GET['acao'];
 $cod    = $_GET['cod'];
 $cod2   = $_GET['cod2'];
 $cepv   = $_GET['cepv'];
+$reset  = $_GET['reset'];
 $qtdpr = $_GET['carqtdprod'];
 $preco  = 0;
 $dataexp = time();
 $dataexp = $dataexp + 1800;
+
+$_SESSION['cepv2'] = $cepv; // colocado para atualizar a SESSION
+
 
 if (isset($_SESSION['last_activity'],$_SESSION['expire_time'])){
 
@@ -356,23 +365,40 @@ echo "</table>";
 		  		
 	//	  echo "<input name='btn_chekout' class='button' type='submit' id='btn_chekout' value='Fechar Conta' size='9'/>";
 	//	  echo "</form>";
-		  
+		   
 		  echo"
 		  <BR>
 		 <H7>Endereço De Entrega:</H7>
 		  <BR>
+		  ";
+		  if($reset !=1){
+		  echo"
 		  <table border=0>
 		  <BR>
 		  <td>Nome:</td>
 		  <td><input name='nomeckt' type='text' id='nomeckt' value='".$nomedecripto."'   size='15' maxlength='9' min='0' ' /></td>
 		  <td>Email:</td>
 		  <td><input name='emailckt' type='text' id='emailckt' value='".$emaildecripto."'   size='15'  ' /></td>
-		  <tr></tr>
+		  <tr></tr>  
 		  ";
+		
+		  }
+		  	else{
+		  echo"
+		  <table border=0>
+		  <BR>
+		  <td>Nome:</td>
+		  <td><input name='nomeckt' type='text' id='nomeckt' value=''   size='15' maxlength='9' min='0' ' /></td>
+		  <td>Email:</td>
+		  <td><input name='emailckt' type='text' id='emailckt' value=''   size='15'  ' /></td>
+		  <tr></tr>
+		  
+		  ";
+		  	}
 		  
 		  //session usada para armazenar um novo cep caso ele seja usado
 		  
-		  if($_SESSION['cepv2'] ==''){
+		  if($_SESSION['cepv2'] =='' && $reset !=1){
 		  echo"
 		  <td>CEP:</td>
 		  <td><input name='cepckt' type='text' id='cepckt' value='".$cepdecripto."' onkeypress='mascara(this,cep)' onBlur='vcep(carfor.cepckt);' size='15' maxlength='9' min='0' ' /></td>
@@ -389,9 +415,30 @@ echo "</table>";
 		  <td><input name='cidadeckt' type='text' id='estadockt' value='".$estadodecripto."'   size='15' maxlength='9' min='0' ' /></td>
 		  ";
 		  }
+		  else if ($_SESSION['cepv2'] =='' && $reset=1){
+		  
+		   echo"
+		  <td>CEP:</td>
+		  <td><input name='cepckt' type='text' id='cepckt' value='' onkeypress='mascara(this,cep)' onBlur='vcep(carfor.cepckt);' size='15' maxlength='9' min='0' ' /></td>
+		  <td>Endereço:</td>
+		  <td><input name='endckt' type='text' id='endckt' value=''   size='15'  ' /></td>
+		  <td>Numero:</td>
+		  <td><input name='numckt' type='text' id='numckt' value='' ' /></td>
+		  <td>Complemento:</td>
+		  <td><input name='cmpckt' type='text' id='cmpckt' value='' ' /></td>
+		  <tr></tr>
+		  <td>Cidade:</td>
+		  <td><input name='cidadeckt' type='text' id='cidadeckt' value=''   size='15' maxlength='9' min='0' ' /></td>
+		  <td>Estado:</td>
+		  <td><input name='cidadeckt' type='text' id='estadockt' value=''   size='15' maxlength='9' min='0' ' /></td>
+		  ";
+		  
+		  }
+		  
+		  
 		  else
 		  {
-		  $cepv = $_SESSION['cepv2'];
+	//	  $cepv = $_SESSION['cepv2'];
 		  echo "
 		  <td>CEP:</td>
 		  <td><input name='cepckt' type='text' id='cepckt' value='".$cepv."' onkeypress='mascara(this,cep)' onBlur='vcep(carfor.cepckt);' size='15' maxlength='9' min='0' ' /></td>  
@@ -409,12 +456,12 @@ echo "</table>";
 		  }
 		  echo"
 		  </table>";
-		  echo "<input name='btn_chekout' class='button' type='submit' id='btn_chekout' value='Fechar Conta' size='9'/>";
-		  echo "</form>";	
-		  		    
+		  echo "<input name='btn_chekout' class='button' type='submit' id='btn_chekout' value='Fechar Compra' size='9'/>";
+		  echo "</form>";		  		    
 		  echo "<BR>";
-		  
-		  
+		  ?>
+		<form><input type="button" value="Clean" onClick="window.location.href='http://localhost/cusko/carr.php?reset=1'"></form>
+<?php
 		 // usado para caso o CEP esteja cadastrado
 		  if($cepv ==''){
 		 // tirando o - do cep
@@ -493,13 +540,13 @@ echo "</table>";
             <div id='menuvert'>
 			<ul>
             <ul class="maisartigos escuro top8"> 
-            <li><a href="#" title="Camisas Masculinas">Camisas Masculinas</a></li>
-            <li><a href="#" title="Camisas Femininas">Camisas Femininas</a></li>
-            <li><a href="#" title="Calcas Masculinas">Calcas Masculinas</a></li>
-            <li><a href="#" title="Calcas Femininas">Calcas Femininas</a></li>
-            <li><a href="#" title="Bermudas Masculinas">Bermudas Masculinas</a></li>
-            <li><a href="#" title="Shorts Femininos">Shorts Femininos</a></li>
-			<li><a href="#" title="Acessorios">Acessorios</a></li>
+            <li><a href="cammasc.php" title="Camisas Masculinas">Camisas Masculinas</a></li>
+            <li><a href="camfem.php" title="Camisas Femininas">Camisas Femininas</a></li>
+            <li><a href="calcmas.php" title="Calcas Masculinas">Calças Masculinas</a></li>
+            <li><a href="calcafem.php" title="Calcas Femininas">Calças Femininas</a></li>
+            <li><a href="bermasc.php" title="Bermudas Masculinas">Bermudas Masculinas</a></li>
+            <li><a href="shortfem.php" title="Shorts Femininos">Shorts Femininos</a></li>
+			<li><a href="acessorios.php" title="Acessorios">Acessórios</a></li>
 			<br>   
             </ul>
             </div>
