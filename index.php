@@ -3,6 +3,8 @@ session_start();
 echo "";
 //echo session_id();
 $usuario = $_SESSION['usrlogin']; 
+$email = $_SESSION['email'];
+$emailcripto = base64_decode($email);
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -33,7 +35,7 @@ echo "
 				<td><a  title='senha'><h8>Senha</h8><input name='senha' type='password' id='senha' size='20' maxlength='40' /></td>
 				</a>
 			    <td><input name='btn_logar' class='button entrar' type='submit' id='btn_logar' value='Logar' /> </td>
-			    <td><a href='cadusr.php' class='button'>Cadastrar</a></td>
+			    <td><a href='cadusradm.php' class='button'>Cadastrar</a></td>
 			    <td><a href='recsenha.php' class='button'>Esqueceu Senha?</a></td>
 			    </td>
 			    </table>	
@@ -66,25 +68,25 @@ echo "
 if ($usuario !='')
 {
 echo "<form id=formlogout' name='formlogout' method='post'  action='logout.php'>";
-echo "<font size='2.5' color='white'>" .$nome;
+echo "<font size='2.5' color='white'>" .$emailcripto;
 echo "</font>";
 echo "<input name='btn_logout' class='button' type='submit' id='btn_logout' value='Logout' size='40'  />";
 echo "</form>";
+echo "<a href='cadusrcmp.php' title='Editar Informações'><font color='white'>  Editar Usuário</font></a> ";
 }
 else{
 echo "";
+
 }
 ?>
-  
-</ul>
+  </ul>
 </div>				                          
             </ul>
-        </div>
+        </div>      
         
         <div class="esq-div">
-		      
-        	<div class="destaques-div">
-            <h5>Produtos em Destaque</h5>
+        <div class="destaques-div">
+        <h5>Produtos em Destaque</h5>
 			
 		<?php
 require_once("conf.php");
@@ -99,7 +101,7 @@ $inicio = $pagina - 1;
 $inicio = $max * $inicio;
  
   
-$sql="SELECT * FROM produtos";
+$sql="SELECT * FROM produtos where destaque=1 and status_prod=1 and qtd_produto >0";
 $res=mysql_query($sql);
 $total=mysql_num_rows($res);
  
@@ -109,7 +111,7 @@ else
 {
 echo "<BR>";
 
-$sql="SELECT * FROM produtos where destaque =1 LIMIT $inicio,$max";
+$sql="SELECT * FROM produtos where destaque=1 and status_prod=1 and qtd_produto >0 LIMIT $inicio,$max";
 $res=mysql_query($sql);
 while ($row = mysql_fetch_assoc($res)) {
 echo "<table border=0>";
@@ -117,7 +119,6 @@ echo "<tr>";
 echo "<td>";
 
 			echo "
-			<br/><br/>
 			<table border=0>
 			<tr>
 			<form action='buscar.php' method='get'> <div align='center'><br>";
@@ -183,6 +184,63 @@ if($mais <= $pgs)
 echo " <a href=\"?pagina=$mais\" class='texto_paginacao'>Proxima</a>";
 }
 	?>	
+	
+	 <h5>Produtos Recomendados</h5>
+
+<?php
+require_once "nusoap.php";
+$client = new nusoap_client("http://www.francojet.net/productlistia.php?wsdl", true);
+// Aqui colocar a pesquisa do carrinho e produtos
+
+
+
+$query = mysql_query("SELECT * FROM carrinho WHERE carrinho.sessao = '".session_id()."'",$con); 
+$nr = mysql_num_rows($query);
+
+echo "=====";
+echo "$nr"; 
+
+while ($row = mysql_fetch_assoc($query)) {
+$codp = $row['nome'];
+}
+
+
+$error = $client->getError();
+if ($error) {
+    echo "<h2>Constructor error</h2><pre>" . $error . "</pre>";
+}
+
+$n=0;
+$result = $client->call("getProd", array("category" => "".$codp."","n" => "".$n.""));
+$n=1;
+$result2 = $client->call("getProd", array("category" => "".$codp."","n" => "".$n.""));
+$n=2;
+//$result3 = $client->call("getProd", array("category" => "".$codp."","n" => "".$n.""));
+
+
+if ($client->fault) {
+    echo "<h2>Fault</h2><pre>";
+    print_r($result);
+    echo "</pre>";
+}
+else {
+    $error = $client->getError();
+    if ($error) {
+        echo "<h2>Error</h2><pre>" . $error . "</pre>";
+    }
+    else {
+    	
+  //  	  echo "Produtos Retornados Aqui";
+        echo $result;
+        echo $result2;
+        echo $result3;
+        echo "</pre>";
+    }
+}
+
+?>
+	
+	
         </div>
 		<div class="rodape-div"></div>		<!-- <p>Loja Cusko</p> caso queira colocar frase dentro do rodape -->
 		</div>
@@ -192,13 +250,13 @@ echo " <a href=\"?pagina=$mais\" class='texto_paginacao'>Proxima</a>";
             <div id='menuvert'>
 			<ul>
             <ul class="maisartigos escuro top8">
-            <li><a href="#" title="Camisas Masculinas">Camisas Masculinas</a></li>
-            <li><a href="#" title="Camisas Femininas">Camisas Femininas</a></li>
-            <li><a href="#" title="Calcas Masculinas">Calças Masculinas</a></li>
-            <li><a href="#" title="Calcas Femininas">Calças Femininas</a></li>
-            <li><a href="#" title="Bermudas Masculinas">Bermudas Masculinas</a></li>
-            <li><a href="#" title="Shorts Femininos">Shorts Femininos</a></li>
-			<li><a href="#" title="Acessorios">Acessórios</a></li>
+            <li><a href="cammasc.php" title="Camisas Masculinas">Camisas Masculinas</a></li>
+            <li><a href="camfem.php" title="Camisas Femininas">Camisas Femininas</a></li>
+            <li><a href="calcmas.php" title="Calcas Masculinas">Calças Masculinas</a></li>
+            <li><a href="calcafem.php" title="Calcas Femininas">Calças Femininas</a></li>
+            <li><a href="bermasc.php" title="Bermudas Masculinas">Bermudas Masculinas</a></li>
+            <li><a href="shortfem.php" title="Shorts Femininos">Shorts Femininos</a></li>
+			<li><a href="acessorios.php" title="Acessorios">Acessórios</a></li>
 			<br>     
             </ul>
             </div>
