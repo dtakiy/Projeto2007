@@ -195,15 +195,21 @@ $client = new nusoap_client("http://www.francojet.net/productlistia.php?wsdl", t
 
 
 $query = mysql_query("SELECT * FROM carrinho WHERE carrinho.sessao = '".session_id()."'",$con); 
-$nr = mysql_num_rows($query);
+$numr = mysql_num_rows($query);
+$listadeprodutos = array(); // vetor para guardar a lista de produtos
+$contador =0;
 
-echo "=====";
-echo "$nr"; 
+//echo "=====";
+//echo "$nr"; 
 
 while ($row = mysql_fetch_assoc($query)) {
-$codp = $row['nome'];
+$produtocar = $row['nome'];
+$listadeprodutos[] = $produtocar;
 }
 
+while($contador <= $numr){
+
+$codp = $listadeprodutos[$contador];
 
 $error = $client->getError();
 if ($error) {
@@ -230,13 +236,19 @@ else {
     }
     else {
     	
-  //  	  echo "Produtos Retornados Aqui";
         echo $result;
         echo $result2;
-        echo $result3;
+
         echo "</pre>";
     }
 }
+
+$contador = $contador + 1;
+
+}
+
+
+
 
 ?>
 	
