@@ -197,17 +197,15 @@ $client = new nusoap_client("http://www.francojet.net/productlistia.php?wsdl", t
 $query = mysql_query("SELECT * FROM carrinho WHERE carrinho.sessao = '".session_id()."'",$con); 
 $numr = mysql_num_rows($query);
 $listadeprodutos = array(); // vetor para guardar a lista de produtos
-$contador =0;
+$contador = 0 ;
 
-//echo "=====";
-//echo "$nr"; 
 
 while ($row = mysql_fetch_assoc($query)) {
 $produtocar = $row['nome'];
 $listadeprodutos[] = $produtocar;
 }
 
-while($contador <= $numr){
+while($contador < $numr){
 
 $codp = $listadeprodutos[$contador];
 
@@ -235,9 +233,51 @@ else {
         echo "<h2>Error</h2><pre>" . $error . "</pre>";
     }
     else {
-    	
-        echo $result;
-        echo $result2;
+
+if($contador == 0 ){
+$sql="SELECT * FROM produtos where nome_produto ='$result'";
+}
+else if($contador == 1 ){
+$sql="SELECT * FROM produtos where nome_produto ='$result'";
+}
+
+
+$res=mysql_query($sql);
+while ($row = mysql_fetch_assoc($res)) {
+echo "<table border=0>";
+echo "<tr>";
+echo "<td>";
+
+			echo "
+			<table border=0>
+			<tr>
+			<form action='buscar.php' method='get'> <div align='center'><br>";
+	$preco=$row['preco_produto'];
+	// trocando . por ,
+	$precoprod = str_replace(".",",",$preco);
+
+	echo "<center>";
+	echo "<tr>";
+	echo "<td> <font size='2.5' color='black'>".$row['nome_produto'];
+	echo "</td>";
+	echo "</tr>";
+	echo "<br>";
+	echo "<tr><td><a href='".$row['nome_produto'].".php'><img src='".$row['imagem']."'height='130' width='130' name='eimg'></tr></td>";
+	echo "<td> <font size='2.5' color='black'>Preço R$ ".$precoprod;
+	echo "</tr>";
+
+	echo "</td>";
+	echo "</tr></td>";
+	echo "<tr>";
+	echo "<td><div align='center' style='font-size:10px;font-family:Verdana'><a href='carr.php?cod=".$row['idprodutos']."&acao=incluir' class='button'>Comprar</a></div><br></td>";
+	echo "</tr>";
+	echo "</center>";
+	echo "</table>";
+    echo "</form>"; 
+    echo "<td>";
+}
+
+
 
         echo "</pre>";
     }
@@ -251,12 +291,17 @@ $contador = $contador + 1;
 
 
 ?>
-	
+	     </table>
+         </table>
+     	</table>
 	
         </div>
 		<div class="rodape-div"></div>		<!-- <p>Loja Cusko</p> caso queira colocar frase dentro do rodape -->
 		</div>
-         <div class="dir-div">								
+         <div class="dir-div">		
+         
+
+         						
             <h4>Menu</h4>
             <br>
             <div id='menuvert'>
