@@ -294,6 +294,115 @@ $contador = $contador + 1;
 	     </table>
          </table>
      	</table>
+     	
+     	
+     	<?php
+     	if($numr==0){
+     	
+     	require_once("conf2.php");
+     	
+     	$query = mysql_query("SELECT * FROM recomendacao",$con2); 
+		$numr = mysql_num_rows($query);
+		$listadeprodutos = array(); // vetor para guardar a lista de produtos
+		$contador = 0 ;
+
+
+while ($row = mysql_fetch_assoc($query)) {
+$produtocar = $row['prod1'];
+$listadeprodutos[] = $produtocar;
+}
+
+while($contador < $numr){
+
+$codp = $listadeprodutos[$contador];
+
+$error = $client->getError();
+if ($error) {
+    echo "<h2>Constructor error</h2><pre>" . $error . "</pre>";
+}
+
+$n=0;
+$result = $client->call("getProd", array("category" => "".$codp."","n" => "".$n.""));
+$n=1;
+$result2 = $client->call("getProd", array("category" => "".$codp."","n" => "".$n.""));
+$n=2;
+//$result3 = $client->call("getProd", array("category" => "".$codp."","n" => "".$n.""));
+
+
+if ($client->fault) {
+    echo "<h2>Fault</h2><pre>";
+    print_r($result);
+    echo "</pre>";
+}
+else {
+    $error = $client->getError();
+    if ($error) {
+        echo "<h2>Error</h2><pre>" . $error . "</pre>";
+    }
+    else {
+
+if($contador == 0 ){
+$sql="SELECT * FROM produtos where nome_produto ='$result'";
+}
+else if($contador == 1 ){
+$sql="SELECT * FROM produtos where nome_produto ='$result'";
+}
+
+
+$res=mysql_query($sql,$con);
+while ($row = mysql_fetch_assoc($res)) {
+echo "<table border=0>";
+echo "<tr>";
+echo "<td>";
+
+			echo "
+			<table border=0>
+			<tr>
+			<form action='buscar.php' method='get'> <div align='center'><br>";
+	$preco=$row['preco_produto'];
+	// trocando . por ,
+	$precoprod = str_replace(".",",",$preco);
+
+	echo "<center>";
+	echo "<tr>";
+	echo "<td> <font size='2.5' color='black'>".$row['nome_produto'];
+	echo "</td>";
+	echo "</tr>";
+	echo "<br>";
+	echo "<tr><td><a href='".$row['nome_produto'].".php'><img src='".$row['imagem']."'height='130' width='130' name='eimg'></tr></td>";
+	echo "<td> <font size='2.5' color='black'>Preço R$ ".$precoprod;
+	echo "</tr>";
+
+	echo "</td>";
+	echo "</tr></td>";
+	echo "<tr>";
+	echo "<td><div align='center' style='font-size:10px;font-family:Verdana'><a href='carr.php?cod=".$row['idprodutos']."&acao=incluir' class='button'>Comprar</a></div><br></td>";
+	echo "</tr>";
+	echo "</center>";
+	echo "</table>";
+    echo "</form>"; 
+    echo "<td>";
+}
+
+
+
+        echo "</pre>";
+    }
+}
+
+$contador = $contador + 1;
+
+}
+     	
+     	
+     	}
+     	
+     	
+     	?>
+     	
+     	</table>
+         </table>
+     	</table>
 	
         </div>
 		<div class="rodape-div"></div>		<!-- <p>Loja Cusko</p> caso queira colocar frase dentro do rodape -->
