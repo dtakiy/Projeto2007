@@ -216,9 +216,9 @@ if ($error) {
 
 $n=0;
 $result = $client->call("getProd", array("category" => "".$codp."","n" => "".$n.""));
-$n=1;
-$result2 = $client->call("getProd", array("category" => "".$codp."","n" => "".$n.""));
-$n=2;
+//$n=1;
+//$result2 = $client->call("getProd", array("category" => "".$codp."","n" => "".$n.""));
+//$n=2;
 //$result3 = $client->call("getProd", array("category" => "".$codp."","n" => "".$n.""));
 
 
@@ -240,7 +240,9 @@ $sql="SELECT * FROM produtos where nome_produto ='$result'";
 else if($contador == 1 ){
 $sql="SELECT * FROM produtos where nome_produto ='$result'";
 }
-
+else if($contador == 2 ){
+$sql="SELECT * FROM produtos where nome_produto ='$result'";
+}
 
 $res=mysql_query($sql);
 while ($row = mysql_fetch_assoc($res)) {
@@ -302,17 +304,18 @@ $contador = $contador + 1;
      	require_once("conf2.php");
      	
      	$query = mysql_query("SELECT * FROM recomendacao",$con2); 
-		$numr = mysql_num_rows($query);
+		$numr2 = mysql_num_rows($query);
 		$listadeprodutos = array(); // vetor para guardar a lista de produtos
 		$contador = 0 ;
-
+		
 
 while ($row = mysql_fetch_assoc($query)) {
 $produtocar = $row['prod1'];
 $listadeprodutos[] = $produtocar;
 }
 
-while($contador < $numr){
+
+while($contador < $numr2 || $numr2 ==1){
 
 $codp = $listadeprodutos[$contador];
 
@@ -322,11 +325,12 @@ if ($error) {
 }
 
 $n=0;
-$result = $client->call("getProd", array("category" => "".$codp."","n" => "".$n.""));
+$result = $client->call("getProd2", array("category" => "Polo","n" => "".$n.""));
 $n=1;
-$result2 = $client->call("getProd", array("category" => "".$codp."","n" => "".$n.""));
+$result2 = $client->call("getProd2", array("category" => "Polo","n" => "".$n.""));
 $n=2;
-//$result3 = $client->call("getProd", array("category" => "".$codp."","n" => "".$n.""));
+$result3 = $client->call("getProd2", array("category" => "".$codp."","n" => "".$n.""));
+
 
 
 if ($client->fault) {
@@ -340,14 +344,15 @@ else {
         echo "<h2>Error</h2><pre>" . $error . "</pre>";
     }
     else {
-
-if($contador == 0 ){
+if($contador == 0){
 $sql="SELECT * FROM produtos where nome_produto ='$result'";
 }
-else if($contador == 1 ){
-$sql="SELECT * FROM produtos where nome_produto ='$result'";
+if($contador == 1){
+$sql="SELECT * FROM produtos where nome_produto ='$result2'";
 }
-
+if($contador == 2){
+$sql="SELECT * FROM produtos where nome_produto ='$result3'";
+}
 
 $res=mysql_query($sql,$con);
 while ($row = mysql_fetch_assoc($res)) {
@@ -402,6 +407,7 @@ $contador = $contador + 1;
      	
      	</table>
          </table>
+     	</table>
      	</table>
 	
         </div>
