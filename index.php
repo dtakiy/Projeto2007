@@ -216,10 +216,10 @@ if ($error) {
 
 $n=0;
 $result = $client->call("getProd", array("category" => "".$codp."","n" => "".$n.""));
-//$n=1;
-//$result2 = $client->call("getProd", array("category" => "".$codp."","n" => "".$n.""));
-//$n=2;
-//$result3 = $client->call("getProd", array("category" => "".$codp."","n" => "".$n.""));
+$n=1;
+$result2 = $client->call("getProd", array("category" => "".$codp."","n" => "".$n.""));
+$n=2;
+$result3 = $client->call("getProd", array("category" => "".$codp."","n" => "".$n.""));
 
 
 if ($client->fault) {
@@ -332,7 +332,6 @@ $n=2;
 $result3 = $client->call("getProd2", array("category" => "".$codp."","n" => "".$n.""));
 
 
-
 if ($client->fault) {
     echo "<h2>Fault</h2><pre>";
     print_r($result);
@@ -367,7 +366,6 @@ echo "<td>";
 	$preco=$row['preco_produto'];
 	// trocando . por ,
 	$precoprod = str_replace(".",",",$preco);
-
 	echo "<center>";
 	echo "<tr>";
 	echo "<td> <font size='2.5' color='black'>".$row['nome_produto'];
@@ -377,7 +375,6 @@ echo "<td>";
 	echo "<tr><td><a href='".$row['nome_produto'].".php'><img src='".$row['imagem']."'height='130' width='130' name='eimg'></tr></td>";
 	echo "<td> <font size='2.5' color='black'>Preço R$ ".$precoprod;
 	echo "</tr>";
-
 	echo "</td>";
 	echo "</tr></td>";
 	echo "<tr>";
@@ -389,22 +386,16 @@ echo "<td>";
     echo "<td>";
 }
 
-
-
         echo "</pre>";
     }
 }
 
 $contador = $contador + 1;
 
-}
-     	
-     	
+}  	
      	}
      	
-     	
      	?>
-     	
      	</table>
          </table>
      	</table>
@@ -414,9 +405,7 @@ $contador = $contador + 1;
 		<div class="rodape-div"></div>		<!-- <p>Loja Cusko</p> caso queira colocar frase dentro do rodape -->
 		</div>
          <div class="dir-div">		
-         
-
-         						
+                  						
             <h4>Menu</h4>
             <br>
             <div id='menuvert'>
@@ -458,8 +447,7 @@ $contador = $contador + 1;
 			data-width="450" data-show-faces="true" data-font="arial"></div>
 			<!-- Fallow Button Facebook -->
 			<div class="fb-follow" data-href="https://www.facebook.com/usecusko" data-width="450" data-layout="button_count" data-show-faces="true"></div>
-
-		
+	
 		</div>
 
 </div>
