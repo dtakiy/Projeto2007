@@ -90,6 +90,7 @@ echo "";
 			
 		<?php
 require_once("conf.php");
+require_once("conf2.php");
 
 $max=5; // numero maximo de produtos por pagina
 
@@ -101,9 +102,8 @@ $inicio = $pagina - 1;
 $inicio = $max * $inicio;
  
   
-$sql="SELECT * FROM produtos where destaque=1 and status_prod=1 and qtd_produto >0";
-$res=mysql_query($sql);
-$total=mysql_num_rows($res);
+$sql = mysql_query("SELECT * FROM produtos where destaque=1 and status_prod=1 and qtd_produto >0",$con); 
+$total=mysql_num_rows($sql);
  
 if ($total == 0)
 echo "Nenhum registro encontrado!";
@@ -111,9 +111,8 @@ else
 {
 echo "<BR>";
 
-$sql="SELECT * FROM produtos where destaque=1 and status_prod=1 and qtd_produto >0 LIMIT $inicio,$max";
-$res=mysql_query($sql);
-while ($row = mysql_fetch_assoc($res)) {
+$sql = mysql_query("SELECT * FROM produtos where destaque=1 and status_prod=1 and qtd_produto >0 LIMIT $inicio,$max",$con); 
+while ($row = mysql_fetch_assoc($sql)) {
 echo "<table border=0>";
 echo "<tr>";
 echo "<td>";
@@ -188,106 +187,14 @@ echo " <a href=\"?pagina=$mais\" class='texto_paginacao'>Proxima</a>";
 	 <h5>Produtos Recomendados</h5>
 
 <?php
-require_once "nusoap.php";
-$client = new nusoap_client("http://www.francojet.net/productlistia.php?wsdl", true);
-// Aqui colocar a pesquisa do carrinho e produtos
 
 
 
-$query = mysql_query("SELECT * FROM carrinho WHERE carrinho.sessao = '".session_id()."'",$con); 
-$numr = mysql_num_rows($query);
-$listadeprodutos = array(); // vetor para guardar a lista de produtos
-$contador = 0 ;
-
-
-while ($row = mysql_fetch_assoc($query)) {
-$produtocar = $row['nome'];
-$listadeprodutos[] = $produtocar;
-}
-
-while($contador < $numr){
-
-$codp = $listadeprodutos[$contador];
-
-$error = $client->getError();
-if ($error) {
-    echo "<h2>Constructor error</h2><pre>" . $error . "</pre>";
-}
-
-$n=0;
-$result = $client->call("getProd", array("category" => "".$codp."","n" => "".$n.""));
-$n=1;
-$result2 = $client->call("getProd", array("category" => "".$codp."","n" => "".$n.""));
-$n=2;
-$result3 = $client->call("getProd", array("category" => "".$codp."","n" => "".$n.""));
-
-
-if ($client->fault) {
-    echo "<h2>Fault</h2><pre>";
-    print_r($result);
-    echo "</pre>";
-}
-else {
-    $error = $client->getError();
-    if ($error) {
-        echo "<h2>Error</h2><pre>" . $error . "</pre>";
-    }
-    else {
-
-if($contador == 0 ){
-$sql="SELECT * FROM produtos where nome_produto ='$result'";
-}
-else if($contador == 1 ){
-$sql="SELECT * FROM produtos where nome_produto ='$result'";
-}
-else if($contador == 2 ){
-$sql="SELECT * FROM produtos where nome_produto ='$result'";
-}
-
-$res=mysql_query($sql);
-while ($row = mysql_fetch_assoc($res)) {
-echo "<table border=0>";
-echo "<tr>";
-echo "<td>";
-
-			echo "
-			<table border=0>
-			<tr>
-			<form action='buscar.php' method='get'> <div align='center'><br>";
-	$preco=$row['preco_produto'];
-	// trocando . por ,
-	$precoprod = str_replace(".",",",$preco);
-
-	echo "<center>";
-	echo "<tr>";
-	echo "<td> <font size='2.5' color='black'>".$row['nome_produto'];
-	echo "</td>";
-	echo "</tr>";
-	echo "<br>";
-	echo "<tr><td><a href='".$row['nome_produto'].".php'><img src='".$row['imagem']."'height='130' width='130' name='eimg'></tr></td>";
-	echo "<td> <font size='2.5' color='black'>Preço R$ ".$precoprod;
-	echo "</tr>";
-
-	echo "</td>";
-	echo "</tr></td>";
-	echo "<tr>";
-	echo "<td><div align='center' style='font-size:10px;font-family:Verdana'><a href='carr.php?cod=".$row['idprodutos']."&acao=incluir' class='button'>Comprar</a></div><br></td>";
-	echo "</tr>";
-	echo "</center>";
-	echo "</table>";
-    echo "</form>"; 
-    echo "<td>";
-}
+echo "aaa";
 
 
 
-        echo "</pre>";
-    }
-}
 
-$contador = $contador + 1;
-
-}
 
 
 
@@ -297,110 +204,6 @@ $contador = $contador + 1;
          </table>
      	</table>
      	
-     	
-     	<?php
-     	if($numr==0){
-     	
-     	require_once("conf2.php");
-     	
-     	$query = mysql_query("SELECT * FROM recomendacao",$con2); 
-		$numr2 = mysql_num_rows($query);
-		$listadeprodutos = array(); // vetor para guardar a lista de produtos
-		$contador = 0 ;
-		
-
-while ($row = mysql_fetch_assoc($query)) {
-$produtocar = $row['prod1'];
-$listadeprodutos[] = $produtocar;
-}
-
-
-while($contador < $numr2 || $numr2 ==1){
-
-$codp = $listadeprodutos[$contador];
-
-$error = $client->getError();
-if ($error) {
-    echo "<h2>Constructor error</h2><pre>" . $error . "</pre>";
-}
-
-$n=0;
-$result = $client->call("getProd2", array("category" => "Polo","n" => "".$n.""));
-$n=1;
-$result2 = $client->call("getProd2", array("category" => "Polo","n" => "".$n.""));
-$n=2;
-$result3 = $client->call("getProd2", array("category" => "".$codp."","n" => "".$n.""));
-
-
-if ($client->fault) {
-    echo "<h2>Fault</h2><pre>";
-    print_r($result);
-    echo "</pre>";
-}
-else {
-    $error = $client->getError();
-    if ($error) {
-        echo "<h2>Error</h2><pre>" . $error . "</pre>";
-    }
-    else {
-if($contador == 0){
-$sql="SELECT * FROM produtos where nome_produto ='$result'";
-}
-if($contador == 1){
-$sql="SELECT * FROM produtos where nome_produto ='$result2'";
-}
-if($contador == 2){
-$sql="SELECT * FROM produtos where nome_produto ='$result3'";
-}
-
-$res=mysql_query($sql,$con);
-while ($row = mysql_fetch_assoc($res)) {
-echo "<table border=0>";
-echo "<tr>";
-echo "<td>";
-
-			echo "
-			<table border=0>
-			<tr>
-			<form action='buscar.php' method='get'> <div align='center'><br>";
-	$preco=$row['preco_produto'];
-	// trocando . por ,
-	$precoprod = str_replace(".",",",$preco);
-	echo "<center>";
-	echo "<tr>";
-	echo "<td> <font size='2.5' color='black'>".$row['nome_produto'];
-	echo "</td>";
-	echo "</tr>";
-	echo "<br>";
-	echo "<tr><td><a href='".$row['nome_produto'].".php'><img src='".$row['imagem']."'height='130' width='130' name='eimg'></tr></td>";
-	echo "<td> <font size='2.5' color='black'>Preço R$ ".$precoprod;
-	echo "</tr>";
-	echo "</td>";
-	echo "</tr></td>";
-	echo "<tr>";
-	echo "<td><div align='center' style='font-size:10px;font-family:Verdana'><a href='carr.php?cod=".$row['idprodutos']."&acao=incluir' class='button'>Comprar</a></div><br></td>";
-	echo "</tr>";
-	echo "</center>";
-	echo "</table>";
-    echo "</form>"; 
-    echo "<td>";
-}
-
-        echo "</pre>";
-    }
-}
-
-$contador = $contador + 1;
-
-}  	
-     	}
-     	
-     	?>
-     	</table>
-         </table>
-     	</table>
-     	</table>
-	
         </div>
 		<div class="rodape-div"></div>		<!-- <p>Loja Cusko</p> caso queira colocar frase dentro do rodape -->
 		</div>
