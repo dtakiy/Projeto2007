@@ -13,7 +13,7 @@ $list5 = array();
 $list7 = array();
 $j=0;
 
-$result2 = mysql_query("SELECT * FROM recomendacao ORDER BY peso DESC");
+$result2 = mysql_query("SELECT * FROM recomendacao ORDER BY peso ASC");
 
 
 while ($row = mysql_fetch_assoc($result2)) {

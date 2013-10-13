@@ -70,6 +70,7 @@ require_once("conf.php");
 
   $cod ="$_POST[ecod2]";
   $nome ="$_POST[enome2]";
+  $tam ="$_POST[tamprod2]";
   $cat ="$_POST[catprod2]";
   $qtd ="$_POST[qtd2]";
   $prc ="$_POST[prc2]";
@@ -82,12 +83,12 @@ require_once("conf.php");
 $precoprod = str_replace(",",".",$prc);
 
 if($img!=""){
-$result = mysql_query("UPDATE produtos SET imagem='$img' WHERE cod_produto='$cod'");
+$result = mysql_query("UPDATE produtos SET imagem='$img' WHERE idprodutos='$cod'");
 }  
-$result = mysql_query("UPDATE produtos SET nome_produto='$nome', cat_produto='$cat', qtd_produto=$qtd, preco_produto=$precoprod, descricao='$desc', status_prod=$status_prod
- WHERE cod_produto='$cod'");
+$result = mysql_query("UPDATE produtos SET nome_produto='$nome', tam_prod ='$tam',cat_produto='$cat', qtd_produto=$qtd, preco_produto=$precoprod, destaque=$dst,descricao='$desc', status_prod=$status_prod
+ WHERE idprodutos='$cod'");
 
-		$qry = mysql_query("SELECT * FROM produtos where cod_produto='$cod'");
+		$qry = mysql_query("SELECT * FROM produtos where idprodutos='$cod'");
 		while ($row = mysql_fetch_assoc($qry)) {
 		$imagem=$row['imagem'];
 		}
@@ -95,6 +96,18 @@ $result = mysql_query("UPDATE produtos SET nome_produto='$nome', cat_produto='$c
 $file = $nome.".php";
 unlink($file);
 
+if($tam == 2){
+$tamv = "P";
+}
+	else if($tam==3){
+		$tamv="M";
+	}
+			else if($tam==4){
+			$tamv="G";
+			}
+				else{
+				$tamv="Único";
+				}
 
 file_put_contents($nome.".php", "
 <html xmlns='http://www.w3.org/1999/xhtml'>
@@ -113,27 +126,23 @@ file_put_contents($nome.".php", "
         	<ul>
         	
         	<ul>
- 
 			  	<table>
 			  	<td>&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
 			  	&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
 			  	&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
 			  	&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
 			  	&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
-			  	&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
-			  	&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
 			    <img src='cusko_branco.jpg' 'height='100' width='200'> </td>
-			  	
 			  	</table>
 			  	<br>
 			  	<br>
 <div id='cssmenu'>
 <ul>
   <li><a href='index.php'><span>Home</span></a></li>
-  <li><a href='#'><span>Produtos</span></a></li>
-  <li><a href='#'><span>Quem Somos</span></a></li>
-  <li><a href='#'><span>Contato</span></a></li>
-  <li><a href='#'><span>Carrinho</span></a></li>
+  <li><a href='produtos.php'><span>Produtos</span></a></li>
+  <li><a href='quemsomos.php'><span>Quem Somos</span></a></li>
+  <li><a href='contato.php'><span>Contato</span></a></li>
+  <li><a href='carr.php'><span>Carrinho</span></a></li>
 
 </ul>
 
@@ -144,7 +153,7 @@ file_put_contents($nome.".php", "
         <div class='esq-div'>
 		      
         	<div class='destaques2-div'>
-            <h5>".$nome."</h5>
+            <h5>".$nome." Tamanho ".$tamv." </h5>
 			
 			<table border=0>
 <td>
@@ -179,15 +188,7 @@ file_put_contents($nome.".php", "
 </td>
 
 </tr>
-<td>Quantidade
-<select name='tamprod2'>
-<option value='0' selected>Selecione</option>
-<option value='1' >1</option>
-<option value='2' >2</option>
-<option value='3' >3</option>
-<option value='4' >4</option>
-<option value='4' >5</option>
-</select>
+<td>
 <button href='inserecar.php' class='button'>Comprar</button>
 </td>
 </tr>
@@ -210,13 +211,13 @@ data-width='450' data-show-faces='true' data-font='arial'></div>
             <div id='menuvert'>
 			<ul>
             <ul class='maisartigos escuro top8'>
-            <li><a href='#' title='Camisas Masculinas'>Camisas Masculinas</a></li>
-            <li><a href='#' title='Camisas Femininas'>Camisas Femininas</a></li>
-            <li><a href='#' title='Calcas Masculinas'>Calças Masculinas</a></li>
-            <li><a href='#' title='Calcas Femininas'>Calças Femininas</a></li>
-            <li><a href='#' title='Bermudas Masculinas'>Bermudas Masculinas</a></li>
-            <li><a href='#' title='Shorts Femininos'>Shorts Femininos</a></li>
-			<li><a href='#' title='Acessorios'>Acessórios</a></li>
+            <li><a href='cammasc.php' title='Camisas Masculinas'>Camisas Masculinas</a></li>
+            <li><a href='camfem.php' title='Camisas Femininas'>Camisas Femininas</a></li>
+            <li><a href='calcmas.php' title='Calcas Masculinas'>Calças Masculinas</a></li>
+            <li><a href='calcafem.php' title='Calcas Femininas'>Calças Femininas</a></li>
+            <li><a href='bermasc.php' title='Bermudas Masculinas'>Bermudas Masculinas</a></li>
+            <li><a href='shortfem.php' title='Shorts Femininos'>Shorts Femininos</a></li>
+			<li><a href='acessorios.php' title='Acessorios'>Acessórios</a></li>
 			<br>      
             </ul>
             </div>
@@ -260,13 +261,13 @@ echo "<a href=admprod.php><h1><font color='black'> Cadastrado com Sucesso, cliqu
             <div id='menuvert'>
 			<ul>
             <ul class="maisartigos escuro top8">
-            <li><a href="#" title="Camisas Masculinas">Camisas Masculinas</a></li>
-            <li><a href="#" title="Camisas Femininas">Camisas Femininas</a></li>
-            <li><a href="#" title="Calcas Masculinas">Calças Masculinas</a></li>
-            <li><a href="#" title="Calcas Femininas">Calças Femininas</a></li>
-            <li><a href="#" title="Bermudas Masculinas">Bermudas Masculinas</a></li>
-            <li><a href="#" title="Shorts Femininos">Shorts Femininos</a></li>
-			<li><a href="#" title="Acessorios">Acessórios</a></li>
+            <li><a href='cammasc.php' title='Camisas Masculinas'>Camisas Masculinas</a></li>
+            <li><a href='camfem.php' title='Camisas Femininas'>Camisas Femininas</a></li>
+            <li><a href='calcmas.php' title='Calcas Masculinas'>Calças Masculinas</a></li>
+            <li><a href='calcafem.php' title='Calcas Femininas'>Calças Femininas</a></li>
+            <li><a href='bermasc.php' title='Bermudas Masculinas'>Bermudas Masculinas</a></li>
+            <li><a href='shortfem.php' title='Shorts Femininos'>Shorts Femininos</a></li>
+			<li><a href='acessorios.php' title='Acessorios'>Acessórios</a></li>
 			<br>   		     
             </ul>
             </div>
