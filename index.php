@@ -198,6 +198,7 @@ $query = mysql_query("SELECT * FROM carrinho WHERE carrinho.sessao = '".session_
 $numr = mysql_num_rows($query);
 $listadeprodutos = array(); // vetor para guardar a lista de produtos
 $contador = 0 ;
+$contador2 = 0;
 
 
 while ($row = mysql_fetch_assoc($query)) {
@@ -206,7 +207,107 @@ $listadeprodutos[] = $produtocar;
 }
 
 
-while($contador <= $numr){
+if($numr == 0){
+
+while ($contador2 <=5){
+$codp2 = $listadeprodutos[$contador2];
+$error = $client->getError();
+if ($error) {
+    echo "<h2>Constructor error</h2><pre>" . $error . "</pre>";
+}
+$n=0;
+$result = $client->call("getProd", array("category" => "".$codp."","n" => "".$n.""));
+$n=1;
+$result2 = $client->call("getProd2", array("category" => "".$codp."","n" => "".$n.""));
+$n=2;
+$result3 = $client->call("getProd2", array("category" => "".$codp."","n" => "".$n.""));
+$n=3;
+$result4 = $client->call("getProd2", array("category" => "".$codp."","n" => "".$n.""));
+$n=4;
+$result5 = $client->call("getProd2", array("category" => "".$codp."","n" => "".$n.""));
+
+if ($client->fault) {
+    echo "<h2>Fault</h2><pre>";
+    print_r($result);
+    echo "</pre>";
+}
+else {
+    $error = $client->getError();
+    if ($error) {
+        echo "<h2>Error</h2><pre>" . $error . "</pre>";
+    }
+    else {
+	if($contador2 == 0){
+	$res = mysql_query("SELECT * FROM produtos where nome_produto = '$result' ", $con);
+	}
+	if($contador2 == 1){
+	$res = mysql_query("SELECT * FROM produtos where nome_produto = '$result2' ", $con);
+	}
+	if($contador2 == 2){
+	$res = mysql_query("SELECT * FROM produtos where nome_produto = '$result3' ", $con);
+	}
+	if($contador2 == 3){
+	$res = mysql_query("SELECT * FROM produtos where nome_produto = '$result4' ", $con);
+	}
+	if($contador2 == 4){
+	$res = mysql_query("SELECT * FROM produtos where nome_produto = '$result5' ", $con);
+	}
+	
+	while ($row = mysql_fetch_assoc($res)) {
+	echo "<table border=0>";
+	echo "<tr>";
+	echo "<td>";
+
+			echo "
+			<table border=0>
+			<tr>
+			<form action='buscar.php' method='get'> <div align='center'><br>";
+	$preco=$row['preco_produto'];
+	// trocando . por ,
+	$precoprod = str_replace(".",",",$preco);
+
+	echo "<center>";
+	echo "<tr>";
+	echo "<td> <font size='2.5' color='black'>".$row['nome_produto'];
+	echo "</td>";
+	echo "</tr>";
+	echo "<br>";
+	echo "<tr><td><a href='".$row['nome_produto'].".php'><img src='".$row['imagem']."'height='130' width='130' name='eimg'></tr></td>";
+	echo "<td> <font size='2.5' color='black'>Preço R$ ".$precoprod;
+	echo "</tr>";
+
+	echo "</td>";
+	echo "</tr></td>";
+	echo "<tr>";
+	echo "<td><div align='center' style='font-size:10px;font-family:Verdana'><a href='carr.php?cod=".$row['idprodutos']."&acao=incluir' class='button'>Comprar</a></div><br></td>";
+	echo "</tr>";
+	echo "</center>";
+	echo "</table>";
+    echo "</form>"; 
+    echo "<td>";
+}
+
+
+
+        echo "</pre>";
+    }
+}
+
+
+$contador2 = $contador2 + 1;
+}
+
+echo "</table>";
+echo "</table>";
+echo "</table>";
+echo "</table>";
+echo "</table>";
+     			
+}
+
+else{
+
+while($contador <= 5){
 
 $codp = $listadeprodutos[$contador];
 
@@ -220,8 +321,11 @@ $result = $client->call("getProd2", array("category" => "".$codp."","n" => "".$n
 $n=1;
 $result2 = $client->call("getProd2", array("category" => "".$codp."","n" => "".$n.""));
 $n=2;
-//$result3 = $client->call("getProd", array("category" => "".$codp."","n" => "".$n.""));
-
+$result3 = $client->call("getProd2", array("category" => "".$codp."","n" => "".$n.""));
+$n=3;
+$result4 = $client->call("getProd2", array("category" => "".$codp."","n" => "".$n.""));
+$n=4;
+$result5 = $client->call("getProd2", array("category" => "".$codp."","n" => "".$n.""));
 
 if ($client->fault) {
     echo "<h2>Fault</h2><pre>";
@@ -239,6 +343,15 @@ else {
 	}
 	if($contador == 1){
 	$res = mysql_query("SELECT * FROM produtos where nome_produto = '$result2' ", $con);
+	}
+	if($contador == 2){
+	$res = mysql_query("SELECT * FROM produtos where nome_produto = '$result3' ", $con);
+	}
+	if($contador == 3){
+	$res = mysql_query("SELECT * FROM produtos where nome_produto = '$result4' ", $con);
+	}
+	if($contador == 4){
+	$res = mysql_query("SELECT * FROM produtos where nome_produto = '$result5' ", $con);
 	}
 	
 	while ($row = mysql_fetch_assoc($res)) {
@@ -285,6 +398,7 @@ $contador = $contador + 1;
 
 }
 
+}
 
 
 
@@ -292,6 +406,8 @@ $contador = $contador + 1;
 ?>
 	     </table>
          </table>
+     	</table>
+     	 </table>
      	</table>
      	
         </div>
