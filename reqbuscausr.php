@@ -67,20 +67,29 @@ echo "</form>";
 $buscar=$_POST["buscarusr"];
 $buscarcripto=base64_encode($buscar);   
 require_once("conf.php");
-echo "
-<br /><br />
-<table border=1>
-<tr>
-<form name='myform' action='editarusr.php' method='POST'> <div align='center'><br>
-<th>Selecione</th><th>Login</th><th>Senha</th><th>Nome</th><th>E-Mail</th></tr>
-";
+$max=3; // numero maximo de produtos por pagina
+$pagina=$_GET["pagina"]; 
+if ($pagina == "")
+$pagina=1;
+ 
+$inicio = $pagina - 1;
+$inicio = $max * $inicio;
+ 
+$sql="select * from usuarios where nome LIKE '%$buscarcripto%' OR email='$buscarcripto' or cpf='$buscarcripto' ";
+$res=mysql_query($sql);
+$total=mysql_num_rows($res);
+ 
+if ($total == 0)
+echo "Nenhum registro encontrado!";
+else
+{
+echo "<BR>";
+echo "Quantidade de produtos encontrados: ".$total.'<br><br>';
+$sql="select * from usuarios where nome LIKE '%$buscarcripto%' OR email='$buscarcripto' or cpf='$buscarcripto' LIMIT $inicio,$max";
+$res=mysql_query($sql);
+while ($row=mysql_fetch_array($res)){
 
-$result = mysql_query("select * from usuarios where nome='$buscarcripto' or email='$buscarcripto' or cpf='$buscarcripto'");
-
-
-while ($row = mysql_fetch_assoc($result)) {
-
-$nome=$row['nome'];
+	$nome=$row['nome'];
 $nomedecripto = base64_decode($nome);
 $email=$row['email'];
 $emaildecripto = base64_decode($email);
@@ -102,8 +111,14 @@ $tel=$row['tel'];
 $teldecripto = base64_decode($tel);
 $cel=$row['cel'];
 $celdecripto = base64_decode($cel);
-
-
+    
+	echo "
+	<br /><br />
+	<table border=1>
+	<tr>
+	<form name='myform' action='editarusr.php' method='POST'> <div align='center'><br>
+	<th>Selecione</th><th>Login</th><th>Senha</th><th>Nome</th><th>E-Mail</th></tr>
+	";
 	echo "<tr>";
     echo "<td> <input type='radio' name='elog' value='".$row['idusuario']."'>".$row['idusuario']. "</td>" ;
     echo "<td> <input type='text' name='elog2'  disabled  size='auto' value='".$row['login']. "'></td>" ;
@@ -123,38 +138,74 @@ $celdecripto = base64_decode($cel);
 	echo "<td> <input type='text' name='etel' disabled size='auto' value='".$teldecripto. "'></td>" ;
 	echo "<td> <input type='text' name='ecel' disabled size='15' value='".$celdecripto. "'></td>" ;
 	echo "</tr>";
-}
-
-echo "</table>";
+	echo "</table>";
+	echo "</form>";  
+	echo "</table>";
 	echo "<td>  <a href='cadusr.php'  class='button adicionar'> Adicionar Usuario</a> </td>";
 	echo "<td> <button type='submit' name='action' value='apagarusr' class='button apagar'> Apagar Usuario</a> </td>";
 	echo "<td> <button type='submit' name='action' value='editarusr' class='button editar'> Editar Usuario</a> </td>";
-	echo "<td> <a href='buscausr.php'> <button  class='button pesquisar'> Pesquisar Usuario</a> </td>";
+	echo "<td> <a href='buscausr.php'> <button  class='button pesquisar'> Pesquisar Usuario</a></button> </td>";
 	echo "</form>";   
-	?>	
+}
+ 
+}
+// Calculando pagina anterior
+$menos = $pagina - 1;
+// Calculando pagina posterior
+$mais = $pagina + 1;
+$pgs = ceil($total / $max);
+if($pgs > 1 ) 
+{
+if($menos>0) 
+echo "<a href=\"?pagina=$menos\" class='texto_paginacao'>Anterior</a> "; 
+ 
+if (($pagina-4) < 1 )
+$anterior = 1;
+else
+$anterior = $pagina-4;
+ 
+if (($pagina+4) > $pgs )
+$posterior = $pgs;
+else
+$posterior = $pagina + 4;
+ 
+for($i=$anterior;$i <= $posterior;$i++) 
+if($i != $pagina) 
+echo " <a href=\"?pagina=".($i)."\" class='texto_paginacao'>$i</a>";
+else 
+echo " <strong class='texto_paginacao_pgatual'>".$i."</strong>";
+ 
+if($mais <= $pgs) 
+echo " <a href=\"?pagina=$mais\" class='texto_paginacao'>Proxima</a>";
+}
+?>
      <br>
-		 
         </div>
-<div class="rodape-div"><p>TCC do JET</p></div>		
+	
 </div>
          <div class="dir-div">								
-            <h4>Menu</h4>
+               <h4>Menu</h4>
             <br>
             <div id='menuvert'>
 			<ul>
-
             <ul class="maisartigos escuro top8">
-            
-            <li><a href="#" title="Camisas Masculinas">Camisas Masculinas</a></li>
-            <li><a href="#" title="Camisas Femininas">Camisas Femininas</a></li>
-            <li><a href="#" title="Calcas Masculinas">Calcas Masculinas</a></li>
-            <li><a href="#" title="Calcas Femininas">Calcas Femininas</a></li>
-            <li><a href="#" title="Bermudas Masculinas">Bermudas Masculinas</a></li>
-            <li><a href="#" title="Shorts Femininos">Shorts Femininos</a></li>
-			<li><a href="#" title="Acessorios">Acessorios</a></li>
-			<br>   	     
+            <li><a href="cammasc.php" title="Camisas Masculinas">Camisas Masculinas</a></li>
+            <li><a href="camfem.php" title="Camisas Femininas">Camisas Femininas</a></li>
+            <li><a href="calcmas.php" title="Calcas Masculinas">Calças Masculinas</a></li>
+            <li><a href="calcafem.php" title="Calcas Femininas">Calças Femininas</a></li>
+            <li><a href="bermasc.php" title="Bermudas Masculinas">Bermudas Masculinas</a></li>
+            <li><a href="shortfem.php" title="Shorts Femininos">Shorts Femininos</a></li>
+			<li><a href="acessorios.php" title="Acessorios">Acessórios</a></li>
+			<br>   		     
             </ul>
             </div>
+            <br>
+            <h4>Área dDo Usuário</h4>
+            <br>
+            <div id='menuvert'>
+            <br> 
+            <li><a href="cadusrcmp.php" title="Editar Informações">Editar Informações</a></li>   
+            </div>  
             <br>
             <h4>Busca De Produtos</h4>
             <br>      
@@ -162,11 +213,19 @@ echo "</table>";
         	<input name="btnsearchprod" class="button" type="submit" size="2" id="btnsearchprod" value="Buscar" />
         	<br>
         	<br>
+        	<h4>Consultar Pedido</h4>
+            <BR>
+			<form id="formconsult" name="formconsult" method="post" action="consulta.php">
+      		<table border=0  width=auto height=auto> 
+      		<td width="auto"><input type="text" name="codcompra" id="codcompra" size="35" placeholder="Código da Compra" /> </td>
+      		<td><input name="btn_codcompra" class="button" type="submit" id="btn_codcompra" value="Pesquisar" size="35"  /></td>
+      		</table>
+      		</form>		  
         	<!-- Like Button Facebook -->
         	<div id="fb-root"></div>        	
 			<div class="fb-like" data-href="https://pt-br.facebook.com/usecusko" data-send="true" data-layout="button_count" 
 			data-width="450" data-show-faces="true" data-font="arial"></div>
-		</div>		
+		</div>	
 </div>
 				<!-- Script para se conectar ao Facebook -->
 				<script>(function(d, s, id) {

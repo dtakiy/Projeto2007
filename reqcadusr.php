@@ -91,6 +91,7 @@ else{
 echo "<h1>Não foi possivel fazer o cadastro</h1>";
 
 echo "Para retornar ao cadastro clique <a href=cadusr.php>"; echo "aqui</a>.";
+echo "Caso queira preecher o cadastro completo clique <a href=cadusrcmp.php>"; echo "aqui</a>.";
 }
 ?>
 			

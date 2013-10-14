@@ -42,14 +42,14 @@
         <div class='esq-div'>
 		      
         	<div class='destaques2-div'>
-            <h5>Polo Tamanho P </h5>
+            <h5>Camisa V Tamanho P </h5>
 			
 			<table border=0>
 <td>
 <table border=0>
 <BR>
 <BR>
-<td><img src='camisa1.jpg'height='150' width='150' name='prod'></td>
+<td><img src='camisa2.jpg'height='150' width='150' name='prod'></td>
 <td><table border=0>
 <td>Dimensoes:(cm)</td><td>&nbsp;&nbsp;P&nbsp;&nbsp;</td><td>&nbsp;&nbsp;M&nbsp;&nbsp;</td><td>&nbsp;&nbsp;G&nbsp;&nbsp;</td>
 <tr><td>Manga</td><td>&nbsp;17,5&nbsp;</td><td>&nbsp;17,5&nbsp;</td><td>&nbsp;18,5&nbsp;</td></tr>
@@ -73,7 +73,7 @@
 <option value='3' >M</option>
 <option value='4' >G</option>
 </select> -->
-&nbsp&nbsp Preco &nbsp; &nbsp; R$ &nbsp;50,00
+&nbsp&nbsp Preco &nbsp; &nbsp; R$ &nbsp;25,00
 </td>
 
 </tr>
