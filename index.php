@@ -92,7 +92,7 @@ echo "";
 require_once("conf.php");
 require_once("conf2.php");
 
-$max=5; // numero maximo de produtos por pagina
+$max=4; // numero maximo de produtos por pagina
 
 $pagina=$_GET["pagina"]; 
 if ($pagina == "")
@@ -197,7 +197,7 @@ $client = new nusoap_client("http://www.francojet.net/productlistia.php?wsdl", t
 $query = mysql_query("SELECT * FROM carrinho WHERE carrinho.sessao = '".session_id()."'",$con); 
 $numr = mysql_num_rows($query);
 $listadeprodutos = array(); // vetor para guardar a lista de produtos
-$contador = 0 ;
+
 $contador2 = 0;
 
 
@@ -218,13 +218,13 @@ if ($error) {
 $n=0;
 $result = $client->call("getProd", array("category" => "".$codp."","n" => "".$n.""));
 $n=1;
-$result2 = $client->call("getProd2", array("category" => "".$codp."","n" => "".$n.""));
+$result2 = $client->call("getProd", array("category" => "".$codp."","n" => "".$n.""));
 $n=2;
-$result3 = $client->call("getProd2", array("category" => "".$codp."","n" => "".$n.""));
+$result3 = $client->call("getProd", array("category" => "".$codp."","n" => "".$n.""));
 $n=3;
-$result4 = $client->call("getProd2", array("category" => "".$codp."","n" => "".$n.""));
+$result4 = $client->call("getProd", array("category" => "".$codp."","n" => "".$n.""));
 $n=4;
-$result5 = $client->call("getProd2", array("category" => "".$codp."","n" => "".$n.""));
+$result5 = $client->call("getProd", array("category" => "".$codp."","n" => "".$n.""));
 
 if ($client->fault) {
     echo "<h2>Fault</h2><pre>";
@@ -252,6 +252,7 @@ else {
 	if($contador2 == 4){
 	$res = mysql_query("SELECT * FROM produtos where nome_produto = '$result5' ", $con);
 	}
+	
 	
 	while ($row = mysql_fetch_assoc($res)) {
 	echo "<table border=0>";
@@ -307,8 +308,9 @@ echo "</table>";
 
 else{
 
-while($contador <= 5){
+$contador = 0;
 
+//while($contador <= 5){
 $codp = $listadeprodutos[$contador];
 
 $error = $client->getError();
@@ -327,6 +329,9 @@ $result4 = $client->call("getProd2", array("category" => "".$codp."","n" => "".$
 $n=4;
 $result5 = $client->call("getProd2", array("category" => "".$codp."","n" => "".$n.""));
 
+
+
+
 if ($client->fault) {
     echo "<h2>Fault</h2><pre>";
     print_r($result);
@@ -340,21 +345,15 @@ else {
     else {
 	if($contador == 0){
 	$res = mysql_query("SELECT * FROM produtos where nome_produto = '$result' ", $con);
+	$res2 = mysql_query("SELECT * FROM produtos where nome_produto = '$result2' ", $con);
+	$res3 = mysql_query("SELECT * FROM produtos where nome_produto = '$result3' ", $con);
+	$res4 = mysql_query("SELECT * FROM produtos where nome_produto = '$result4' ", $con);
+	$res5 = mysql_query("SELECT * FROM produtos where nome_produto = '$result5' ", $con);
 	}
-	if($contador == 1){
-	$res = mysql_query("SELECT * FROM produtos where nome_produto = '$result2' ", $con);
-	}
-	if($contador == 2){
-	$res = mysql_query("SELECT * FROM produtos where nome_produto = '$result3' ", $con);
-	}
-	if($contador == 3){
-	$res = mysql_query("SELECT * FROM produtos where nome_produto = '$result4' ", $con);
-	}
-	if($contador == 4){
-	$res = mysql_query("SELECT * FROM produtos where nome_produto = '$result5' ", $con);
-	}
+
 	
 	while ($row = mysql_fetch_assoc($res)) {
+		
 	echo "<table border=0>";
 	echo "<tr>";
 	echo "<td>";
@@ -386,15 +385,124 @@ else {
 	echo "</table>";
     echo "</form>"; 
     echo "<td>";
+
+}
+	
+	while ($row = mysql_fetch_assoc($res2)) {
+		
+	echo "<table border=0>";
+	echo "<tr>";
+	echo "<td>";
+
+			echo "
+			<table border=0>
+			<tr>
+			<form action='buscar.php' method='get'> <div align='center'><br>";
+	$preco=$row['preco_produto'];
+	// trocando . por ,
+	$precoprod = str_replace(".",",",$preco);
+
+	echo "<center>";
+	echo "<tr>";
+	echo "<td> <font size='2.5' color='black'>".$row['nome_produto'];
+	echo "</td>";
+	echo "</tr>";
+	echo "<br>";
+	echo "<tr><td><a href='".$row['nome_produto'].".php'><img src='".$row['imagem']."'height='130' width='130' name='eimg'></tr></td>";
+	echo "<td> <font size='2.5' color='black'>Preço R$ ".$precoprod;
+	echo "</tr>";
+
+	echo "</td>";
+	echo "</tr></td>";
+	echo "<tr>";
+	echo "<td><div align='center' style='font-size:10px;font-family:Verdana'><a href='carr.php?cod=".$row['idprodutos']."&acao=incluir' class='button'>Comprar</a></div><br></td>";
+	echo "</tr>";
+	echo "</center>";
+	echo "</table>";
+    echo "</form>"; 
+    echo "<td>";
+
+}
+
+	while ($row = mysql_fetch_assoc($res3)) {
+		
+	echo "<table border=0>";
+	echo "<tr>";
+	echo "<td>";
+
+			echo "
+			<table border=0>
+			<tr>
+			<form action='buscar.php' method='get'> <div align='center'><br>";
+	$preco=$row['preco_produto'];
+	// trocando . por ,
+	$precoprod = str_replace(".",",",$preco);
+
+	echo "<center>";
+	echo "<tr>";
+	echo "<td> <font size='2.5' color='black'>".$row['nome_produto'];
+	echo "</td>";
+	echo "</tr>";
+	echo "<br>";
+	echo "<tr><td><a href='".$row['nome_produto'].".php'><img src='".$row['imagem']."'height='130' width='130' name='eimg'></tr></td>";
+	echo "<td> <font size='2.5' color='black'>Preço R$ ".$precoprod;
+	echo "</tr>";
+
+	echo "</td>";
+	echo "</tr></td>";
+	echo "<tr>";
+	echo "<td><div align='center' style='font-size:10px;font-family:Verdana'><a href='carr.php?cod=".$row['idprodutos']."&acao=incluir' class='button'>Comprar</a></div><br></td>";
+	echo "</tr>";
+	echo "</center>";
+	echo "</table>";
+    echo "</form>"; 
+    echo "<td>";
+
 }
 
 
+while ($row = mysql_fetch_assoc($res5)) {
+		
+	echo "<table border=0>";
+	echo "<tr>";
+	echo "<td>";
+
+			echo "
+			<table border=0>
+			<tr>
+			<form action='buscar.php' method='get'> <div align='center'><br>";
+	$preco=$row['preco_produto'];
+	// trocando . por ,
+	$precoprod = str_replace(".",",",$preco);
+
+	echo "<center>";
+	echo "<tr>";
+	echo "<td> <font size='2.5' color='black'>".$row['nome_produto'];
+	echo "</td>";
+	echo "</tr>";
+	echo "<br>";
+	echo "<tr><td><a href='".$row['nome_produto'].".php'><img src='".$row['imagem']."'height='130' width='130' name='eimg'></tr></td>";
+	echo "<td> <font size='2.5' color='black'>Preço R$ ".$precoprod;
+	echo "</tr>";
+
+	echo "</td>";
+	echo "</tr></td>";
+	echo "<tr>";
+	echo "<td><div align='center' style='font-size:10px;font-family:Verdana'><a href='carr.php?cod=".$row['idprodutos']."&acao=incluir' class='button'>Comprar</a></div><br></td>";
+	echo "</tr>";
+	echo "</center>";
+	echo "</table>";
+    echo "</form>"; 
+    echo "<td>";
+
+}
 
         echo "</pre>";
     }
-}
+   
+//}
 
-$contador = $contador + 1;
+//$contador = $contador + 1;
 
 }
 
@@ -404,6 +512,7 @@ $contador = $contador + 1;
 
 
 ?>
+
 	     </table>
          </table>
      	</table>
