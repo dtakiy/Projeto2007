@@ -328,8 +328,43 @@ $n=3;
 $result4 = $client->call("getProd2", array("category" => "".$codp."","n" => "".$n.""));
 $n=4;
 $result5 = $client->call("getProd2", array("category" => "".$codp."","n" => "".$n.""));
+$n=5;
+$result6 = $client->call("getProd2", array("category" => "".$codp."","n" => "".$n.""));
+$n=6;
+$result7 = $client->call("getProd2", array("category" => "".$codp."","n" => "".$n.""));
+$n=7;
+$result8 = $client->call("getProd2", array("category" => "".$codp."","n" => "".$n.""));
+$n=8;
+$result9 = $client->call("getProd2", array("category" => "".$codp."","n" => "".$n.""));
 
+	//colocando produtos em uma lista que será usada para eliminar a recomendacao de produtos que já estão no carrinho.
+	
+	$listaresultado = array();
+	$listaresultado[] = $result;
+	$listaresultado[] = $result2;
+	$listaresultado[] = $result3;
+	$listaresultado[] = $result4;
+	$listaresultado[] = $result5;
+	$listaresultado[] = $result6;
+	$listaresultado[] = $result7;
+	$listaresultado[] = $result8;
+	$listaresultado[] = $result9;
+	
+    $arraylimpo = array_diff($listaresultado,$listadeprodutos);
+ 	rsort ($arraylimpo);
+    
+    $nelemarray = sizeof($arraylimpo2); // numero de elementos do array
+    
+   $result  =  $arraylimpo[0];
+   $result2 =  $arraylimpo[1];
+   $result3 =  $arraylimpo[2];
+   $result4 =  $arraylimpo[3];
+    
+ 
+    
+    
 
+	// Fim da eliminação e ordenação de elementos iguais e dos produtos que serao recomendados
 
 
 if ($client->fault) {
@@ -351,22 +386,7 @@ else {
 	$res5 = mysql_query("SELECT * FROM produtos where nome_produto = '$result5' ", $con);
 	}
 	
-	
-	//colocando produtos em uma lista que será usada para eliminar a recomendacao de produtos que já estão no carrinho.
-	
-	$listaresultado = array();
-	$listaresultado[] = $result;
-	$listaresultado[] = $result2;
-	$listaresultado[] = $result3;
-	$listaresultado[] = $result4;
-	$listaresultado[] = $result5;
-	
-    $arraylimpo = array_diff($listaresultado,$listadeprodutos);
-    
-    rsort($arraylimpo);
-
-	// Fim da eliminação e ordenação de elementos iguais
-    
+	    
 	
 	while ($row = mysql_fetch_assoc($res)) {
 		
@@ -517,13 +537,6 @@ while ($row = mysql_fetch_assoc($res4)) {
     }
    
 //}
-
-//$contador = $contador + 1;
-
-
-
-
-
 
 
 }
