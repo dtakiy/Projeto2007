@@ -350,7 +350,23 @@ else {
 	$res4 = mysql_query("SELECT * FROM produtos where nome_produto = '$result4' ", $con);
 	$res5 = mysql_query("SELECT * FROM produtos where nome_produto = '$result5' ", $con);
 	}
+	
+	
+	//colocando produtos em uma lista que será usada para eliminar a recomendacao de produtos que já estão no carrinho.
+	
+	$listaresultado = array();
+	$listaresultado[] = $result;
+	$listaresultado[] = $result2;
+	$listaresultado[] = $result3;
+	$listaresultado[] = $result4;
+	$listaresultado[] = $result5;
+	
+    $arraylimpo = array_diff($listaresultado,$listadeprodutos);
+    
+    rsort($arraylimpo);
 
+	// Fim da eliminação e ordenação de elementos iguais
+    
 	
 	while ($row = mysql_fetch_assoc($res)) {
 		
@@ -461,7 +477,7 @@ else {
 }
 
 
-while ($row = mysql_fetch_assoc($res5)) {
+while ($row = mysql_fetch_assoc($res4)) {
 		
 	echo "<table border=0>";
 	echo "<tr>";
@@ -503,6 +519,12 @@ while ($row = mysql_fetch_assoc($res5)) {
 //}
 
 //$contador = $contador + 1;
+
+
+
+
+
+
 
 }
 
