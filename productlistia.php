@@ -103,6 +103,32 @@ return $list4[0];
 }
 
 
+function getProd3($category,$n) {
+
+
+$con = @mysql_connect("dbmy0106.whservidor.com","francojet","puccamp2007");
+if (!$con)
+	die ("Connection Error! -> ".mysql_error());
+$db = @mysql_select_db("francojet",$con);
+
+$list9 = array();
+
+$result = mysql_query("SELECT * FROM recomendacao where prod1='$category ' OR prod2 = '$category ' ");
+
+$total = 0;
+while ($row = mysql_fetch_assoc($result)) {
+
+$vendas = $row['nvendas'];
+$total +=$vendas;
+
+}
+
+
+$list9[$n] = $total;
+return $list9[$n];
+    
+}
+
 
 $server = new soap_server();
 $server->configureWSDL("productlistia", "urn:productlistia");
@@ -125,6 +151,15 @@ $server->register("getProd",
     "rpc",
     "encoded",
     "Retornar Lista com os Pesos carrinho vazio");
+
+    $server->register("getProd3",
+    array("category" => "xsd:string","n" => "xsd:string"),
+    array("return" => "xsd:string"),
+    "urn:productlist",
+    "urn:productlist#getProd",
+    "rpc",
+    "encoded",
+    "Retornar Lista com vendas");
 
 $server->service($HTTP_RAW_POST_DATA);
 
