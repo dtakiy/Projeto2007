@@ -308,6 +308,9 @@ echo "
 $result = mysql_query("SELECT * FROM carrinho WHERE carrinho.sessao = '".session_id()."'");
 
 
+$prodcar = array();
+$qtdcar = array();
+$contcar = 0;
 while ($row = mysql_fetch_assoc($result)) {
 	$precop=$row['preco'];
 	$precoprod = str_replace(".",",",$precop);
@@ -323,10 +326,34 @@ while ($row = mysql_fetch_assoc($result)) {
 	echo "<div align='auto'style='font-size:7px;font-family:Verdana'><a href='carr.php?&acao=modificamenos&cod=".$row['cod']."&carqtdprod=".$row['qtd']."' class='button'>-</a></div><br></td>";
 	echo"<td><div align='center' style='font-size:10px;font-family:Verdana'><a href='carr.php?&acao=excluir&cod2=".$row['cod']."' class='button'>Excluir</a></div><br></td>";
 	echo "</tr>";
+	$prodcar[$contcar] = $row['nome'] ;
+	$qtdcar[$contcar] = $row['qtd'] ;
+	$contcar ++;
 	
-	$peso_produto=$peso_produto+$row['peso_prod']*$row['qtd'];
-		
 }
+
+$pesoprod = 0;
+$totalpeso = 0;
+
+
+for ($incr=0; $incr < $contcar; $incr++){
+	$nomepeso = $prodcar[$incr];
+	$qtdprod =  $qtdcar[$incr];
+
+
+
+	$resultpeso = mysql_query("SELECT * FROM produtos where nome_produto = '$nomepeso'");
+
+	while ($row = mysql_fetch_assoc($resultpeso)) {
+	$pesoprod = $row['peso_prod'] * $qtdprod;
+	}
+	$totalpeso += $pesoprod;
+	
+	
+}
+
+
+
 echo "</table>";
 //echo "<a href='checkout.php' class='button' size=9  id='btn_checkout'/>Fechar Conta</a>";
 
@@ -467,7 +494,8 @@ echo "</table>";
 		 // tirando o - do cep
 		 $cepreplace = str_replace("-", "", $cepdecripto);
 	   	 include("calcfrete.php");
-	     $valorfrete = calcula_frete('40010','13901150',$cepreplace,'0.5');	     
+	   	 $totalpeso2 = $totalpeso/1000;
+	     $valorfrete = calcula_frete('40010','13901150',$cepreplace,$totalpeso2);	     
 	     // troca , por .
 	     $valorfrete2 = str_replace(",",".",$valorfrete);
 	     
@@ -489,7 +517,8 @@ echo "</table>";
 			$_SESSION['cepv2'] = $cepv;
 			$cepreplace = str_replace("-", "", $cepv);
 			include("calcfrete.php");
-	     	$valorfrete = calcula_frete('40010','13901150',$cepreplace,'0.5');	     
+			$totalpeso2 = $totalpeso/1000;
+	     	$valorfrete = calcula_frete('40010','13901150',$cepreplace,$totalpeso2);	     
 	     	// troca , por .
 	     	$valorfrete2 = str_replace(",",".",$valorfrete);
 	     	
@@ -513,6 +542,7 @@ echo "</table>";
 		  echo "<BR>";
 		  echo "Usuário não Registrado, Faça o Login ou Registre-se para pagar a compra";
 		  }
+
 		?>
 <br>
 <br>
