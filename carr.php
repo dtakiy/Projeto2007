@@ -330,7 +330,7 @@ echo "</table>";
 		   
 		  echo"
 		  <BR>
-		 <H7>Endereço De Entrega:</H7>
+		 <H7>Endereço de Entrega:</H7>
 		  <BR>
 		  ";
 		  if($reset !=1){

@@ -70,7 +70,7 @@ echo "</form>";
 			<?php
 // Inserindo produtos na tabela
 require_once("conf.php");
-
+require_once("conf2.php");
 
 
 $result = mysql_query("SELECT * FROM produtos",$con);
@@ -88,10 +88,11 @@ $valor = "$_POST[precoprod]";
 $qtdprod = "$_POST[qtdprod]";
 $pesoprod = "$_POST[pesoprod]";
 $catprod = "$_POST[catprod]";
+$tamprod = "$_POST[tamprod]";
 $destaqueprod = "$_POST[nomeprod]";
 $fotoprod = "$_POST[fotoprod]";
 $descprod = "$_POST[descprod]";
-//$notaprod = "$_POST[notaprod]";
+
 
 $precoprod = str_replace(",",".",$valor);
 $precoprod2 = str_replace(".",",",$precoprod);
@@ -104,56 +105,43 @@ $query4 = mysql_query("SELECT * from produtos",$con); // procura por todos os pr
 while ($row = mysql_fetch_assoc($query4)) {
 $nprod2 = $row['nome_produto'];
 	if($nomeprod != $nprod2){
-	// espaco reservado para colocar os produtos que serao usadados na entrada da IA
+	$query3 = mysql_query("INSERT INTO recomendacao (prod1,prod2,peso) VALUES('$nomeprod','$nprod2',1)",$con2); //insere para comparação
+	//echo "INSERT INTO recomendacao (prod1,prod2,peso) VALUES('$nomeprod','$nprod2',1)";
 	}
 
 
 }
 
 if($num<1){
-$result = mysql_query("INSERT INTO produtos (nome_produto,cat_produto,preco_produto,qtd_produto,imagem,destaque,status_prod,descricao,peso_prod) VALUES('$nomeprod'
-,'$catprod',$precoprod,$qtdprod,'$fotoprod',1,1,'$descprod',$pesoprod)",$con);
+$result = mysql_query("INSERT INTO produtos (nome_produto,cat_produto,tam_prod,preco_produto,qtd_produto,imagem,destaque,status_prod,descricao,peso_prod) VALUES('$nomeprod'
+,'$catprod','$tamprod',$precoprod,$qtdprod,'$fotoprod',1,1,'$descprod',$pesoprod)",$con);
+
+if($tamprod == 2){
+$tamv = "P";
+}
+	else if($tamprod==3){
+		$tamv="M";
+	}
+			else if($tamprod==4){
+			$tamv="G";
+			}
+				else{
+				$tamv="Único";
+				}
 
 
 file_put_contents($nomeprod.".php","  ");
 file_put_contents($nomeprod.".php", "
-<html xmlns='http://www.w3.org/1999/xhtml'>
-<head>
-<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
-<link rel='icon' rel='icon' href='favicon.ico' type='image/ico' />
-<link rel='stylesheet' type='text/css' href='estilo.css' />
-<title>Cusko</title>
-</head>
-<body>
-    <div class='global-div'>
-    	<div class='topo-div'></div>
-        <div class='menu-div'>
-        	<ul>
-        	<ul>
-			  	<table>
-			  	<td>&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-			  	&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
-			  	&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
-			  	&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
-			  	&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
-			    <img src='cusko_branco.jpg' 'height='100' width='200'> </td>
-			  	</table>
-			  	<br>
-			  	<br>
-<div id='cssmenu'>
-<ul>
-  <li><a href='index.php'><span>Home</span></a></li>
-  <li><a href='#'><span>Produtos</span></a></li>
-  <li><a href='#'><span>Quem Somos</span></a></li>
-  <li><a href='#'><span>Contato</span></a></li>
-  <li><a href='#'><span>Carrinho</span></a></li>
+ 		<?php
+		require_once('reader.php');
+		?> 		
 </ul>
 </div>				                          
             </ul>
         </div>
         <div class='esq-div'>
         	<div class='destaques2-div'>
-            <h5>".$nomeprod."</h5>
+           <h5>".$nomeprod." Tamanho ".$tamv." </h5>
 			
 			<table border=1 style='text-align:right'>
 <td>
@@ -161,12 +149,12 @@ file_put_contents($nomeprod.".php", "
 <BR>
 <BR>
 <td><img src='".$fotoprod."'height='150' width='150' name='prod'>&nbsp &nbsp</td>
-<td><table border=0>
+<!--<td><table border=0>
 <td>Dimensoes:(cm)</td><td>&nbsp;&nbsp;P&nbsp;&nbsp;</td><td>&nbsp;&nbsp;M&nbsp;&nbsp;</td><td>&nbsp;&nbsp;G&nbsp;&nbsp;</td>
 <tr><td>Manga</td><td>&nbsp;17,5&nbsp;</td><td>&nbsp;17,5&nbsp;</td><td>&nbsp;18,5&nbsp;</td></tr>
 <tr><td>Largura</td><td>46,5</td><td>49,5</td><td>50</td></tr>
 <tr><td>Comprimento</td><td>66,5</td><td>69,5</td><td>71</td></tr>
-</table></td>
+</table></td>-->
 
 </table>
 </td>
@@ -217,49 +205,10 @@ data-width='450' data-show-faces='true' data-font='arial'></div>
 <div class='rodape-div'><p>Loja Cusko</p></div>		
 </div>
          <div class='dir-div'>								
-            <h4>Menu</h4>
-            <br>
-            <div id='menuvert'>
-			<ul>
-
-            <ul class='maisartigos escuro top8'>
-            
-            <li><a href='#' title='Camisas Masculinas'>Camisas Masculinas</a></li>
-            <li><a href='#' title='Camisas Femininas'>Camisas Femininas</a></li>
-            <li><a href='#' title='Calcas Masculinas'>Calças Masculinas</a></li>
-            <li><a href='#' title='Calcas Femininas'>Calças Femininas</a></li>
-            <li><a href='#' title='Bermudas Masculinas'>Bermudas Masculinas</a></li>
-            <li><a href='#' title='Shorts Femininos'>Shorts Femininos</a></li>
-			<li><a href='#' title='Acessorios'>Acessórios</a></li>
-			<br>   
-			     
-            </ul>
-            </div>
-            <br>
-            <h4>Busca De Produtos</h4>
-            <br>      
-        	<input name='login' type='text' id='login' placeholder='Nome ou Descrição' size='20' maxlength='60'/>
-        	<input name='btnsearchprod' class='button' type='submit' size='2' id='btnsearchprod' value='Buscar' />
-        	<br>
-        	<br>
-        	
-        	<!-- Like Button Facebook -->
-        	<div id='fb-root'></div>        	
-			<div class='fb-like' data-href='https://pt-br.facebook.com/usecusko' data-send='true' data-layout='button_count' 
-			data-width='450' data-show-faces='true' data-font='arial'></div>
-			<!-- Fallow Button Facebook -->
-			<div class='fb-follow' data-href='https://www.facebook.com/usecusko' data-width='450' data-layout='button_count' data-show-faces='true'></div>
-		    </div>
-		
+ 		<?php
+		require_once('menulado2.php');
+		?> 		
 </div>
-				<!-- Script para se conectar ao Facebook -->
-				<script>(function(d, s, id) {
-  				var js, fjs = d.getElementsByTagName(s)[0];
-  				if (d.getElementById(id)) return;
- 					js = d.createElement(s); js.id = id;
-  				js.src = '//connect.facebook.net/en_US/all.js#xfbml=1';
-  				fjs.parentNode.insertBefore(js, fjs);
-				}(document, 'script', 'facebook-jssdk'));</script>
 </body>
 </html>
 
@@ -269,18 +218,13 @@ data-width='450' data-show-faces='true' data-font='arial'></div>
 
 	if($result>=1)
 	{
-//header("refresh:5; url=cadprod.php");
 	echo "<h1> <a href=admprod.php> Produto Cadastrado. Clique"; echo " aqui para Voltar</a>.</h1>";
 	}
 
-//mysql_free_result($result);
-
-//mysqli_close($con);
 }
 
 else{
 echo "<h1><font color='black'> Não foi possivel fazer o cadastro </font></h1>";
-
 echo "<h1><a href=cadprod.php> Para retornar ao cadastro clique aqui</a></h1>";
 }
 ?>
