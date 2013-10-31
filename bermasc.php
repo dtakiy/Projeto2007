@@ -7,8 +7,8 @@ $email = $_SESSION['email'];
 $emailcripto = base64_decode($email);
 ?>
 
-<?php
-require_once('reader.php');	
+<?
+  require_once('reader.php');
 ?>
   
 </ul>
@@ -19,7 +19,7 @@ require_once('reader.php');
         <div class="esq-div">
 		      
         	<div class="destaques-div">
-            <h5>Camisas Femininas</h5>
+            <h5>Bermudas Masculinas</h5>
 			
 		<?php
 require_once("conf.php");
@@ -34,7 +34,7 @@ $inicio = $pagina - 1;
 $inicio = $max * $inicio;
  
   
-$sql="SELECT * FROM produtos where cat_produto=3 and status_prod=1 ";
+$sql="SELECT * FROM produtos where cat_produto=5 and status_prod=1 ";
 $res=mysql_query($sql);
 $total=mysql_num_rows($res);
  
@@ -44,7 +44,7 @@ else
 {
 echo "<BR>";
 
-$sql="SELECT * FROM produtos where cat_produto=3 and status_prod=1 LIMIT $inicio,$max";
+$sql="SELECT * FROM produtos where cat_produto=6 and status_prod=1 LIMIT $inicio,$max";
 $res=mysql_query($sql);
 while ($row = mysql_fetch_assoc($res)) {
 echo "<table border=0>";
@@ -122,15 +122,13 @@ echo " <a href=\"?pagina=$mais\" class='texto_paginacao'>Proxima</a>";
 		<div class="rodape-div"></div>		<!-- <p>Loja Cusko</p> caso queira colocar frase dentro do rodape -->
 		</div>
          <div class="dir-div">								
-
-		<?php
-		require_once('menulado.php');
-		?>
-
 		
+		  <?
+		  require_once('menulado.php');	
+		  ?>	
 		</div>
 
 </div>
-	
+			
 </body>
 </html>

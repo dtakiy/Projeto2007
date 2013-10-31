@@ -6,35 +6,25 @@ $usuario = $_SESSION['usrlogin'];
 $email = $_SESSION['email'];
 $emailcripto = base64_decode($email);
 ?>
-
-<?php
-require_once('reader.php');	
-?>
-  
+         <?php
+         require_once('reader.php');	
+         ?>
 </ul>
 </div>				                          
             </ul>
         </div>
-        
         <div class="esq-div">
-		      
         	<div class="destaques-div">
-            <h5>Camisas Femininas</h5>
-			
+            <h5>Shorts Femininos</h5>
 		<?php
 require_once("conf.php");
-
 $max=5; // numero maximo de produtos por pagina
-
 $pagina=$_GET["pagina"]; 
 if ($pagina == "")
 $pagina=1;
- 
 $inicio = $pagina - 1;
 $inicio = $max * $inicio;
- 
-  
-$sql="SELECT * FROM produtos where cat_produto=3 and status_prod=1 ";
+$sql="SELECT * FROM produtos where cat_produto=7 and status_prod=1 ";
 $res=mysql_query($sql);
 $total=mysql_num_rows($res);
  
@@ -43,14 +33,12 @@ echo "Nenhum registro encontrado!";
 else
 {
 echo "<BR>";
-
-$sql="SELECT * FROM produtos where cat_produto=3 and status_prod=1 LIMIT $inicio,$max";
+$sql="SELECT * FROM produtos where cat_produto=6 and status_prod=1 LIMIT $inicio,$max";
 $res=mysql_query($sql);
 while ($row = mysql_fetch_assoc($res)) {
 echo "<table border=0>";
 echo "<tr>";
 echo "<td>";
-
 			echo "
 			<br/><br/>
 			<table border=0>
@@ -59,7 +47,6 @@ echo "<td>";
 	$preco=$row['preco_produto'];
 	// trocando . por ,
 	$precoprod = str_replace(".",",",$preco);
-
 	echo "<center>";
 	echo "<tr>";
 	echo "<td> <font size='2.5' color='black'>".$row['nome_produto'];
@@ -69,7 +56,6 @@ echo "<td>";
 	echo "<tr><td><a href='".$row['nome_produto'].".php'><img src='".$row['imagem']."'height='130' width='130' name='eimg'></tr></td>";
 	echo "<td> <font size='2.5' color='black'>Preço R$ ".$precoprod;
 	echo "</tr>";
-
 	echo "</td>";
 	echo "</tr></td>";
 	echo "<tr>";
@@ -80,13 +66,9 @@ echo "<td>";
     echo "</form>"; 
     echo "<td>";
 }
-	
 	for($i =1; $i <= $max; $i++){
 	echo "</table>";
 	}
- 
-
- 
 }
 // Calculando pagina anterior
 $menos = $pagina - 1;
@@ -97,7 +79,6 @@ if($pgs > 1 )
 {
 if($menos>0) 
 echo "<a href=\"?pagina=$menos\" class='texto_paginacao'>Anterior</a> "; 
- 
 if (($pagina-4) < 1 )
 $anterior = 1;
 else
@@ -122,15 +103,10 @@ echo " <a href=\"?pagina=$mais\" class='texto_paginacao'>Proxima</a>";
 		<div class="rodape-div"></div>		<!-- <p>Loja Cusko</p> caso queira colocar frase dentro do rodape -->
 		</div>
          <div class="dir-div">								
-
 		<?php
-		require_once('menulado.php');
-		?>
-
-		
+         require_once('menulado.php');	
+         ?>
 		</div>
-
 </div>
-	
 </body>
 </html>
