@@ -36,8 +36,11 @@ echo "
 <table border=1>
 <tr>
 <form name='myform2' action='editarprod.php' method='POST'> <div align='center'><br>
-<th>Selecione</th><th>Nome</th><th>Tamanho</th><th>Categoria</th><th>Quantidade</th><th>Preço</th><th>Imagem</th><th>Desatque</th><th>Descrição</th><th>Status</th>
-";
+
+<th><font size='4' color='black'>Selecione</font></th><th><font size='4' color='black'>Nome</font></th><th><font size='4' color='black'>Tamanho</font></th><th><font size='4' color='black'>Categoria</font></th><th><font size='4' color='black'>Quantidade</font></th><th><font size='4' color='black'>Preço</font></th><th><font size='4' color='black'>Imagem</font></th>";
+
+//<th><font size='4' color='black'>Selecione</font></th><th><font size='4' color='black'>Nome</font></th><th><font size='4' color='black'>Tamanho</font></th><th><font size='4' color='black'>Categoria</font></th><th><font size='4' color='black'>Quantidade</font></th><th><font size='4' color='black'>Preço</font></th><th><font size='4' color='black'>Imagem</font></th><th><font size='4' color='black'>Desatque</font></th><th><font size='4' color='black'>Descrição</th><th><font size='4' color='black'>Status</font></th>";
+
 }
 else{
 echo "";
@@ -113,16 +116,16 @@ if($tam==2){
 		$dest_value="Nao Selecionado";
 	
 	echo "<tr>";
-	echo "<td> <input type='radio' style='text-align:right' name='rcod' value='".$row['idprodutos']."'></td>" ;
-	echo "<td> <input type='text' style='text-align:right' name='enome2' disabled size='16' value='".$row['nome_produto']."'></td>" ;
-	echo "<td> <input type='text' style='text-align:right' name='etam' disabled size='5' value='".$tam_value."'></td>";
-	echo "<td> <input type='text' style='text-align:right' name='ecat' disabled size='19' value='".$cat_value. "'></td>" ;
-	echo "<td> <input type='text' style='text-align:right' name='eqtd' disabled size='5' value='".$row['qtd_produto']. "'></td>" ;
-	echo "<td> <input type='text' style='text-align:right' name='eprc' disabled size='6' value='R$".$precoprod2."'></td>" ;
-	echo "<td><img src='".$row['imagem']."'height='30' width='30' style='text-align:right' name='eimg'></td>";
-	echo "<td> <input type='text' style='text-align:right' name='edst' disabled size='5' value='".$dest_value."'></td>" ;
-	echo "<td> <input type='text' style='text-align:right' name='edesc' disabled size='5' value='".$row['descricao']."'></td>" ;
-	echo "<td> <input type='text' style='text-align:right' name='edesc' disabled size='3' value='".$row['status_prod']."'></td>" ;
+	echo "<td><font size='2' color='white'> <input type='radio' style='text-align:right' name='rcod' value='".$row['idprodutos']."'></font></td>" ;
+	echo "<td><font size='2' color='black'> <input type='text' style='text-align:right' name='enome2' disabled size='11' value='".$row['nome_produto']."'></font></td>" ;
+	echo "<td><font size='2' color='black'> <input type='text' style='text-align:right' name='etam' disabled size='5' value='".$tam_value."'></font></td>";
+	echo "<td><font size='2' color='black'> <input type='text' style='text-align:right' name='ecat' disabled size='18' value='".$cat_value. "'></font></td>" ;
+	echo "<td><font size='2' color='black'> <input type='text' style='text-align:right' name='eqtd' disabled size='3' value='".$row['qtd_produto']. "'></font></td>" ;
+	echo "<td><font size='2' color='black'> <input type='text' style='text-align:right' name='eprc' disabled size='6' value='R$".$precoprod2."'></font></td>" ;
+	echo "<td><font size='2' color='black'><img src='".$row['imagem']."'height='45' width='45' style='text-align:right' name='eimg'></font></td>";
+//	echo "<td> <input type='text' style='text-align:right' name='edst' disabled size='5' value='".$dest_value."'></td>" ;
+//	echo "<td> <input type='text' style='text-align:right' name='edesc' disabled size='5' value='".$row['descricao']."'></td>" ;
+//	echo "<td> <input type='text' style='text-align:right' name='edesc' disabled size='3' value='".$row['status_prod']."'></td>" ;
 	echo "</tr>";
 
 }
@@ -133,7 +136,7 @@ echo "</table>";
 	?>
 	<button type='submit' name='action' value='apagar' onclick="return confirm('Tem Certeza de excluir o produto ?')" class='button apagar'> Apagar Produto</a>
 <?php
-        echo "<td> <button type='submit' name='action' value='editar' class='button editar'> Editar Produto</a></button> </td>";
+        echo "<td> <button type='submit' name='action' value='editar' class='button editar'> Editar Produto / Visualizar Produto</a></button> </td>";
 //      echo "<td> <a href='buscaprod.php'> <button  class='button pesquisar'> Pesquisar Produto</a> </td>";
         echo "</form>";   
  	    echo "<BR>";

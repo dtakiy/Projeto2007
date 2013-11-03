@@ -291,10 +291,6 @@ $result9 = $client->call("getProd2", array("category" => "".$codp."","n" => "".$
    $result3 =  $arraylimpo[2];
    $result4 =  $arraylimpo[3];
     
- 
-    
-    
-
 	// Fim da eliminação e ordenação de elementos iguais e dos produtos que serao recomendados
 
 

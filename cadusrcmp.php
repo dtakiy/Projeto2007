@@ -50,6 +50,7 @@ session_start();
 		$tel=$row['tel'];
 		$cel=$row['cel'];
 		$senha=$row['senha'];
+		$email=$row['email'];
 
 		}
 		$denome = base64_decode($nome);
@@ -64,6 +65,7 @@ session_start();
 		$decep = base64_decode($cep);
 		$detel = base64_decode($tel);
 		$decel = base64_decode($cel);
+		$deemail = base64_decode($email);
 		
 
 		echo "<tr> ";
@@ -224,8 +226,12 @@ echo"
       <td width='auto'><h7>Telefone:</h7></td>
       <td width='auto'><input name='telusr' type='text' onkeypress='mascara(this,telefone)' id='telusr'  size='auto' maxlength='14' value='".$detel."'  />
      <td width='auto'><h7>Celular:</h7></td>
-      <td width='auto'><input name='celusr' type='text' onkeypress='mascara(this,celular)' id='celusr' size='auto' maxlength='15' min='0' value='".$decel."'/>
+     <td width='auto'><input name='celusr' type='text' onkeypress='mascara(this,celular)' id='celusr' size='auto' maxlength='15' min='0' value='".$decel."'/>
+    <td width='auto'><h7>Email:</h7></td>
+    <td width='auto'><input type='emailusr' name='emailusr' value='".$deemail."' type='text' id='emailusr' size='20' maxlength='60' onBlur='vemail(formulariousr.emailusr);' />
+     
       </tr>
+      
 	  <tr>
       <td width='auto'><h7>Senha:</h7></td>
       <td width='auto'><input name='senusr' type='password' id='senusr'  size='auto' maxlength='14' value='".$senha."'  />

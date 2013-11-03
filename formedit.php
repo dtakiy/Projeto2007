@@ -76,7 +76,7 @@ require_once("conf.php");
   $prc ="$_POST[prc2]";
   $img = "$_POST[editimg2]";
   $desc = "$_POST[desc2]";
-  $dst = "$_POST[dest2]";
+  $dst = "$_POST[destaque2]";
   $status_prod = "$_POST[statusprod]";
 
 //trocar , por .  
@@ -85,9 +85,9 @@ $precoprod = str_replace(",",".",$prc);
 if($img!=""){
 $result = mysql_query("UPDATE produtos SET imagem='$img' WHERE idprodutos='$cod'");
 }  
-$result = mysql_query("UPDATE produtos SET nome_produto='$nome', tam_prod ='$tam',cat_produto='$cat', qtd_produto=$qtd, preco_produto=$precoprod, destaque=$dst,descricao='$desc', status_prod=$status_prod
+$result = mysql_query("UPDATE produtos SET nome_produto='$nome', tam_prod ='$tam',cat_produto='$cat', qtd_produto=$qtd, preco_produto=$precoprod, destaque=$dst, descricao='$desc', status_prod=$status_prod
  WHERE idprodutos='$cod'");
-
+ 
 		$qry = mysql_query("SELECT * FROM produtos where idprodutos='$cod'");
 		while ($row = mysql_fetch_assoc($qry)) {
 		$imagem=$row['imagem'];

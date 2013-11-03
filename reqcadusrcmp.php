@@ -1,17 +1,12 @@
-<?php 
-	session_start();
-    $usuario = $_SESSION['usrlogin'];
-    $tipo=$_SESSION['usrtipo'];
-    $nome = $_SESSION['usrnome'];
-    
-	$nomedecripto = base64_decode($nome);
-	
-	if($tipo==2){
-	echo "";
-	}
-	else 
-//	 header("location:erro.php");
+<?php
+session_start();
+echo "";
+//echo session_id();
+$usuario = $_SESSION['usrlogin']; 
+$email = $_SESSION['email'];
+$emailcripto = base64_decode($email);
 ?>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -20,13 +15,34 @@
 <link rel='icon' rel='icon' href='favicon.ico' type='image/ico' />
 <title>Cusko</title>
 </head>
+
 <body>
     <div class="global-div">
     	<div class="topo-div"></div>
         <div class="menu-div">
         	<ul>
         	<ul>
-			  	<table>
+<?php
+if ($usuario !='')
+{
+echo "";
+}
+else{
+echo "
+        	    <table border=0>
+        		<form name='input' action='auth.php'method='post'>  
+        		<td><a  title='login'><h8>Login</h8> <input name='login' type='text' id='login' size='20' maxlength='40' /></td>
+				<td><a  title='senha'><h8>Senha</h8><input name='senha' type='password' id='senha' size='20' maxlength='40' /></td>
+				</a>
+			    <td><input name='btn_logar' class='button entrar' type='submit' id='btn_logar' value='Logar' /> </td>
+			    <td><a href='cadusradm.php' class='button'>Cadastrar</a></td>
+			    <td><a href='recsenha.php' class='button'>Esqueceu Senha?</a></td>
+			    </td>
+			    </table>	
+			  	</form>        	
+			  	<table>";
+}
+?>
 			  	<td>&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
 			  	&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
 			  	&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
@@ -34,28 +50,39 @@
 			  	&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
 			  	&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
 			  	&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
-			    <img src='cusko_branco.jpg' 'height='100' width='200'> </td>  	
+			    <img src='cusko_branco.jpg' 'height='100' width='200'> </td>
+			  	
 			  	</table>
 			  	<br>
 			  	<br>
+		  				  	
 <div id='cssmenu'>
 <ul>
   <li><a href='index.php'><span>Home</span></a></li>
-  <li><a href='#'><span>Produtos</span></a></li>
-  <li><a href='#'><span>Quem Somos</span></a></li>
-  <li><a href='#'><span>Contato</span></a></li>
-  <li><a href='#'><span>Carrinho</span></a></li>
+  <li><a href='produtos.php'><span>Produtos</span></a></li>
+  <li><a href='quemsomos.php'><span>Quem Somos</span></a></li>
+  <li><a href='contato.php'><span>Contato</span></a></li>
+  <li><a href='carr.php'><span>Carrinho</span></a></li>
+  
   <?php
+if ($usuario !='')
+{
 echo "<form id=formlogout' name='formlogout' method='post'  action='logout.php'>";
-echo "<font size='2.5' color='white'>".$nomedecripto;
+echo "<font size='2.5' color='white'>" .$emailcripto;
 echo "</font>";
 echo "<input name='btn_logout' class='button' type='submit' id='btn_logout' value='Logout' size='40'  />";
 echo "</form>";
+echo "<a href='cadusrcmp.php' title='Editar Informações'><font color='white'>  Editar Usuário</font></a> ";
+}
+else{
+echo "";
+
+}
 ?>
-</ul>
+  </ul>
 </div>				                          
             </ul>
-        </div>
+        </div>   
         
         <div class="esq-div">
 		      
@@ -84,6 +111,7 @@ $cep=$_POST["cepusr"];
 $tel=$_POST["telusr"];
 $cel=$_POST["celusr"];
 $senha=$_POST["senusr"];
+$email=$_POST["emailusr"];
 
 // criptografando dados base 64
 
@@ -99,32 +127,31 @@ $estdcripto = base64_encode($estd);
 $cepcripto = base64_encode($cep);
 $telcripto = base64_encode($tel);
 $celcripto = base64_encode($cel);
-
+$emailcripto = base64_encode($email);
 // criptografando dados MD5
 
 $senhacripto = hash('md5', $senha);
 
 $query = mysql_query("select * from usuarios where login='$usuario' and senha='$senha'");
 $num = mysql_num_rows($query);
-echo "numero";
-echo $num;
+
 if($num >=1){
 $result = mysql_query("UPDATE usuarios
 SET nome='$nomecripto', cpf='$cpfcripto',
 endereco='$endcripto', cidade='$cidadecripto', tel='$telcripto', cel='$celcripto',
-estado='$estdcripto', cep='$cepcripto', numero='$numcripto', complemento='$cmpusrcripto', senha='$senha'
+estado='$estdcripto', cep='$cepcripto', numero='$numcripto', complemento='$cmpusrcripto', senha='$senha', email='$emailcripto'
 WHERE login='$usuario'");
-echo "entro aqui";
-echo "<h1>Cadastro Realizado com Sucesso</h1>";
+
+echo "<h1><font color ='black'>Cadastro Realizado com Sucesso</font></h1>";
 }
 else{
 $result = mysql_query("UPDATE usuarios
 SET nome='$nomecripto', cpf='$cpfcripto',
 endereco='$endcripto', cidade='$cidadecripto', tel='$telcripto', cel='$celcripto',
-estado='$estdcripto', cep='$cepcripto', numero='$numcripto', complemento='$cmpusrcripto', senha='$senhacripto'
+estado='$estdcripto', cep='$cepcripto', numero='$numcripto', complemento='$cmpusrcripto', senha='$senhacripto',email='$emailcripto'
 WHERE login='$usuario'");
 echo "else";
-echo "<h1>Cadastro Realizado com Sucesso</h1>";
+echo "<h1><font color ='black'>Cadastro Realizado com Sucesso</font></h1>";
 }
 //echo $result;
 // Free the resources associated with the result set

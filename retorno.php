@@ -7,7 +7,8 @@ $email = $_SESSION['email'];
 $emailcripto = base64_decode($email);
 ?>
          <?php
-         require_once('reader.php');	
+         require_once('reader.php');
+         require_once('conf.php');	
          ?>
   </ul>
 </div>				                          
@@ -15,6 +16,12 @@ $emailcripto = base64_decode($email);
         </div>            
         <div class="esq-div">
         <div class="destaques-div">
+        <?php
+        $result = mysql_query("DELETE FROM carrinho WHERE carrinho.sessao = '".session_id()."'");
+
+        ?>
+        
+        
 	 <h5>Obrigado Pela Preferência</h5>
 <?php
 echo "<BR>";
