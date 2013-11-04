@@ -129,6 +129,29 @@ return $list9[$n];
     
 }
 
+function token($category,$n) {
+
+
+$con = @mysql_connect("dbmy0106.whservidor.com","francojet","puccamp2007");
+if (!$con)
+	die ("Connection Error! -> ".mysql_error());
+$db = @mysql_select_db("francojet",$con);
+
+$list10 = array();
+
+$result = mysql_query("select * from vendas ORDER BY id DESC");
+
+$z=0;
+while ($row = mysql_fetch_assoc($result)) {
+$token = $row['token'];
+$list10[$z] = $token;
+$z = $z+1;
+}
+
+return $list10[$n];
+    
+}
+
 
 $server = new soap_server();
 $server->configureWSDL("productlistia", "urn:productlistia");
@@ -160,6 +183,15 @@ $server->register("getProd",
     "rpc",
     "encoded",
     "Retornar Lista com vendas");
+    
+    $server->register("token",
+    array("category" => "xsd:string","n" => "xsd:string"),
+    array("return" => "xsd:string"),
+    "urn:productlist",
+    "urn:productlist#getProd",
+    "rpc",
+    "encoded",
+    "Retornar token");
 
 $server->service($HTTP_RAW_POST_DATA);
 

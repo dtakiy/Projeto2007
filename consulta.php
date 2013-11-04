@@ -1,4 +1,6 @@
 <?php
+//C88A9163-16EA-4055-B019-CA30175DDCD5
+
 session_start();
 echo "";
 //echo session_id();
@@ -168,36 +170,37 @@ $sts = "Aguardando pagamento";
 
 
 echo "<BR>";
-echo "<table border=1 font size=2>
-<th>Cod Compra</th><th>Status</th>
+echo "<table border=1 font size=3>
+<th><font size='4' color='black'>Cod Compra</font></th><th><font size='4' color='black'>Status</font></th>
 <tr>
 <td>
 <p>
-<font size='1' color='black'>".$_POST[codcompra]."</td></font><font size='1'>".$sts."</td>
+<font size='2' color='black'>".$_POST[codcompra]."</td></font><td><font size='2'>".$sts."</td>
 </tr>
 </table>";
 
 echo "<BR>";
 
-echo "<table border=1 font size=2>
-<th>Nome</th><th>Endereço</th><th>E_mail</th>
+echo "<table border=1 font size=3>
+<th><font size='3' color='black'>Nome</font></th><th><font size='3' color='black'>Endereço</font></th><th><font size='3' color='black'>E_mail</font></th>
 <tr>
 <td>
 <p>
-<font size='1' color='black'>".$nomec."</td></font><td><font size='1'>".$endc." ".$numc. " " .$compc. " " .$cidadec. " " .$estadoc. "</td></font><td><font size='1'>".$emailc."</td></font>
+<font size='2' color='black'>".$nomec."</td></font><td><font size='2'>".$endc." ".$numc. " " .$compc. " " .$cidadec. " " .$estadoc. "</td></font><td><font size='2'>".$emailc."</td></font>
 </table>";
 
 echo "<BR>";
 
-echo "<table border=1 font size=2>
-<th>Preço C / Frete</th>
+echo "<table border=1 font size=3>
+<th><font size='3' color='black'>Preço C / Frete</font></th>
 <tr>
 <td>
 <p>
-<font size='1' color='black'>".$valorc."</td>
+<font size='2' color='black'>".$valorc."</td>
 </table>";
 
 }
+
 
 ?>
 
