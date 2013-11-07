@@ -23,7 +23,7 @@ require_once("conf.php");
 require_once("conf2.php");
 
 $max=4; // numero maximo de produtos por pagina
-
+//
 $pagina=$_GET["pagina"]; 
 if ($pagina == "")
 $pagina=1;
