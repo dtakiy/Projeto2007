@@ -10,7 +10,8 @@ $emailcripto = base64_decode($email);
 require_once('reader.php');
 ?>
   </ul>
-</div>				                          
+</div>			
+//	                          
             </ul>
         </div>      
         
@@ -478,7 +479,11 @@ else{
 
 // caso tenha mais de um produto
 
+$arrayrec = array(); //array usado para as recomendacoes auxiliar;
+$arrayrecomend = array(); //array usado para as recomendacoes;
 $produtosdisp = array();
+$arrayfianal = array(); //array final para rec
+
 $numprodcar = count($listadeprodutos);
 $m=0;
 $queryprod = mysql_query("SELECT * FROM produtos WHERE status_prod=1",$con); 
@@ -488,41 +493,262 @@ $produtosdisp[$m] = $produtonome;
 $m = $m +1;
 }
 
+//tirando os produtos que estao dentro do carrinho da comparacao
+//$arraylimpo2 = array_diff($produtosdisp,$listadeprodutos);
+//rsort ($arraylimpo2);
+
+// verificando o numero de produtos que vao ser comparados na pesquisa
 $numprodcarexistente = count($produtosdisp);
-$arraysim = array ();
+
+// criando array
+$matrix = array ();
+
 
 for($conts = 0; $conts < $numprodcar ; $conts++){
-		echo "============";
-	echo "PARA ESSE PROD";
+
 	for($npc=0; $npc < $numprodcarexistente; $npc++ ){
-	
 
-	$pesq = $listadeprodutos[0];
 	
+	$pesq = $listadeprodutos[$conts];
 	
-	$result = $client->call("getProd2", array("category" => "".$pesq."","n" => "".$produtosdisp[$npc].""));
-	$result2 = $client->call("getProd3", array("category" => "".$pesq."","n" => "".$pesq.""));
+	$result = $client->call("getProd2", array("category" => "".$pesq."","n" => "".$produtosdisp[$npc]."")); // pega UV
+	$result2 = $client->call("getProd3", array("category" => "".$pesq."","n" => "".$pesq."")); // pega V
 	
+	/*
+	echo "=================================";
+	echo "<BR>";
+	echo "PESQUISA COM OS PRODUTOS";
+	echo "<BR>";
+	echo $pesq;
+	echo "<BR>";
+	echo $produtosdisp[$npc];
+	echo "<BR>";
+	echo "=================================";
+	*/
 	
-
-//	echo $listadeprodutos[$conts];
-//	echo $produtosdisp[$npc];
+	//SIM = UV/V
+	if($result2 !=0){
 	$sim = $result/$result2;
-//	echo $sim;
-//	echo "**********";
-		if($conts==0){
-		$arraysim[] = $produtosdisp[$npc];
-		$arraysim[] = $sim;
-		}
-
 	}
+	
+	if($sim!=0){
+	$matrix[$npc] = array('prod2' => $produtosdisp[$npc],'similaridade' => $sim);
+	}
+}
+
 }	
+
+ function orderBy($matrix, $field)
+  {
+    $code = "return strnatcmp(\$a['$field'], \$b['$field']);";
+    usort($matrix, create_function('$a,$b', $code));
+    return $matrix;
+  }
+
+  $data = orderBy($matrix, 'similaridade');
+
 
 }
 
-print_r($arraysim);
+$tamarryprod = count($data);
+
+//echo $tamarryprod;
+//echo "        ";
+//print_r($data);
+
+/*
+echo "===>>>>>>>>";
+echo "<BR>";
+echo "<BR>";
+echo $data[0]['prod2'];
+echo "<BR>";
+echo "<BR>";
+echo "===>>>>>>>>";
+*/
 
 
+//separando os nomes dos produtos em um array
+
+for($incr = 0 ;$incr < $tamarryprod;$incr++ ){
+
+$arrayrec[] = $data[$incr]['prod2'];
+
+}
+
+$tamarryprod2 = count($arrayrec);
+
+$tamaux = $tamarryprod2;
+for($conta = 0; $conta <= $tamarryprod2; $conta++ ){
+	$arrayrecomend[] = $arrayrec[$tamaux];
+	
+	$tamaux = $tamaux - 1;
+}
+
+
+//tirando os produtos que estao dentro do carrinho da comparacao
+$arraylimpo2 = array_diff($arrayrec,$listadeprodutos);
+
+$numrecis = 4 + $numprodcar;
+
+for($conty=0;$conty <=$numrecis;$conty++){
+
+	if($arraylimpo2[$conty] !=''){
+	$arrayfinal[] = $arraylimpo2[$conty];
+	}
+}
+
+$resultado = $arrayfinal[0];
+$resultado2 = $arrayfinal[1];
+$resultado3 = $arrayfinal[2];
+$resultado4 = $arrayfinal[3];
+
+	$res = mysql_query("SELECT * FROM produtos where nome_produto = '$resultado' ", $con);
+	$res2 = mysql_query("SELECT * FROM produtos where nome_produto = '$resultado2' ", $con);
+	$res3 = mysql_query("SELECT * FROM produtos where nome_produto = '$resultado3' ", $con);
+	$res4 = mysql_query("SELECT * FROM produtos where nome_produto = '$resultado4' ", $con);
+
+	while ($row = mysql_fetch_assoc($res)) {
+		
+	echo "<table border=0>";
+	echo "<tr>";
+	echo "<td>";
+
+			echo "
+			<table border=0>
+			<tr>
+			<form action='buscar.php' method='get'> <div align='center'><br>";
+	$preco=$row['preco_produto'];
+	// trocando . por ,
+	$precoprod = str_replace(".",",",$preco);
+
+	echo "<center>";
+	echo "<tr>";
+	echo "<td> <font size='2.5' color='black'>".$row['nome_produto'];
+	echo "</td>";
+	echo "</tr>";
+	echo "<br>";
+	echo "<tr><td><a href='".$row['nome_produto'].".php'><img src='".$row['imagem']."'height='130' width='130' name='eimg'></tr></td>";
+	echo "<td> <font size='2.5' color='black'>Preço R$ ".$precoprod;
+	echo "</tr>";
+
+	echo "</td>";
+	echo "</tr></td>";
+	echo "<tr>";
+	echo "<td><div align='center' style='font-size:10px;font-family:Verdana'><a href='carr.php?cod=".$row['idprodutos']."&acao=incluir' class='button'>Comprar</a></div><br></td>";
+	echo "</tr>";
+	echo "</center>";
+	echo "</table>";
+    echo "</form>"; 
+    echo "<td>";
+
+}
+	while ($row = mysql_fetch_assoc($res2)) {
+		
+	echo "<table border=0>";
+	echo "<tr>";
+	echo "<td>";
+
+			echo "
+			<table border=0>
+			<tr>
+			<form action='buscar.php' method='get'> <div align='center'><br>";
+	$preco=$row['preco_produto'];
+	// trocando . por ,
+	$precoprod = str_replace(".",",",$preco);
+
+	echo "<center>";
+	echo "<tr>";
+	echo "<td> <font size='2.5' color='black'>".$row['nome_produto'];
+	echo "</td>";
+	echo "</tr>";
+	echo "<br>";
+	echo "<tr><td><a href='".$row['nome_produto'].".php'><img src='".$row['imagem']."'height='130' width='130' name='eimg'></tr></td>";
+	echo "<td> <font size='2.5' color='black'>Preço R$ ".$precoprod;
+	echo "</tr>";
+
+	echo "</td>";
+	echo "</tr></td>";
+	echo "<tr>";
+	echo "<td><div align='center' style='font-size:10px;font-family:Verdana'><a href='carr.php?cod=".$row['idprodutos']."&acao=incluir' class='button'>Comprar</a></div><br></td>";
+	echo "</tr>";
+	echo "</center>";
+	echo "</table>";
+    echo "</form>"; 
+    echo "<td>";
+
+}
+	while ($row = mysql_fetch_assoc($res3)) {
+		
+	echo "<table border=0>";
+	echo "<tr>";
+	echo "<td>";
+
+			echo "
+			<table border=0>
+			<tr>
+			<form action='buscar.php' method='get'> <div align='center'><br>";
+	$preco=$row['preco_produto'];
+	// trocando . por ,
+	$precoprod = str_replace(".",",",$preco);
+
+	echo "<center>";
+	echo "<tr>";
+	echo "<td> <font size='2.5' color='black'>".$row['nome_produto'];
+	echo "</td>";
+	echo "</tr>";
+	echo "<br>";
+	echo "<tr><td><a href='".$row['nome_produto'].".php'><img src='".$row['imagem']."'height='130' width='130' name='eimg'></tr></td>";
+	echo "<td> <font size='2.5' color='black'>Preço R$ ".$precoprod;
+	echo "</tr>";
+
+	echo "</td>";
+	echo "</tr></td>";
+	echo "<tr>";
+	echo "<td><div align='center' style='font-size:10px;font-family:Verdana'><a href='carr.php?cod=".$row['idprodutos']."&acao=incluir' class='button'>Comprar</a></div><br></td>";
+	echo "</tr>";
+	echo "</center>";
+	echo "</table>";
+    echo "</form>"; 
+    echo "<td>";
+
+}
+	while ($row = mysql_fetch_assoc($res4)) {
+		
+	echo "<table border=0>";
+	echo "<tr>";
+	echo "<td>";
+
+			echo "
+			<table border=0>
+			<tr>
+			<form action='buscar.php' method='get'> <div align='center'><br>";
+	$preco=$row['preco_produto'];
+	// trocando . por ,
+	$precoprod = str_replace(".",",",$preco);
+
+	echo "<center>";
+	echo "<tr>";
+	echo "<td> <font size='2.5' color='black'>".$row['nome_produto'];
+	echo "</td>";
+	echo "</tr>";
+	echo "<br>";
+	echo "<tr><td><a href='".$row['nome_produto'].".php'><img src='".$row['imagem']."'height='130' width='130' name='eimg'></tr></td>";
+	echo "<td> <font size='2.5' color='black'>Preço R$ ".$precoprod;
+	echo "</tr>";
+
+	echo "</td>";
+	echo "</tr></td>";
+	echo "<tr>";
+	echo "<td><div align='center' style='font-size:10px;font-family:Verdana'><a href='carr.php?cod=".$row['idprodutos']."&acao=incluir' class='button'>Comprar</a></div><br></td>";
+	echo "</tr>";
+	echo "</center>";
+	echo "</table>";
+    echo "</form>"; 
+    echo "<td>";
+
+}
+ 
+ echo "</pre>";
 ?>
 	     </table>
          </table>
